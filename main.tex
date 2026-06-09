@@ -1,0 +1,33 @@
+% !TEX program = xelatex
+\documentclass[12pt,letterpaper,oneside]{report}
+
+\input{preamble}
+\input{metadata}
+
+\begin{document}
+
+\input{cover}
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\listoftables
+\clearpage
+\listoffigures
+\clearpage
+
+\pagenumbering{arabic}
+
+\include{chapters/01_mo_dau}
+\include{chapters/02_co_so_ly_thuyet_va_phap_ly}
+\include{chapters/03_du_lieu_va_gan_nhan}
+\include{chapters/04_phan_tich_va_thiet_ke_he_thong}
+\include{chapters/04_phuong_phap_de_xuat}
+\include{chapters/05_thuc_nghiem_va_danh_gia}
+\include{chapters/06_ket_luan_va_huong_phat_trien}
+
+\clearpage
+\addcontentsline{toc}{chapter}{TÀI LIỆU THAM KHẢO}
+\input{references}
+
+\end{document}

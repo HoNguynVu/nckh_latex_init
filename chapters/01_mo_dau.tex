@@ -1,0 +1,83 @@
+\chapter{MỞ ĐẦU}
+
+\section{Bối cảnh đề tài}
+Sự phát triển mạnh của các nền tảng mạng xã hội như Facebook, TikTok và các kênh nội dung ngắn đã làm thay đổi đáng kể cách sản phẩm thực phẩm chức năng, thực phẩm bảo vệ sức khỏe được quảng bá đến người tiêu dùng. Nội dung quảng cáo không còn chỉ xuất hiện dưới dạng văn bản tĩnh, mà thường được kết hợp giữa bài đăng, video, phụ đề, chữ chèn trong ảnh, lời thoại, hình ảnh chuyên gia, phản hồi người dùng và các hình thức khuyến mãi có tính lan truyền cao. Đặc điểm này giúp quảng cáo tiếp cận người dùng nhanh hơn, nhưng đồng thời cũng khiến việc kiểm tra, giám sát và phát hiện sai phạm bằng phương pháp thủ công trở nên khó khăn.
+
+Trong thực tế, nhiều nội dung quảng cáo thực phẩm chức năng có dấu hiệu thổi phồng công dụng, gây hiểu nhầm về khả năng điều trị bệnh, lợi dụng hình ảnh hoặc uy tín của bác sĩ, bệnh viện, cơ quan nhà nước, báo chí, hoặc khai thác tâm lý lo sợ của người tiêu dùng. Một số quảng cáo còn sử dụng ký tự đặc biệt, teencode, cách viết biến dạng, hình ảnh hoặc video để né tránh các bộ lọc đơn giản. Bối cảnh pháp lý liên quan đến quảng cáo thực phẩm và thực phẩm bảo vệ sức khỏe đặt ra yêu cầu cần có các công cụ hỗ trợ rà soát rủi ro, giúp phát hiện sớm các nội dung có dấu hiệu vi phạm trước khi tiến hành đánh giá chuyên sâu.
+
+\section{Vấn đề nghiên cứu}
+Bài toán nghiên cứu của đề tài là xây dựng một pipeline hỗ trợ tự động thu thập, xử lý, gán nhãn, huấn luyện mô hình và đánh giá các nội dung quảng cáo thực phẩm chức năng trên mạng xã hội. Hệ thống không nhằm đưa ra kết luận pháp lý cuối cùng thay cho cơ quan chức năng, mà đóng vai trò như một công cụ hỗ trợ phát hiện và ưu tiên rà soát các mẫu quảng cáo có rủi ro cao.
+
+Ở giai đoạn hiện tại, đề tài không chỉ dừng ở phân loại văn bản, mà hướng đến một hệ thống phát hiện rủi ro đa phương thức. Văn bản bài đăng, caption, phụ đề, chữ OCR trong ảnh/video, nội dung ASR từ lời nói, tín hiệu hình ảnh và luật phát hiện đều được xem là các nguồn thông tin bắt buộc trong pipeline. Một mẫu quảng cáo có thể đồng thời chứa nhiều dấu hiệu rủi ro, chẳng hạn vừa là nội dung quảng cáo, vừa có tuyên bố công dụng quá mức, tuyên bố chữa bệnh, trích dẫn uy tín y tế, nhân chứng khỏi bệnh, yếu tố hù dọa hoặc khuyến mãi gây áp lực. Do đó, hệ thống cần kết hợp nhiều nguồn tín hiệu để nhận diện được các nhóm dấu hiệu sai phạm khác nhau trong cùng một mẫu dữ liệu.
+
+\section{Mục tiêu đề tài}
+Đề tài hướng đến các mục tiêu chính sau:
+\begin{itemize}
+    \item Xây dựng quy trình thu thập dữ liệu quảng cáo thực phẩm chức năng, thực phẩm bảo vệ sức khỏe từ các nền tảng mạng xã hội, có lưu trữ nội dung văn bản, nguồn dữ liệu, thời gian đăng tải, định danh mẫu và metadata cần thiết.
+    \item Đề xuất và chuẩn hóa bộ nhãn phục vụ phát hiện các nhóm dấu hiệu rủi ro phổ biến trong quảng cáo, bao gồm tính chất quảng cáo, tuyên bố công dụng, tuyên bố chữa bệnh, lợi dụng uy tín, nhân chứng, yếu tố hù dọa, khuyến mãi và cảnh báo bắt buộc nếu có.
+    \item Xây dựng pipeline xử lý dữ liệu đa nguồn, bao gồm văn bản bài đăng, caption, phụ đề, OCR từ ảnh/video, ASR từ lời nói, frame hình ảnh, metadata và các tín hiệu luật/keyword.
+    \item Xây dựng các mô hình baseline từ luật/keyword và học máy truyền thống, phát triển mô hình phân loại đa nhãn cho văn bản, đồng thời tích hợp các module OCR, ASR và phát hiện tín hiệu hình ảnh rủi ro.
+    \item Đánh giá mô hình bằng các chỉ số phù hợp cho bài toán đa nhãn như micro F1, macro F1, precision, recall, exact match accuracy và F1 riêng cho từng nhãn; đồng thời thực hiện phân tích lỗi để cải thiện dữ liệu và mô hình.
+    \item Xây dựng cơ chế kết hợp đa phương thức giữa văn bản, OCR, ASR, tín hiệu hình ảnh và luật phát hiện để tạo nhãn dự đoán, xác suất và điểm rủi ro tổng hợp.
+\end{itemize}
+
+\section{Phạm vi nghiên cứu}
+Phạm vi nghiên cứu hiện tại bao gồm cả dữ liệu văn bản và dữ liệu đa phương thức trong nội dung quảng cáo trên mạng xã hội. Hệ thống xử lý văn bản từ bài đăng, mô tả, caption và phụ đề; trích xuất chữ trong ảnh hoặc video bằng OCR; chuyển lời nói trong video thành văn bản bằng ASR; phân tích frame hình ảnh để nhận diện các tín hiệu rủi ro như bác sĩ, áo blouse, ống nghe, phòng khám, logo cơ quan/báo chí hoặc hình thức testimonial trực quan; đồng thời kết hợp với luật/keyword để hỗ trợ phát hiện dấu hiệu sai phạm.
+
+Trong đó, mô hình PhoBERT là module phân loại văn bản chính nhưng không phải toàn bộ hệ thống. Các nhánh như PhoBERT, OCR, ASR, visual detection và rule-based detection được thiết kế chạy song song, mỗi nhánh tạo ra điểm dự đoán riêng. Kết quả cuối cùng được tạo từ quá trình hợp nhất nhiều nguồn tín hiệu, bao gồm \texttt{phobert\_score}, \texttt{OCR\_score}, \texttt{ASR\_score}, \texttt{visual\_score} và \texttt{rule\_score}. Cơ chế kết hợp ban đầu có thể theo hướng late fusion để tạo \texttt{risk\_score}, sau đó điều chỉnh theo kết quả thực nghiệm.
+
+Các nhóm nhãn đầu ra dự kiến gồm:
+\begin{itemize}
+    \item \texttt{IS\_ADS}: nội dung có tính quảng cáo.
+    \item \texttt{EFFICACY\_CLAIM}: tuyên bố công dụng hoặc thổi phồng hiệu quả.
+    \item \texttt{CURE\_CLAIM}: tuyên bố chữa bệnh hoặc điều trị khỏi bệnh.
+    \item \texttt{AUTHORITY\_REFERENCE}: lợi dụng uy tín của bác sĩ, bệnh viện, cơ quan nhà nước, báo chí hoặc tổ chức uy tín.
+    \item \texttt{TESTIMONIAL}: nhân chứng, bệnh nhân hoặc câu chuyện khỏi bệnh.
+    \item \texttt{FEAR\_URGENCY}: hù dọa, tạo áp lực, FOMO hoặc khan hiếm giả.
+    \item \texttt{PRICE\_PROMOTION}: ưu đãi, giảm giá, khuyến mãi hoặc cam kết hoàn tiền.
+\end{itemize}
+Các nhãn này được sử dụng cho mô hình văn bản và cho tầng hợp nhất đa phương thức. Khi dữ liệu đủ điều kiện, bộ nhãn có thể mở rộng thêm nhóm phát hiện thiếu hoặc che khuất cảnh báo bắt buộc. Đối với ảnh và video, hệ thống không chỉ dựa vào nhãn văn bản, mà còn cần ghi nhận các bằng chứng trực quan hoặc âm thanh tương ứng, chẳng hạn chữ quảng cáo xuất hiện trong frame, lời thoại khẳng định công dụng, hình ảnh bác sĩ/chuyên gia, logo tổ chức uy tín hoặc testimonial trong poster/video.
+
+Đề tài giới hạn ở mức phát hiện dấu hiệu và hỗ trợ rà soát rủi ro. Kết quả của hệ thống là nhãn dự đoán, xác suất, điểm rủi ro và bằng chứng hỗ trợ, không phải kết luận vi phạm pháp luật cuối cùng.
+
+\subsection{Yêu cầu chức năng hệ thống}
+Để đáp ứng phạm vi nghiên cứu nêu trên, hệ thống cần được thiết kế theo kiến trúc module, trong đó mỗi module đảm nhiệm một nhóm chức năng riêng nhưng có thể kết nối thành pipeline xử lý thống nhất. Các yêu cầu chức năng chính của hệ thống bao gồm:
+
+\begin{itemize}
+    \item \textbf{Data Collection Module:} thu thập bài đăng, hình ảnh hoặc video từ TikTok và Facebook; lưu metadata, đường dẫn file hoặc video, nguồn dữ liệu và văn bản thô đi kèm.
+    \item \textbf{Data Processing \& Labeling Module:} chuẩn hóa dữ liệu, kiểm tra trùng lặp, quản lý bộ nhãn, chia tập train/validation/test và lưu phiên bản dataset phục vụ tái lập thực nghiệm.
+    \item \textbf{Rule-based Detection Module:} đọc file \texttt{keyword.json}, phát hiện các cụm từ rủi ro, trả về nhãn gợi ý và đoạn bằng chứng tương ứng trong văn bản.
+    \item \textbf{PhoBERT Classification Module:} huấn luyện và suy luận mô hình PhoBERT cho bài toán phân loại đa nhãn văn bản, trả về xác suất theo từng nhãn.
+    \item \textbf{OCR Module:} trích xuất frame từ video và nhận diện chữ được nhúng trong ảnh hoặc video, nhằm bổ sung tín hiệu văn bản ngoài phần caption.
+    \item \textbf{ASR Module:} trích xuất audio từ video và chuyển lời nói thành văn bản bằng Whisper hoặc mô hình nhận dạng tiếng nói tương đương.
+    \item \textbf{Visual Detection Module:} phát hiện các tín hiệu hình ảnh có rủi ro như áo blouse trắng, ống nghe, bối cảnh phòng khám, logo giả mạo hoặc hình ảnh chuyên gia y tế.
+    \item \textbf{Fusion \& Risk Scoring Module:} kết hợp điểm từ PhoBERT, OCR, ASR, hình ảnh và luật phát hiện để tạo điểm rủi ro tổng hợp cho từng mẫu dữ liệu.
+    \item \textbf{RAG \& LLM Reasoning Module:} truy xuất quy định, nguyên tắc gán nhãn và bằng chứng liên quan, sau đó sinh kết luận có giải thích để hỗ trợ người rà soát.
+    \item \textbf{Inference API/Demo Module:} cung cấp endpoint \texttt{/predict} nhận văn bản hoặc metadata bài đăng, trả về nhãn, xác suất, bằng chứng và phần giải thích.
+\end{itemize}
+
+\subsection{Yêu cầu chức năng dữ liệu}
+Bên cạnh các module xử lý, hệ thống cần có yêu cầu rõ ràng đối với dữ liệu để bảo đảm quá trình huấn luyện, đánh giá và suy luận có thể kiểm soát được. Các yêu cầu chức năng dữ liệu bao gồm:
+
+\begin{itemize}
+    \item \textbf{Lưu trữ dữ liệu thô:} lưu nguyên trạng văn bản bài đăng, caption, mô tả video, đường dẫn nguồn, thời gian thu thập, nền tảng, định danh bài đăng và các metadata cần thiết.
+    \item \textbf{Quản lý dữ liệu đa phương thức:} liên kết mỗi mẫu với các thành phần tương ứng như ảnh, video, frame trích xuất, audio, kết quả OCR, kết quả ASR và tín hiệu hình ảnh.
+    \item \textbf{Chuẩn hóa và làm sạch dữ liệu:} chuẩn hóa Unicode, loại bỏ mẫu rỗng, kiểm tra duplicate, kiểm tra leakage theo bài đăng và chuẩn hóa định dạng nhãn.
+    \item \textbf{Quản lý bộ nhãn:} lưu danh sách nhãn, định nghĩa nhãn, nguyên tắc gán nhãn và trạng thái gán nhãn của từng mẫu để hỗ trợ kiểm tra thủ công.
+    \item \textbf{Chia tập dữ liệu:} chia dữ liệu thành train, validation và test theo quy tắc nhất quán, hạn chế việc các đoạn thuộc cùng một bài đăng xuất hiện ở nhiều tập khác nhau.
+    \item \textbf{Lưu phiên bản dataset:} ghi nhận phiên bản dữ liệu, thời điểm tạo, nguồn dữ liệu, cấu hình tiền xử lý và thống kê phân phối nhãn để có thể tái lập thực nghiệm.
+    \item \textbf{Lưu bằng chứng phát hiện:} lưu đoạn văn bản, frame, lời thoại hoặc tín hiệu hình ảnh làm bằng chứng cho từng nhãn gợi ý hoặc nhãn dự đoán.
+    \item \textbf{Lưu kết quả mô hình:} lưu xác suất dự đoán, nhãn sau threshold, điểm rủi ro tổng hợp, nhãn sai lệch và ghi chú review để phục vụ phân tích lỗi.
+    \item \textbf{Xuất dữ liệu phục vụ đánh giá:} hỗ trợ xuất file CSV hoặc JSON chứa dữ liệu, nhãn, xác suất, bằng chứng và metadata để kiểm tra thủ công hoặc dùng trong các lần huấn luyện tiếp theo.
+\end{itemize}
+
+\section{Đóng góp dự kiến}
+Đóng góp dự kiến của đề tài bao gồm:
+\begin{itemize}
+    \item Một quy trình dữ liệu có thể tái lập cho bài toán phát hiện sai phạm trong quảng cáo thực phẩm chức năng trên mạng xã hội.
+    \item Một bộ nhãn đa nhãn phản ánh các dạng dấu hiệu rủi ro thường gặp trong nội dung quảng cáo thực phẩm chức năng, thực phẩm bảo vệ sức khỏe.
+    \item Các mô hình baseline gồm rule-based/keyword-based detector và mô hình học máy truyền thống, làm cơ sở so sánh cho các module học sâu và module đa phương thức.
+    \item Mô hình NLP đa nhãn dựa trên transformer tiếng Việt, các module OCR, ASR, phát hiện tín hiệu hình ảnh và cơ chế điều chỉnh threshold theo từng nhãn.
+    \item Quy trình phân tích lỗi và xuất kết quả dự đoán phục vụ review thủ công, cải thiện dataset và huấn luyện lại trong các phiên bản tiếp theo.
+    \item Kiến trúc hợp nhất đa phương thức, kết hợp văn bản, OCR, ASR, tín hiệu hình ảnh và luật phát hiện để xây dựng điểm rủi ro tổng hợp.
+\end{itemize}

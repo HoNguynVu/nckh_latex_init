@@ -1,0 +1,130 @@
+\chapter{CƠ SỞ LÝ THUYẾT VÀ PHÁP LÝ}
+
+\section{Tổng quan về quảng cáo thực phẩm chức năng}
+Thực phẩm chức năng và thực phẩm bảo vệ sức khỏe là nhóm sản phẩm có liên quan trực tiếp đến nhận thức sức khỏe của người tiêu dùng. Vì vậy, quảng cáo cho nhóm sản phẩm này cần được kiểm soát chặt chẽ, đặc biệt đối với các nội dung gây hiểu nhầm rằng sản phẩm có tác dụng như thuốc chữa bệnh.
+
+\section{Cơ sở pháp lý}
+Báo cáo có thể tham chiếu các văn bản pháp lý sau trong quá trình xây dựng tiêu chí phát hiện:
+\begin{itemize}
+    \item Luật Quảng cáo 2012 và các văn bản sửa đổi, bổ sung.
+    \item Nghị định 15/2018/NĐ-CP.
+    \item Nghị định 38/2021/NĐ-CP.
+    \item Các văn bản cập nhật liên quan đến xử phạt và quản lý quảng cáo thực phẩm bảo vệ sức khỏe.
+\end{itemize}
+
+\section{Các công nghệ sử dụng}
+Trong quá trình xây dựng và thực nghiệm mô hình phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng, đề tài sử dụng một số công nghệ chính phục vụ xử lý dữ liệu, huấn luyện mô hình ngôn ngữ và đánh giá kết quả. Các công nghệ này được lựa chọn dựa trên mức độ phù hợp với bài toán phân loại đa nhãn tiếng Việt, khả năng triển khai trên môi trường Google Colab và khả năng tái lập kết quả thực nghiệm.
+
+\subsection{Google Colab và GPU NVIDIA T4}
+Google Colab là nền tảng điện toán đám mây cho phép chạy mã Python trực tiếp trên trình duyệt. Trong thực nghiệm, đề tài sử dụng môi trường Colab với GPU NVIDIA T4 để tăng tốc quá trình fine-tune mô hình PhoBERT.
+
+\textbf{Ưu điểm.} Google Colab dễ sử dụng, không yêu cầu cài đặt môi trường phức tạp trên máy cá nhân và hỗ trợ GPU miễn phí hoặc theo gói trả phí. GPU NVIDIA T4 phù hợp với các mô hình Transformer cỡ vừa như PhoBERT-base-v2, giúp rút ngắn đáng kể thời gian huấn luyện so với CPU.
+
+\textbf{Nhược điểm.} Tài nguyên Colab có giới hạn về thời gian phiên chạy, dung lượng bộ nhớ và mức độ ổn định. GPU được cấp phát có thể thay đổi tùy thời điểm, vì vậy thời gian huấn luyện giữa các lần chạy có thể không hoàn toàn giống nhau.
+
+\textbf{Lý do chọn.} Colab phù hợp với quy mô thực nghiệm của đề tài, đặc biệt khi cần fine-tune mô hình học sâu nhưng không có sẵn máy tính cá nhân cấu hình cao. Việc sử dụng GPU T4 giúp cân bằng giữa hiệu năng, chi phí và khả năng triển khai nhanh.
+
+\subsection{Python}
+Python là ngôn ngữ lập trình chính được sử dụng để xây dựng toàn bộ pipeline, bao gồm đọc dữ liệu, kiểm tra chất lượng dữ liệu, tokenization, huấn luyện mô hình, đánh giá và lưu kết quả.
+
+\textbf{Ưu điểm.} Python có hệ sinh thái thư viện mạnh cho học máy và xử lý ngôn ngữ tự nhiên, cú pháp dễ đọc và phù hợp với môi trường notebook như Google Colab.
+
+\textbf{Nhược điểm.} Python có tốc độ thực thi thuần không cao bằng các ngôn ngữ biên dịch. Tuy nhiên, trong bài toán này, các phép tính nặng chủ yếu được thực hiện bởi các thư viện tối ưu hóa như PyTorch và chạy trên GPU.
+
+\textbf{Lý do chọn.} Python là lựa chọn phổ biến trong nghiên cứu học sâu, dễ kết hợp với các thư viện như PyTorch, Transformers, Pandas, NumPy và Scikit-learn. Điều này giúp quá trình thử nghiệm mô hình diễn ra nhanh và thuận tiện.
+
+\subsection{Pandas và NumPy}
+Pandas được sử dụng để đọc và xử lý dữ liệu dạng bảng từ file \texttt{dataset\_real.csv}. NumPy được sử dụng để xử lý mảng số, tính toán thống kê, class weight và threshold cho từng nhãn.
+
+\textbf{Ưu điểm.} Pandas thuận tiện cho thao tác với dữ liệu dạng bảng như lọc mẫu, kiểm tra cột bắt buộc, xử lý giá trị thiếu và chia tập train/validation/test. NumPy hỗ trợ tính toán vector hóa hiệu quả, phù hợp với các thao tác trên ma trận nhãn và xác suất dự đoán.
+
+\textbf{Nhược điểm.} Pandas có thể tiêu tốn nhiều bộ nhớ khi dữ liệu rất lớn. NumPy tuy mạnh về tính toán mảng nhưng không cung cấp trực tiếp các cấu trúc dữ liệu giàu ngữ nghĩa như DataFrame.
+
+\textbf{Lý do chọn.} Dữ liệu của đề tài được tổ chức dưới dạng CSV với nhiều cột nhãn, vì vậy Pandas và NumPy là bộ công cụ phù hợp để kiểm tra, chuẩn hóa và chuẩn bị dữ liệu trước khi đưa vào mô hình.
+
+\subsection{PyTorch}
+PyTorch là framework học sâu được sử dụng làm nền tảng tính toán cho mô hình. Trong code thực nghiệm, PyTorch được dùng để kiểm tra GPU, thiết lập seed, tính sigmoid, đưa mô hình lên thiết bị CUDA và cài đặt hàm mất mát \texttt{BCEWithLogitsLoss}.
+
+\textbf{Ưu điểm.} PyTorch linh hoạt, dễ tùy biến và được hỗ trợ tốt bởi các thư viện Transformer hiện đại. Framework này cho phép tận dụng GPU để tăng tốc huấn luyện và suy luận.
+
+\textbf{Nhược điểm.} PyTorch yêu cầu người dùng hiểu rõ tensor, thiết bị tính toán và quá trình huấn luyện mô hình. Nếu quản lý GPU hoặc kiểu dữ liệu không đúng, chương trình có thể gặp lỗi bộ nhớ hoặc lỗi không tương thích thiết bị.
+
+\textbf{Lý do chọn.} PyTorch tương thích trực tiếp với Hugging Face Transformers và phù hợp với việc tùy biến loss cho bài toán phân loại đa nhãn mất cân bằng.
+
+\subsection{Hugging Face Transformers}
+Hugging Face Transformers là thư viện được sử dụng để tải tokenizer, mô hình PhoBERT và triển khai quá trình huấn luyện. Trong code, thư viện này cung cấp các thành phần chính như tokenizer tự động, lớp mô hình phân loại chuỗi, cấu hình huấn luyện, Trainer, data collator và callback dừng sớm.
+
+\textbf{Ưu điểm.} Thư viện cung cấp giao diện thống nhất cho nhiều mô hình ngôn ngữ hiện đại, giúp giảm khối lượng code cần tự viết. Lớp \texttt{Trainer} hỗ trợ sẵn các chức năng quan trọng như huấn luyện theo epoch, đánh giá, lưu checkpoint, chọn mô hình tốt nhất và early stopping.
+
+\textbf{Nhược điểm.} Do thư viện đóng gói nhiều chức năng ở mức cao, việc tùy biến sâu đôi khi cần kế thừa lại lớp \texttt{Trainer} hoặc hiểu rõ cơ chế hoạt động bên trong. Ngoài ra, phiên bản thư viện thay đổi có thể làm thay đổi một số tham số cấu hình.
+
+\textbf{Lý do chọn.} Transformers giúp triển khai nhanh mô hình PhoBERT cho bài toán phân loại đa nhãn, đồng thời vẫn cho phép tùy biến hàm loss thông qua lớp Trainer mở rộng.
+
+\subsection{PhoBERT-base-v2}
+PhoBERT-base-v2 là mô hình ngôn ngữ tiền huấn luyện cho tiếng Việt, được sử dụng như một encoder văn bản trong kiến trúc nhiều nhánh. Trong thực nghiệm, mô hình được tải bằng lớp phân loại chuỗi của thư viện Transformers, đặt số đầu ra bằng số nhãn cần dự đoán và cấu hình theo hướng phân loại đa nhãn.
+
+\textbf{Ưu điểm.} PhoBERT được huấn luyện trên dữ liệu tiếng Việt nên có khả năng biểu diễn ngữ nghĩa tốt với văn bản tiếng Việt. Phiên bản base có kích thước vừa phải, phù hợp để fine-tune trên GPU T4 trong môi trường Google Colab.
+
+\textbf{Nhược điểm.} Mô hình Transformer cần nhiều tài nguyên tính toán hơn các phương pháp truyền thống như từ khóa hoặc học máy cổ điển. Hiệu quả của mô hình cũng phụ thuộc nhiều vào chất lượng dữ liệu gán nhãn và mức độ cân bằng giữa các nhãn trong tập huấn luyện.
+
+\textbf{Lý do chọn.} Bài toán của đề tài tập trung vào văn bản quảng cáo tiếng Việt, có nhiều cách diễn đạt linh hoạt và phụ thuộc mạnh vào ngữ cảnh. PhoBERT-base-v2 phù hợp vì có khả năng học đặc trưng ngôn ngữ tiếng Việt và có thể fine-tune cho phân loại đa nhãn.
+
+\subsection{Hugging Face Datasets}
+Hugging Face Datasets được sử dụng để chuyển dữ liệu từ Pandas DataFrame sang định dạng \texttt{Dataset}, sau đó ánh xạ hàm tokenization lên các tập train, validation và test.
+
+\textbf{Ưu điểm.} Thư viện này tích hợp tốt với Transformers Trainer, hỗ trợ xử lý dữ liệu theo batch và giúp pipeline huấn luyện gọn hơn.
+
+\textbf{Nhược điểm.} Với các bài toán nhỏ, việc chuyển đổi từ DataFrame sang Dataset có thể làm tăng thêm một bước xử lý. Người dùng cũng cần chú ý loại bỏ các cột không cần thiết trước khi đưa dữ liệu vào Trainer.
+
+\textbf{Lý do chọn.} Datasets giúp chuẩn hóa định dạng đầu vào cho Hugging Face Trainer, từ đó giảm lỗi trong quá trình tokenization, batching và huấn luyện.
+
+\subsection{Scikit-learn}
+Scikit-learn được sử dụng để tính các chỉ số đánh giá gồm exact match accuracy, precision, recall, macro F1, micro F1 và classification report.
+
+\textbf{Ưu điểm.} Scikit-learn cung cấp các hàm đánh giá ổn định, dễ sử dụng và phù hợp với bài toán phân loại đa nhãn. Các tham số như \texttt{average="macro"}, \texttt{average="micro"} và \texttt{zero\_division=0} giúp kiểm soát cách tính chỉ số trong trường hợp nhãn hiếm.
+
+\textbf{Nhược điểm.} Scikit-learn chủ yếu phục vụ xử lý và đánh giá trên CPU, không phải framework huấn luyện mô hình Transformer. Vì vậy, thư viện này được dùng bổ trợ thay vì thay thế PyTorch hoặc Transformers.
+
+\textbf{Lý do chọn.} Các chỉ số của Scikit-learn phù hợp để đánh giá hiệu quả mô hình ở cả mức tổng quan và từng nhãn, đặc biệt trong bối cảnh dữ liệu mất cân bằng.
+
+\subsection{Định dạng CSV và JSON}
+CSV được sử dụng làm định dạng dữ liệu đầu vào và lưu file dự đoán trên tập test. JSON được sử dụng để lưu các thông tin cấu hình như danh sách nhãn, threshold cuối cùng và metadata của quá trình huấn luyện.
+
+\textbf{Ưu điểm.} CSV dễ tạo, dễ đọc bằng Pandas và thuận tiện cho việc kiểm tra thủ công bằng các phần mềm bảng tính. JSON phù hợp để lưu cấu hình có cấu trúc, dễ đọc lại khi triển khai hoặc tái lập thực nghiệm.
+
+\textbf{Nhược điểm.} CSV không lưu được kiểu dữ liệu phức tạp một cách chặt chẽ và dễ phát sinh lỗi nếu dữ liệu chứa dấu phân tách không được xử lý đúng. JSON không tối ưu cho dữ liệu dạng bảng lớn.
+
+\textbf{Lý do chọn.} Hai định dạng này đơn giản, phổ biến và phù hợp với quy mô đề tài. CSV thuận tiện cho dữ liệu gán nhãn, còn JSON phù hợp để lưu thông tin phụ trợ của mô hình.
+
+\subsection{Weighted loss và early stopping}
+Do dữ liệu có hiện tượng mất cân bằng giữa các nhãn, đề tài sử dụng \texttt{BCEWithLogitsLoss} kết hợp \texttt{pos\_weight}. Trọng số dương được tính từ tỷ lệ mẫu âm/dương, sau đó làm mềm bằng căn bậc hai và chặn trong khoảng hợp lý. Ngoài ra, \texttt{EarlyStoppingCallback} được sử dụng để dừng huấn luyện khi kết quả validation không tiếp tục cải thiện.
+
+\textbf{Ưu điểm.} Weighted loss giúp mô hình chú ý hơn đến các nhãn hiếm, hạn chế tình trạng mô hình chỉ học tốt các nhãn phổ biến. Early stopping giúp giảm nguy cơ overfit và tiết kiệm thời gian huấn luyện.
+
+\textbf{Nhược điểm.} Nếu trọng số dương quá lớn, mô hình có thể dự đoán quá nhiều nhãn dương và làm tăng false positive. Early stopping cũng phụ thuộc vào tập validation, nên nếu validation nhỏ hoặc chưa đại diện tốt thì quyết định dừng có thể chưa tối ưu.
+
+\textbf{Lý do chọn.} Bài toán phân loại sai phạm quảng cáo là bài toán đa nhãn và có một số nhãn hiếm như \texttt{TESTIMONIAL} hoặc \texttt{FEAR\_URGENCY}. Vì vậy, weighted loss và early stopping được sử dụng để cân bằng giữa khả năng học nhãn hiếm, kiểm soát overfit và giữ quá trình huấn luyện ổn định.
+
+\section{Các nhóm dấu hiệu sai phạm trong văn bản}
+\begin{longtable}{|p{0.25\textwidth}|p{0.65\textwidth}|}
+\caption{Nhóm dấu hiệu sai phạm trong nội dung văn bản}\\
+\hline
+\textbf{Nhóm dấu hiệu} & \textbf{Mô tả ngắn} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Nhóm dấu hiệu} & \textbf{Mô tả ngắn} \\
+\hline
+\endhead
+Thổi phồng công dụng & Cam kết khỏi bệnh, dùng các cụm từ tuyệt đối như ``khỏi 100\%'', ``trị tận gốc'', ``chữa dứt điểm''. \\ \hline
+Tuyên bố chữa bệnh & Gán cho sản phẩm vai trò như thuốc, phác đồ điều trị hoặc phương pháp chữa bệnh. \\ \hline
+Lợi dụng uy tín & Sử dụng tên bác sĩ, bệnh viện, cơ quan y tế, truyền thông hoặc chứng nhận để tạo niềm tin sai lệch. \\ \hline
+Nhân chứng/đánh giá & Dùng câu chuyện bệnh nhân, thư cảm ơn, hình ảnh trước-sau hoặc trải nghiệm cá nhân để tạo bằng chứng cảm tính. \\ \hline
+Hù dọa/FOMO & Tạo áp lực bằng biến chứng nguy hiểm, khan hiếm giả tạo, ưu đãi giới hạn hoặc lời kêu gọi mua ngay. \\ \hline
+\end{longtable}
+
+\section{Bài toán phân loại đa nhãn}
+Trong thực tế, một quảng cáo có thể đồng thời chứa nhiều dấu hiệu sai phạm. Vì vậy, bài toán được mô hình hóa theo hướng phân loại đa nhãn, trong đó mỗi mẫu văn bản có thể được gán nhiều nhãn cùng lúc thay vì chỉ thuộc một lớp duy nhất.
+
+\section{Các hướng tiếp cận liên quan}
+Các hướng tiếp cận có thể được trình bày gồm phương pháp dựa trên từ khóa, học máy truyền thống, mô hình ngôn ngữ tiếng Việt và mô hình đa phương thức. Phần này nên so sánh ưu nhược điểm của từng hướng để làm rõ lý do chọn phương pháp đề xuất.

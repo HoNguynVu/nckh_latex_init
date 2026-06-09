@@ -1,0 +1,157 @@
+\chapter{PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG}
+
+\section{Kiến trúc hệ thống}
+Hệ thống được thiết kế theo hướng pipeline đa module nhằm hỗ trợ phát hiện dấu hiệu rủi ro trong quảng cáo thực phẩm chức năng trên mạng xã hội. Sau giai đoạn thu thập và chuẩn hóa dữ liệu, các mô hình phát hiện được tổ chức thành những lớp xử lý độc lập, chạy song song để tạo điểm dự đoán riêng. Tầng hợp nhất ở cuối pipeline nhận kết quả từ từng lớp mô hình và tạo nhãn, xác suất, bằng chứng cùng điểm rủi ro tổng hợp. Cách thiết kế này giúp hệ thống dễ mở rộng khi cần bổ sung nguồn dữ liệu mới, mô hình mới hoặc nhóm tín hiệu rủi ro mới.
+
+Về tổng thể, hệ thống gồm các lớp chức năng chính sau:
+\begin{itemize}
+    \item \textbf{Lớp thu thập dữ liệu:} tiếp nhận bài đăng, video, metadata, đường dẫn nguồn và văn bản thô từ các nền tảng như TikTok hoặc Facebook.
+    \item \textbf{Lớp xử lý và quản lý dữ liệu:} chuẩn hóa dữ liệu, loại bỏ trùng lặp, quản lý nhãn, chia tập train/validation/test và lưu phiên bản dataset.
+    \item \textbf{Lớp rule-based detection:} đọc tập keyword, phát hiện cụm từ rủi ro, xác định nhãn gợi ý và lưu đoạn bằng chứng trong văn bản.
+    \item \textbf{Lớp PhoBERT:} suy luận mô hình PhoBERT đã fine-tune cho phân loại đa nhãn và trả về \texttt{phobert\_score} cho từng nhãn.
+    \item \textbf{Lớp OCR:} trích xuất frame từ ảnh/video, nhận diện chữ nhúng và tạo \texttt{OCR\_score} dựa trên nội dung chữ nhận diện được.
+    \item \textbf{Lớp ASR:} trích xuất audio từ video, chuyển lời nói thành văn bản và tạo \texttt{ASR\_score} từ nội dung transcript.
+    \item \textbf{Lớp visual detection:} phát hiện các tín hiệu hình ảnh có rủi ro như áo blouse, ống nghe, phòng khám hoặc hình ảnh chuyên gia y tế và tạo \texttt{visual\_score}.
+    \item \textbf{Lớp hợp nhất và chấm điểm rủi ro:} kết hợp điểm từ các lớp chạy song song để tạo điểm rủi ro tổng hợp.
+    \item \textbf{Lớp truy xuất và giải thích:} truy xuất quy định, nguyên tắc gán nhãn và bằng chứng liên quan để hỗ trợ sinh kết luận có giải thích.
+    \item \textbf{Lớp API/Demo:} cung cấp chức năng dự đoán cho người dùng hoặc hệ thống bên ngoài, trả về nhãn, xác suất, bằng chứng và phần giải thích.
+\end{itemize}
+
+Luồng xử lý chính của hệ thống bắt đầu từ việc thu thập bài đăng hoặc video. Dữ liệu thô sau đó được chuẩn hóa và kiểm tra chất lượng trước khi đưa vào các lớp mô hình song song. Văn bản từ caption hoặc mô tả được đưa đồng thời vào rule-based detection và PhoBERT. Hình ảnh hoặc video được đưa đồng thời vào OCR, ASR và visual detection. Mỗi lớp trả về score, nhãn gợi ý và bằng chứng tương ứng; tầng fusion tiếp nhận các kết quả này để tạo nhãn dự đoán, xác suất cuối cùng và điểm rủi ro. Cuối cùng, hệ thống có thể sử dụng module RAG và LLM reasoning để sinh phần giải thích phục vụ rà soát thủ công.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/OveralArchitecture.png}
+\caption{Kiến trúc tổng thể của hệ thống phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng}
+\label{fig:overall_architecture}
+\end{figure}
+
+\section{Thiết kế UC}
+Thiết kế UC mô tả các chức năng chính mà người dùng hoặc thành phần bên ngoài có thể tương tác với hệ thống. Các tác nhân chính gồm người quản trị dữ liệu, người gán nhãn hoặc rà soát, người dùng demo/API và các module AI nội bộ của hệ thống. Danh sách use case chính gồm:
+
+\begin{itemize}
+    \item \textbf{UC01 -- Thu thập dữ liệu:} người quản trị dữ liệu thu thập bài đăng, video, metadata, đường dẫn nguồn và văn bản thô từ TikTok hoặc Facebook.
+    \item \textbf{UC02 -- Xử lý và chuẩn hóa dữ liệu:} người quản trị dữ liệu chuẩn hóa văn bản, kiểm tra duplicate, kiểm tra dữ liệu thiếu và chuẩn bị dữ liệu cho gán nhãn hoặc huấn luyện.
+    \item \textbf{UC03 -- Quản lý và gán nhãn dữ liệu:} người gán nhãn xem mẫu dữ liệu, gán một hoặc nhiều nhãn, ghi chú bằng chứng và cập nhật trạng thái review.
+    \item \textbf{UC04 -- Chia tập và lưu phiên bản dataset:} người quản trị dữ liệu chia dữ liệu thành train, validation và test, lưu thông tin phiên bản dataset và thống kê phân phối nhãn.
+    \item \textbf{UC05 -- Phát hiện rủi ro bằng luật:} module rule-based đọc keyword, phát hiện cụm từ rủi ro, trả về nhãn gợi ý và evidence span trong văn bản.
+    \item \textbf{UC06 -- Huấn luyện mô hình PhoBERT:} người nghiên cứu huấn luyện PhoBERT trên tập train, chọn checkpoint tốt nhất và lưu mô hình.
+    \item \textbf{UC07 -- Suy luận văn bản bằng PhoBERT:} lớp PhoBERT dự đoán xác suất cho từng nhãn từ văn bản đầu vào.
+    \item \textbf{UC08 -- Phân tích ảnh và video:} các lớp OCR, ASR và visual detection chạy song song để nhận diện chữ, lời nói và tín hiệu hình ảnh rủi ro.
+    \item \textbf{UC09 -- Hợp nhất điểm rủi ro:} module fusion kết hợp phobert score, OCR score, ASR score, visual score và rule score để tạo risk score tổng hợp.
+    \item \textbf{UC10 -- Truy xuất quy định và sinh giải thích:} module RAG/LLM truy xuất quy định, nguyên tắc gán nhãn, bằng chứng liên quan và sinh phần giải thích cho kết quả dự đoán.
+    \item \textbf{UC11 -- Dự đoán qua API hoặc demo:} người dùng demo/API gửi văn bản hoặc metadata bài đăng tới endpoint dự đoán, nhận nhãn, xác suất, bằng chứng và giải thích.
+    \item \textbf{UC12 -- Xuất kết quả phục vụ rà soát:} người rà soát xuất file kết quả gồm dữ liệu, nhãn thật, nhãn dự đoán, xác suất, điểm rủi ro và ghi chú lỗi để kiểm tra thủ công.
+\end{itemize}
+
+\subsection{Đặc tả UC01 -- Thu thập dữ liệu}
+UC01 mô tả chức năng thu thập dữ liệu thô từ TikTok/Facebook thông qua Apify và lưu trữ kết quả trên Google Drive. Đây là use case đầu vào của toàn bộ pipeline, vì chất lượng dữ liệu thu thập ảnh hưởng trực tiếp đến các bước xử lý, gán nhãn và huấn luyện mô hình phía sau.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    font=\footnotesize,
+    actor/.style={
+        rectangle,
+        rounded corners=3pt,
+        draw,
+        thick,
+        align=center,
+        text width=2.7cm,
+        minimum height=1.05cm,
+        fill=white
+    },
+    usecase/.style={
+        ellipse,
+        draw,
+        thick,
+        align=center,
+        text width=4.2cm,
+        minimum height=1.05cm,
+        fill=white
+    },
+    boundary/.style={
+        rectangle,
+        rounded corners=6pt,
+        draw,
+        dashed,
+        inner xsep=18pt,
+        inner ysep=16pt
+    },
+    link/.style={-{Latex[length=2.3mm]}, thick, shorten >=2pt, shorten <=2pt},
+    assoc/.style={thick}
+]
+\node[actor] (admin) at (-3.3,3.20) {Người quản trị\\dữ liệu};
+\node[actor] (apify) at (9.6,-1.10) {Apify};
+\node[actor] (platform) at (9.6,0.85) {TikTok /\\Facebook};
+\node[actor] (drive) at (9.6,-4.30) {Google Drive};
+
+\node[usecase] (config) at (3.0,4.30) {Cấu hình\\tác vụ Apify};
+\node[usecase] (input) at (3.0,2.15) {Nhập từ khóa\\hoặc URL};
+\node[usecase] (crawl) at (3.0,0.00) {Thu thập\\bài đăng/video};
+\node[usecase] (extract) at (3.0,-2.15) {Trích xuất text thô\\và metadata};
+\node[usecase] (save) at (3.0,-4.30) {Lưu dữ liệu thô\\lên Google Drive};
+
+\node[boundary, fit=(config)(input)(crawl)(extract)(save)] (system) {};
+\node[fill=white, font=\bfseries] at (system.north) {UC01 -- Thu thập dữ liệu};
+
+\draw[link] (admin.north east) -- (config.west);
+\draw[link] (admin.south east) -- (input.west);
+\draw[link] (config.south) -- (input.north);
+\draw[link] (input.south) -- (crawl.north);
+\draw[link] (crawl.south) -- (extract.north);
+\draw[link] (extract.south) -- (save.north);
+\draw[link] (config.east) -- (apify.north west);
+\draw[link] (platform.south) -- (apify.north);
+\draw[link] (apify.west) -- (crawl.south east);
+\draw[link] (apify.south west) -- (extract.north east);
+\draw[link] (save.east) -- (drive.west);
+\end{tikzpicture}
+}
+\caption{Use case UC01 -- Thu thập dữ liệu}
+\label{fig:uc01_data_collection}
+\end{figure}
+
+\begin{longtable}{|p{0.25\textwidth}|p{0.65\textwidth}|}
+\caption{Đặc tả use case UC01 -- Thu thập dữ liệu}\\
+\hline
+\textbf{Thành phần} & \textbf{Nội dung} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Thành phần} & \textbf{Nội dung} \\
+\hline
+\endhead
+Mã use case & UC01 \\ \hline
+Tên use case & Thu thập dữ liệu \\ \hline
+Tác nhân chính & Người quản trị dữ liệu \\ \hline
+Tác nhân phụ & Apify, TikTok/Facebook, Google Drive \\ \hline
+Mục tiêu & Thu thập bài đăng, video, metadata, source URL, file/video link và văn bản thô từ TikTok/Facebook thông qua Apify, sau đó lưu dữ liệu thô lên Google Drive để phục vụ xử lý, gán nhãn và huấn luyện mô hình. \\ \hline
+Tiền điều kiện & Người quản trị dữ liệu đã xác định nền tảng, từ khóa, nhóm sản phẩm hoặc danh sách URL cần thu thập; tác vụ Apify đã sẵn sàng để chạy. \\ \hline
+Hậu điều kiện & Dữ liệu thô được lưu trên Google Drive, bao gồm raw text, metadata, source URL, file/video link, nền tảng và định danh mẫu dữ liệu. \\ \hline
+Luồng chính &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Người quản trị dữ liệu cấu hình tác vụ Apify.
+    \item Người quản trị nhập từ khóa, nhóm sản phẩm hoặc URL bài đăng/video.
+    \item Apify truy xuất bài đăng/video từ nền tảng nguồn.
+    \item Hệ thống nhận kết quả crawl từ Apify.
+    \item Hệ thống trích xuất hoặc chuẩn hóa text thô, metadata, source URL và file/video link.
+    \item Hệ thống lưu dữ liệu thô lên Google Drive.
+    \item Hệ thống trả về trạng thái thu thập thành công.
+\end{enumerate}
+\end{minipage} \\ \hline
+Luồng thay thế &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Nếu URL không hợp lệ, bài đăng/video không truy cập được hoặc Apify trả lỗi, hệ thống ghi nhận lỗi và bỏ qua mẫu đó.
+    \item Nếu dữ liệu đã tồn tại trên Google Drive, hệ thống đánh dấu trùng lặp để xử lý ở bước sau.
+\end{enumerate}
+\end{minipage} \\ \hline
+Dữ liệu đầu vào & Từ khóa, nhóm sản phẩm, URL bài đăng/video, nền tảng và cấu hình tác vụ Apify. \\ \hline
+Dữ liệu đầu ra & Dữ liệu thô trên Google Drive gồm raw text, source URL, file/video link, platform, post/video id, thời gian thu thập và metadata liên quan. \\ \hline
+Ngoại lệ & Apify lỗi, hết quota, URL lỗi, bài đăng/video bị xóa, nội dung bị giới hạn quyền truy cập, thiếu metadata hoặc không lưu được lên Google Drive. \\ \hline
+\end{longtable}
+
+Trong phạm vi đề tài, các UC liên quan đến dữ liệu và từng lớp xử lý được thiết kế theo hướng độc lập để có thể huấn luyện, suy luận và đánh giá riêng. Khi triển khai đầy đủ, các lớp PhoBERT, OCR, ASR, visual detection và rule-based detection không phụ thuộc tuần tự vào nhau mà cùng tạo đầu ra cho tầng fusion. Cách tổ chức này giúp hệ thống có thể bật/tắt từng nhánh xử lý và mở rộng thêm nguồn tín hiệu mới mà không làm thay đổi toàn bộ pipeline.

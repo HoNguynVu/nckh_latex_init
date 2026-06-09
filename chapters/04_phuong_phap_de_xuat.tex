@@ -1,0 +1,214 @@
+\chapter{PHƯƠNG PHÁP ĐỀ XUẤT}
+
+\section{Tổng quan kiến trúc hệ thống}
+Hệ thống được đề xuất theo pipeline đa phương thức gồm thu thập dữ liệu, tiền xử lý văn bản, OCR chữ trong ảnh/video, ASR lời nói, trích xuất tín hiệu hình ảnh, phân loại đa nhãn và hậu xử lý kết quả bằng luật hỗ trợ. Trong kiến trúc tổng thể, PhoBERT, OCR, ASR, visual detection và rule-based detection được xem là các nhánh xử lý song song; mỗi nhánh tạo score riêng trước khi tầng fusion tổng hợp kết quả cuối cùng. Phần thực nghiệm hiện tại tập trung minh họa nhánh PhoBERT cho phân loại đa nhãn văn bản; pipeline huấn luyện nhánh này được trình bày trong Hình~\ref{fig:phobert_pipeline}.
+
+\begin{figure}[H]
+\centering
+\resizebox{0.90\textwidth}{!}{
+\begin{tikzpicture}[
+    font=\scriptsize,
+    box/.style={
+        rectangle,
+        rounded corners=3pt,
+        draw,
+        fill=white,
+        align=center,
+        text width=3.15cm,
+        minimum height=1.05cm,
+        inner sep=5pt
+    },
+    main/.style={box, thick},
+    arrow/.style={-{Latex[length=2.4mm]}, thick},
+    grouptitle/.style={font=\bfseries, fill=white, inner xsep=5pt, inner ysep=1pt},
+    group/.style={
+        rectangle,
+        rounded corners=5pt,
+        draw,
+        dashed,
+        inner sep=10pt
+    }
+]
+
+\node[main] (csv) at (0,0) {
+    \textbf{Dataset CSV}\\
+    \texttt{dataset\_real.csv}\\
+    Text + split + 7 labels
+};
+
+\node[main] (validate) at (4.2,0) {
+    \textbf{Validate dữ liệu}\\
+    Kiểm tra cột bắt buộc\\
+    Chuẩn hóa split, label
+};
+
+\node[main] (quality) at (8.4,0) {
+    \textbf{Kiểm tra chất lượng}\\
+    Post leakage\\
+    Synthetic chỉ ở train
+};
+
+\node[main] (split) at (12.6,0) {
+    \textbf{Chia tập}\\
+    Train / Validation / Test
+};
+
+\node[main] (weight) at (4.2,-3.05) {
+    \textbf{Class weight}\\
+    Tính \texttt{pos\_weight}\\
+    Xử lý mất cân bằng nhãn
+};
+
+\node[main] (hf) at (8.4,-3.05) {
+    \textbf{HF Dataset}\\
+    Convert DataFrame\\
+    sang Dataset
+};
+
+\node[main] (tokenize) at (12.6,-3.05) {
+    \textbf{Tokenization}\\
+    PhoBERT tokenizer\\
+    Max length = 256
+};
+
+\node[main] (model) at (4.2,-6.1) {
+    \textbf{PhoBERT-base-v2}\\
+    Multi-label classifier\\
+    7 sigmoid outputs
+};
+
+\node[main] (trainer) at (8.4,-6.1) {
+    \textbf{Weighted Trainer}\\
+    BCEWithLogits\\
+    Loss + \texttt{pos\_weight}
+};
+
+\node[main] (train) at (12.6,-6.1) {
+    \textbf{Training}\\
+    12 epochs\\
+    Early stopping\\
+    Best by F1 balanced
+};
+
+\node[main] (threshold) at (12.6,-9.15) {
+    \textbf{Tune threshold}\\
+    Tối ưu trên validation\\
+    Chặn bằng threshold bounds
+};
+
+\node[main] (eval) at (8.4,-9.15) {
+    \textbf{Evaluation}\\
+    Validation + Test\\
+    Macro/Micro F1\\
+    Per-label metrics
+};
+
+\node[main] (pred) at (4.2,-9.15) {
+    \textbf{File dự đoán}\\
+    Test predictions\\
+    + probabilities
+};
+
+\node[main] (save) at (8.4,-11.5) {
+    \textbf{Lưu mô hình}\\
+    Model + tokenizer\\
+    thresholds.json\\
+    labels.json\\
+    metadata.json
+};
+
+\draw[arrow] (csv.east) -- (validate.west);
+\draw[arrow] (validate.east) -- (quality.west);
+\draw[arrow] (quality.east) -- (split.west);
+
+\draw[arrow] (split.south) -- (tokenize.north);
+\draw[arrow] (tokenize.west) -- (hf.east);
+\draw[arrow] (hf.west) -- (weight.east);
+
+\draw[arrow] (weight.south) -- (model.north);
+\draw[arrow] (model.east) -- (trainer.west);
+\draw[arrow] (trainer.east) -- (train.west);
+
+\draw[arrow] (train.south) -- (threshold.north);
+\draw[arrow] (threshold.west) -- (eval.east);
+\draw[arrow] (eval.west) -- (pred.east);
+\draw[arrow] (eval.south) -- (save.north);
+
+\node[grouptitle] (titledata) at (6.3,1.2) {1. Data Loading \& Validation};
+\node[grouptitle] (titlepreprocess) at (8.4,-2.05) {2. Preprocessing};
+\node[grouptitle] (titletraining) at (8.4,-5.1) {3. Model Training};
+\node[grouptitle] (titleeval) at (8.4,-7.75) {4. Threshold Tuning \& Evaluation};
+
+\begin{scope}[on background layer]
+\node[group, fit=(titledata)(csv)(validate)(quality)(split)] (groupdata) {};
+
+\node[group, fit=(titlepreprocess)(weight)(hf)(tokenize)] (grouppreprocess) {};
+
+\node[group, fit=(titletraining)(model)(trainer)(train)] (grouptraining) {};
+
+\node[group, fit=(titleeval)(threshold)(eval)(pred)(save)] (groupeval) {};
+\end{scope}
+
+\end{tikzpicture}
+}
+\caption{Pipeline huấn luyện mô hình PhoBERT multi-label để phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng.}
+\label{fig:phobert_pipeline}
+\end{figure}
+
+\section{Tiền xử lý văn bản}
+Các bước tiền xử lý bao gồm chuẩn hóa Unicode, loại bỏ ký tự nhiễu không cần thiết, xử lý teencode, chuẩn hóa viết hoa/viết thường và tách dữ liệu theo đầu vào của mô hình. Đối với nội dung mạng xã hội, cần giữ lại một số ký hiệu đặc trưng như emoji, dấu chấm xen giữa chữ hoặc cách viết né tránh vì chúng có thể là tín hiệu lách luật.
+
+\section{Mô hình phân loại đa nhãn}
+Bài toán được xây dựng dưới dạng phân loại đa nhãn. Với mỗi văn bản đầu vào, mô hình dự đoán xác suất cho từng nhãn. Sau đó, mỗi nhãn được so sánh với ngưỡng riêng để quyết định nhãn cuối cùng.
+
+\subsection{Thử nghiệm và tối ưu mô hình PhoBERT cho phân loại đa nhãn}
+Trong thực nghiệm với dữ liệu văn bản, đề tài sử dụng \texttt{PhoBERT-base-v2} làm encoder tiếng Việt và bổ sung classification head gồm 7 đầu ra sigmoid tương ứng với 7 nhãn. Mô hình được triển khai bằng lớp \texttt{AutoModelForSequenceClassification}. Tham số \texttt{problem\_type} được đặt ở chế độ \texttt{multi\_label\_classification}. Cách thiết lập này phù hợp với bài toán vì một nội dung quảng cáo có thể đồng thời chứa nhiều dấu hiệu sai phạm, ví dụ vừa tuyên bố công dụng, vừa nhắc đến bác sĩ/chuyên gia, vừa kèm ưu đãi hoặc lời cam kết bán hàng.
+
+Do dữ liệu có hiện tượng mất cân bằng, đặc biệt ở các nhãn hiếm, đề tài thử nghiệm thêm weighted binary cross entropy. Loss được cài đặt thông qua \texttt{BCEWithLogitsLoss} và \texttt{pos\_weight}. Trọng số dương được tính dựa trên tỷ lệ âm/dương trong tập huấn luyện, sau đó làm mềm bằng căn bậc hai và giới hạn trong khoảng hợp lý. Cách này giúp mô hình chú ý hơn đến nhãn hiếm, nhưng nếu trọng số quá lớn thì dễ làm tăng false positive.
+
+Quá trình thử nghiệm cũng cho thấy việc chọn checkpoint tốt nhất theo \texttt{eval\_loss} không nhất thiết cho kết quả F1 tốt nhất trong bài toán phân loại đa nhãn mất cân bằng. Loss phản ánh mức độ khớp xác suất, nhưng chưa trực tiếp phản ánh chất lượng dự đoán sau khi áp threshold. Vì vậy, đề tài sử dụng chỉ số cân bằng giữa macro F1 và micro F1 để lựa chọn checkpoint:
+\[
+F1_{balanced} = 0.5 \times F1_{macro} + 0.5 \times F1_{micro}
+\]
+Chỉ số này giúp cân bằng giữa hiệu quả trên toàn bộ nhãn và hiệu quả tổng thể của mô hình.
+
+Sau khi chọn checkpoint, threshold của từng nhãn được tune riêng trên tập validation thay vì dùng cố định 0.5. Tuy nhiên, do validation set nhỏ và một số nhãn có số mẫu dương thấp, threshold tự động có thể bị lệch theo một vài mẫu cụ thể. Vì vậy, threshold cuối cùng được chặn trong khoảng giá trị hợp lý theo từng nhãn để hạn chế overfit validation.
+
+Ngoài ra, dữ liệu được chia lại theo \texttt{post\_id} nhằm hạn chế leakage: các đoạn hoặc chunk thuộc cùng một bài đăng không được xuất hiện đồng thời trong train, validation và test. Cách chia này giúp đánh giá khách quan hơn so với split ngẫu nhiên, dù kết quả có thể thấp hơn do mô hình phải tổng quát hóa trên bài đăng mới.
+
+\begin{table}[H]
+\centering
+\caption{Tóm tắt các cấu hình thử nghiệm với mô hình PhoBERT}
+\begin{tabularx}{\textwidth}{|p{0.22\textwidth}|p{0.26\textwidth}|p{0.24\textwidth}|Y|}
+\hline
+\textbf{Thành phần} & \textbf{Cấu hình thử nghiệm} & \textbf{Mục tiêu} & \textbf{Nhận xét} \\
+\hline
+Loss & Loss mặc định multi-label; \texttt{BCEWithLogitsLoss} với \texttt{pos\_weight} & Xử lý mất cân bằng nhãn & Weighted loss giúp nhãn hiếm được chú ý hơn, nhưng cần làm mềm và clipping trọng số để tránh false positive. \\ \hline
+Checkpoint & Chọn theo \texttt{eval\_loss}; chọn theo F1 sau threshold & Tìm checkpoint có khả năng phân loại tốt & \texttt{eval\_loss} không luôn tương ứng với F1 tốt nhất trong bài toán đa nhãn. \\ \hline
+Threshold & Threshold 0.5; auto threshold theo validation; threshold có chặn biên & Tối ưu quyết định nhãn cuối cùng & Threshold riêng theo nhãn hiệu quả hơn, nhưng cần chặn biên với nhãn hiếm. \\ \hline
+Split dữ liệu & Split ngẫu nhiên; split theo \texttt{post\_id} & Hạn chế leakage giữa các tập & Split theo \texttt{post\_id} cho đánh giá khách quan hơn. \\ \hline
+\end{tabularx}
+\end{table}
+
+\section{Điều chỉnh ngưỡng dự đoán}
+Thay vì sử dụng ngưỡng cố định 0.5 cho mọi nhãn, đề tài có thể tìm ngưỡng tốt nhất trên tập validation cho từng nhãn. Cách làm này đặc biệt hữu ích khi dữ liệu mất cân bằng hoặc một số nhãn khó học hơn các nhãn còn lại.
+
+\begin{table}[H]
+\centering
+\caption{Bảng ngưỡng dự đoán cho từng nhãn}
+\begin{tabularx}{\textwidth}{|p{0.35\textwidth}|p{0.25\textwidth}|Y|}
+\hline
+\textbf{Nhãn} & \textbf{Ngưỡng} & \textbf{Ghi chú} \\
+\hline
+\texttt{EFFICACY\_CLAIM} & 0.57 & Giữ theo threshold tự động trên validation. \\ \hline
+\texttt{CURE\_CLAIM} & 0.73 & Threshold cao hơn nhằm hạn chế false positive ở tuyên bố chữa bệnh. \\ \hline
+\texttt{AUTHORITY\_REFERENCE} & 0.59 & Giữ theo threshold tự động trên validation. \\ \hline
+\texttt{TESTIMONIAL} & 0.65 & Threshold tự động thấp được chặn biên do support validation nhỏ. \\ \hline
+\texttt{FEAR\_URGENCY} & 0.27 & Threshold thấp để tăng recall cho nhãn hiếm. \\ \hline
+\texttt{PRICE\_PROMOTION} & 0.60 & Threshold tự động được chặn biên để tránh quá lệch validation. \\ \hline
+\texttt{IS\_ADS} & 0.65 & Threshold cuối cùng sau khi chặn biên. \\ \hline
+\end{tabularx}
+\end{table}
+
+\section{Hậu xử lý và luật hỗ trợ}
+Bên cạnh dự đoán từ mô hình, có thể kết hợp các luật hỗ trợ nhằm phát hiện các cụm từ có rủi ro cao như ``khỏi 100\%'', ``trị tận gốc'', ``bác sĩ khuyên dùng'', hoặc các mẫu teencode. Tuy nhiên, luật từ khóa chỉ nên đóng vai trò hỗ trợ vì nếu dùng đơn độc sẽ dễ sinh false positive.

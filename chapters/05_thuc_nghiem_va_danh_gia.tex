@@ -1,0 +1,110 @@
+\chapter{THỰC NGHIỆM VÀ ĐÁNH GIÁ}
+
+\section{Thiết lập thực nghiệm}
+Thực nghiệm chính sử dụng mô hình \texttt{PhoBERT-base-v2} được fine-tune cho bài toán phân loại đa nhãn bằng lớp \texttt{AutoModelForSequenceClassification}. Tham số \texttt{problem\_type} được đặt ở chế độ \texttt{multi\_label\_classification}. Mô hình dự đoán 7 nhãn chính; danh sách nhãn và kết quả tương ứng được trình bày trong các bảng bên dưới. Checkpoint được chọn theo chỉ số F1 cân bằng giữa macro F1 và micro F1, sau đó threshold của từng nhãn được tune lần cuối trên validation set và chặn trong khoảng hợp lý.
+
+\section{Thống kê dữ liệu}
+\begin{table}[H]
+\centering
+\caption{Thống kê số lượng mẫu theo tập dữ liệu}
+\begin{tabular}{|l|r|r|}
+\hline
+\textbf{Tập dữ liệu} & \textbf{Số mẫu} & \textbf{Tỷ lệ} \\
+\hline
+Train & \placeholder{số mẫu} & \placeholder{\%} \\ \hline
+Validation & \placeholder{số mẫu} & \placeholder{\%} \\ \hline
+Test & \placeholder{số mẫu} & \placeholder{\%} \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Thống kê phân phối nhãn}
+\begin{tabularx}{\textwidth}{|p{0.35\textwidth}|r|r|Y|}
+\hline
+\textbf{Nhãn} & \textbf{Số mẫu dương} & \textbf{Tỷ lệ} & \textbf{Nhận xét} \\
+\hline
+IS\_ADS & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
+EFFICACY\_CLAIM & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
+CURE\_CLAIM & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
+AUTHORITY\_REFERENCE & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
+TESTIMONIAL & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
+FEAR\_URGENCY & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
+PRICE\_PROMOTION & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
+\end{tabularx}
+\end{table}
+
+\section{Chỉ số đánh giá}
+Các chỉ số đánh giá gồm exact match accuracy, micro/macro precision, micro/macro recall và micro/macro F1. Với bài toán đa nhãn, macro F1 phản ánh tốt hơn hiệu quả trên các nhãn ít dữ liệu, trong khi micro F1 phản ánh hiệu quả tổng thể theo toàn bộ dự đoán.
+
+\section{Kết quả thực nghiệm}
+\begin{table}[H]
+\centering
+\caption{Threshold cuối cùng dùng để đánh giá validation/test}
+\begin{tabular}{|l|r|}
+\hline
+\textbf{Nhãn} & \textbf{Threshold} \\
+\hline
+\texttt{EFFICACY\_CLAIM} & 0.57 \\ \hline
+\texttt{CURE\_CLAIM} & 0.73 \\ \hline
+\texttt{AUTHORITY\_REFERENCE} & 0.59 \\ \hline
+\texttt{TESTIMONIAL} & 0.65 \\ \hline
+\texttt{FEAR\_URGENCY} & 0.27 \\ \hline
+\texttt{PRICE\_PROMOTION} & 0.60 \\ \hline
+\texttt{IS\_ADS} & 0.65 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Kết quả tổng quan trên validation và test}
+\begin{tabular}{|l|r|r|r|r|r|}
+\hline
+\textbf{Tập} & \textbf{Exact match} & \textbf{Macro F1} & \textbf{Micro F1} & \textbf{Macro P} & \textbf{Macro R} \\
+\hline
+Validation & 0.6747 & 0.7522 & 0.8468 & 0.7191 & 0.8304 \\ \hline
+Test & 0.6546 & 0.6413 & 0.8183 & 0.6115 & 0.6790 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Kết quả đánh giá theo từng nhãn trên tập test}
+\begin{tabularx}{\textwidth}{|p{0.30\textwidth}|r|r|r|r|Y|}
+\hline
+\textbf{Nhãn} & \textbf{P} & \textbf{R} & \textbf{F1} & \textbf{Support} & \textbf{Nhận xét} \\
+\hline
+\texttt{EFFICACY\_CLAIM} & 0.7177 & 0.8812 & 0.7911 & 101 & Recall cao, phù hợp với mục tiêu phát hiện claim công dụng. \\ \hline
+\texttt{CURE\_CLAIM} & 0.8056 & 0.8286 & 0.8169 & 35 & Kết quả ổn định dù support thấp hơn nhãn công dụng. \\ \hline
+\texttt{AUTHORITY\_REFERENCE} & 0.7808 & 0.9344 & 0.8507 & 61 & Nhãn đạt F1 cao nhất trong các nhãn nội dung rủi ro. \\ \hline
+\texttt{TESTIMONIAL} & 0.0000 & 0.0000 & 0.0000 & 4 & Chưa học tốt do số mẫu dương rất ít. \\ \hline
+\texttt{FEAR\_URGENCY} & 0.2857 & 0.4000 & 0.3333 & 5 & Kết quả còn hạn chế do nhãn hiếm và biểu đạt đa dạng. \\ \hline
+\texttt{PRICE\_PROMOTION} & 0.8333 & 0.7812 & 0.8065 & 32 & Tín hiệu khuyến mãi tương đối rõ, F1 đạt mức tốt. \\ \hline
+\texttt{IS\_ADS} & 0.8571 & 0.9273 & 0.8908 & 110 & Nhãn quảng cáo tổng quát đạt kết quả tốt nhất. \\ \hline
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{So sánh F1 theo từng nhãn trên validation và test}
+\begin{tabular}{|l|r|r|r|r|}
+\hline
+\textbf{Nhãn} & \textbf{Val F1} & \textbf{Val support} & \textbf{Test F1} & \textbf{Test support} \\
+\hline
+\texttt{EFFICACY\_CLAIM} & 0.8219 & 102 & 0.7911 & 101 \\ \hline
+\texttt{CURE\_CLAIM} & 0.8649 & 35 & 0.8169 & 35 \\ \hline
+\texttt{AUTHORITY\_REFERENCE} & 0.8550 & 61 & 0.8507 & 61 \\ \hline
+\texttt{TESTIMONIAL} & 0.5714 & 4 & 0.0000 & 4 \\ \hline
+\texttt{FEAR\_URGENCY} & 0.4000 & 5 & 0.3333 & 5 \\ \hline
+\texttt{PRICE\_PROMOTION} & 0.8438 & 32 & 0.8065 & 32 \\ \hline
+\texttt{IS\_ADS} & 0.9083 & 109 & 0.8908 & 110 \\ \hline
+\end{tabular}
+\end{table}
+
+Trên tập test, mô hình đạt micro F1 là 0.8183 và macro F1 là 0.6413. Chênh lệch giữa micro F1 và macro F1 cho thấy mô hình hoạt động tốt trên các nhãn phổ biến, nhưng hiệu quả giảm ở các nhãn hiếm. Các nhãn quảng cáo, tham chiếu uy tín, tuyên bố chữa bệnh, khuyến mãi và tuyên bố công dụng đạt F1 tương đối ổn định. Ngược lại, \texttt{TESTIMONIAL} và \texttt{FEAR\_URGENCY} còn hạn chế do số lượng mẫu dương trong validation/test rất thấp và cách biểu đạt trong dữ liệu mạng xã hội đa dạng.
+
+\section{Phân tích lỗi}
+Phân tích lỗi tập trung vào các nhóm mẫu bị nhầm lẫn thường gặp: nội dung giáo dục sức khỏe nhưng không bán hàng, quảng cáo ngụy trang dưới dạng chia sẻ cá nhân, câu chuyện bệnh nhân không nhắc trực tiếp tên sản phẩm, hoặc nội dung dùng ký tự đặc biệt để né kiểm duyệt. Với \texttt{TESTIMONIAL}, mô hình dễ bỏ sót các trường hợp kể chuyện khỏi bệnh gián tiếp hoặc testimonial xuất hiện dưới dạng bình luận, hình ảnh, video. Với \texttt{FEAR\_URGENCY}, mô hình có thể nhầm giữa nội dung hù dọa bán hàng và cảnh báo sức khỏe trung lập.
+
+\section{Thảo luận}
+Kết quả cho thấy mô hình PhoBERT phù hợp với các nhãn có tín hiệu ngôn ngữ rõ và số lượng mẫu dương tương đối đủ. Các nhãn hiếm như \texttt{TESTIMONIAL} và \texttt{FEAR\_URGENCY} cần được cải thiện bằng cách bổ sung dữ liệu thật, tạo dữ liệu synthetic có kiểm soát, audit thủ công các mẫu false positive/false negative và hoàn thiện nguyên tắc gán nhãn. Ngoài ra, một phần tín hiệu testimonial hoặc hù dọa có thể nằm trong hình ảnh, video hoặc lời thoại, vì vậy các module OCR, ASR và nhận diện tín hiệu hình ảnh là cần thiết trong pipeline đa phương thức.

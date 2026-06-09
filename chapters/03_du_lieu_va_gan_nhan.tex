@@ -1,0 +1,55 @@
+\chapter{DỮ LIỆU VÀ QUY TRÌNH GÁN NHÃN}
+
+\section{Nguồn dữ liệu}
+Dữ liệu được thu thập từ các nền tảng mạng xã hội như TikTok và Facebook. Các mẫu dữ liệu được ưu tiên lấy từ nội dung có liên quan đến quảng cáo thực phẩm chức năng, thực phẩm bảo vệ sức khỏe, sản phẩm hỗ trợ sinh lý, xương khớp, tiểu đường, giảm cân, làm đẹp hoặc các nhóm sản phẩm sức khỏe phổ biến khác.
+
+\section{Quy trình thu thập dữ liệu}
+Quy trình thu thập dữ liệu gồm các bước chính:
+\begin{enumerate}
+    \item Xác định từ khóa và nhóm sản phẩm cần thu thập.
+    \item Cào dữ liệu bài đăng hoặc video từ nền tảng mạng xã hội.
+    \item Trích xuất văn bản từ caption, mô tả, bình luận, phụ đề hoặc transcript.
+    \item Chuẩn hóa dữ liệu và loại bỏ mẫu trùng lặp.
+    \item Lưu trữ các trường thông tin cần thiết để phục vụ gán nhãn và truy vết.
+\end{enumerate}
+
+\section{Định dạng dữ liệu}
+\begin{table}[H]
+\centering
+\caption{Định dạng dữ liệu đề xuất}
+\begin{tabularx}{\textwidth}{|p{0.22\textwidth}|Y|}
+\hline
+\textbf{Trường} & \textbf{Ý nghĩa} \\
+\hline
+id & Mã định danh duy nhất của mẫu dữ liệu. \\ \hline
+text & Nội dung văn bản đã trích xuất từ bài đăng, phụ đề hoặc mô tả. \\ \hline
+source & Nền tảng hoặc nguồn thu thập. \\ \hline
+posted\_at & Thời gian đăng tải nếu có. \\ \hline
+labels & Các nhãn được gán cho mẫu dữ liệu. \\ \hline
+split & Tập dữ liệu tương ứng: train, validation hoặc test. \\ \hline
+\end{tabularx}
+\end{table}
+
+\section{Bộ nhãn sử dụng}
+\begin{table}[H]
+\centering
+\caption{Bộ nhãn phân loại dự kiến}
+\begin{tabularx}{\textwidth}{|p{0.33\textwidth}|Y|}
+\hline
+\textbf{Nhãn} & \textbf{Ý nghĩa} \\
+\hline
+IS\_ADS & Mẫu có bản chất là quảng cáo hoặc nội dung bán hàng. \\ \hline
+EFFICACY\_CLAIM & Có tuyên bố công dụng, hiệu quả hoặc lợi ích sức khỏe. \\ \hline
+CURE\_CLAIM & Có tuyên bố chữa bệnh, điều trị, thay thế thuốc hoặc khỏi bệnh. \\ \hline
+AUTHORITY\_REFERENCE & Có sử dụng hoặc gợi nhắc uy tín bác sĩ, bệnh viện, cơ quan, chuyên gia. \\ \hline
+TESTIMONIAL & Có câu chuyện nhân chứng, phản hồi khách hàng, hành trình khỏi bệnh. \\ \hline
+FEAR\_URGENCY & Có yếu tố hù dọa, cảnh báo biến chứng, khan hiếm hoặc thúc ép hành động. \\ \hline
+PRICE\_PROMOTION & Có ưu đãi, giảm giá, khuyến mãi, cam kết hoàn tiền hoặc deal giới hạn. \\ \hline
+\end{tabularx}
+\end{table}
+
+\section{Nguyên tắc gán nhãn}
+Mỗi mẫu được gán nhãn dựa trên nội dung thực tế thay vì chỉ dựa vào sự xuất hiện của từ khóa. Trường hợp một mẫu không phải quảng cáo nhưng có chứa thông tin sức khỏe chung, nhãn \texttt{IS\_ADS} có thể bằng 0 trong khi các nhãn nội dung khác vẫn cần được xem xét tùy ngữ cảnh. Các mẫu giáo dục sức khỏe thông thường, không có dấu hiệu bán hàng hoặc thúc đẩy sử dụng sản phẩm, cần được gán nhãn thận trọng để tránh làm mô hình học sai.
+
+\section{Chia tập dữ liệu}
+Dữ liệu sau khi làm sạch được chia thành các tập huấn luyện, kiểm định và kiểm tra. Cần đảm bảo phân phối nhãn giữa các tập tương đối ổn định, đặc biệt với các nhãn ít xuất hiện như \texttt{TESTIMONIAL} hoặc \texttt{FEAR\_URGENCY}.

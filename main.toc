@@ -1,0 +1,57 @@
+\babel@toc {vietnamese}{}\relax 
+\contentsline {chapter}{\numberline {1}MỞ ĐẦU}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Bối cảnh đề tài}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Vấn đề nghiên cứu}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Mục tiêu đề tài}{2}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Phạm vi nghiên cứu}{3}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Yêu cầu chức năng hệ thống}{4}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Yêu cầu chức năng dữ liệu}{5}{subsection.1.4.2}%
+\contentsline {section}{\numberline {1.5}Đóng góp dự kiến}{6}{section.1.5}%
+\contentsline {chapter}{\numberline {2}CƠ SỞ LÝ THUYẾT VÀ PHÁP LÝ}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Tổng quan về quảng cáo thực phẩm chức năng}{7}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Cơ sở pháp lý}{7}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Các công nghệ sử dụng}{7}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Google Colab và GPU NVIDIA T4}{8}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Python}{8}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Pandas và NumPy}{9}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}PyTorch}{9}{subsection.2.3.4}%
+\contentsline {subsection}{\numberline {2.3.5}Hugging Face Transformers}{10}{subsection.2.3.5}%
+\contentsline {subsection}{\numberline {2.3.6}PhoBERT-base-v2}{10}{subsection.2.3.6}%
+\contentsline {subsection}{\numberline {2.3.7}Hugging Face Datasets}{11}{subsection.2.3.7}%
+\contentsline {subsection}{\numberline {2.3.8}Scikit-learn}{11}{subsection.2.3.8}%
+\contentsline {subsection}{\numberline {2.3.9}Định dạng CSV và JSON}{12}{subsection.2.3.9}%
+\contentsline {subsection}{\numberline {2.3.10}Weighted loss và early stopping}{12}{subsection.2.3.10}%
+\contentsline {section}{\numberline {2.4}Các nhóm dấu hiệu sai phạm trong văn bản}{13}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Bài toán phân loại đa nhãn}{13}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Các hướng tiếp cận liên quan}{14}{section.2.6}%
+\contentsline {chapter}{\numberline {3}DỮ LIỆU VÀ QUY TRÌNH GÁN NHÃN}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Nguồn dữ liệu}{15}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Quy trình thu thập dữ liệu}{15}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Định dạng dữ liệu}{16}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Bộ nhãn sử dụng}{16}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Nguyên tắc gán nhãn}{17}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Chia tập dữ liệu}{17}{section.3.6}%
+\contentsline {chapter}{\numberline {4}PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG}{18}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Kiến trúc hệ thống}{18}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Thiết kế UC}{20}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Đặc tả UC01 -- Thu thập dữ liệu}{22}{subsection.4.2.1}%
+\contentsline {chapter}{\numberline {5}PHƯƠNG PHÁP ĐỀ XUẤT}{25}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Tổng quan kiến trúc hệ thống}{25}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Tiền xử lý văn bản}{26}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Mô hình phân loại đa nhãn}{27}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Thử nghiệm và tối ưu mô hình PhoBERT cho phân loại đa nhãn}{27}{subsection.5.3.1}%
+\contentsline {section}{\numberline {5.4}Điều chỉnh ngưỡng dự đoán}{29}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Hậu xử lý và luật hỗ trợ}{29}{section.5.5}%
+\contentsline {chapter}{\numberline {6}THỰC NGHIỆM VÀ ĐÁNH GIÁ}{30}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Thiết lập thực nghiệm}{30}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Thống kê dữ liệu}{30}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Chỉ số đánh giá}{31}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Kết quả thực nghiệm}{31}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Phân tích lỗi}{33}{section.6.5}%
+\contentsline {section}{\numberline {6.6}Thảo luận}{33}{section.6.6}%
+\contentsline {chapter}{\numberline {7}KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}{35}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Kết luận}{35}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Ưu điểm}{35}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Hạn chế}{35}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Hướng phát triển}{35}{section.7.4}%
+\contentsline {chapter}{TÀI LIỆU THAM KHẢO}{37}{section.7.4}%
