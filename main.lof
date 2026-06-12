@@ -3,9 +3,11 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Kiến trúc tổng thể của hệ thống phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng}}{20}{figure.caption.3}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Use case UC01 -- Thu thập dữ liệu}}{22}{figure.caption.4}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Kiến trúc tổng thể của hệ thống phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng}}{24}{figure.caption.5}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Use case UC01 -- Thu thập dữ liệu}}{26}{figure.caption.6}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Use case UC02 -- Xử lý và chuẩn hóa dữ liệu}}{29}{figure.caption.7}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Use case UC03 -- Quản lý và gán nhãn dữ liệu}}{33}{figure.caption.8}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Pipeline huấn luyện mô hình PhoBERT multi-label để phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng.}}{26}{figure.caption.5}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Pipeline huấn luyện mô hình PhoBERT multi-label để phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng.}}{39}{figure.caption.9}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

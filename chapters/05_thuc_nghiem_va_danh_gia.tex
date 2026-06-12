@@ -11,11 +11,13 @@ Thực nghiệm chính sử dụng mô hình \texttt{PhoBERT-base-v2} được f
 \hline
 \textbf{Tập dữ liệu} & \textbf{Số mẫu} & \textbf{Tỷ lệ} \\
 \hline
-Train & \placeholder{số mẫu} & \placeholder{\%} \\ \hline
-Validation & \placeholder{số mẫu} & \placeholder{\%} \\ \hline
-Test & \placeholder{số mẫu} & \placeholder{\%} \\ \hline
+Train & 2289 & 82.1\% \\ \hline
+Validation & 249 & 8.9\% \\ \hline
+Test & 249 & 8.9\% \\ \hline
 \end{tabular}
 \end{table}
+
+Tổng số mẫu sau khi chia tập là 2787. Quá trình chia dữ liệu theo \texttt{post\_id} không phát hiện nhóm leakage giữa các tập, với \texttt{Post\_id leakage groups} bằng 0.
 
 \begin{table}[H]
 \centering
@@ -24,14 +26,48 @@ Test & \placeholder{số mẫu} & \placeholder{\%} \\ \hline
 \hline
 \textbf{Nhãn} & \textbf{Số mẫu dương} & \textbf{Tỷ lệ} & \textbf{Nhận xét} \\
 \hline
-IS\_ADS & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
-EFFICACY\_CLAIM & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
-CURE\_CLAIM & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
-AUTHORITY\_REFERENCE & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
-TESTIMONIAL & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
-FEAR\_URGENCY & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
-PRICE\_PROMOTION & \placeholder{} & \placeholder{} & \placeholder{} \\ \hline
+IS\_ADS & 1327 & 47.6\% & Nhãn quảng cáo tổng quát có số mẫu dương lớn nhất. \\ \hline
+EFFICACY\_CLAIM & 1233 & 44.2\% & Nhãn công dụng xuất hiện phổ biến trong dữ liệu. \\ \hline
+CURE\_CLAIM & 397 & 14.2\% & Nhãn chữa bệnh có số mẫu trung bình. \\ \hline
+AUTHORITY\_REFERENCE & 658 & 23.6\% & Nhãn tham chiếu uy tín xuất hiện tương đối nhiều. \\ \hline
+TESTIMONIAL & 117 & 4.2\% & Nhãn hiếm, cần theo dõi khi đánh giá macro F1. \\ \hline
+FEAR\_URGENCY & 124 & 4.4\% & Nhãn hiếm, dễ bị ảnh hưởng bởi mất cân bằng dữ liệu. \\ \hline
+PRICE\_PROMOTION & 365 & 13.1\% & Nhãn khuyến mãi có số mẫu trung bình. \\ \hline
 \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Phân bố nhãn theo từng tập dữ liệu}
+\begin{tabular}{|l|r|r|r|r|}
+\hline
+\textbf{Nhãn} & \textbf{Train} & \textbf{Validation} & \textbf{Test} & \textbf{Toàn bộ} \\
+\hline
+EFFICACY\_CLAIM & 1030 & 102 & 101 & 1233 \\ \hline
+CURE\_CLAIM & 327 & 35 & 35 & 397 \\ \hline
+AUTHORITY\_REFERENCE & 536 & 61 & 61 & 658 \\ \hline
+TESTIMONIAL & 109 & 4 & 4 & 117 \\ \hline
+FEAR\_URGENCY & 114 & 5 & 5 & 124 \\ \hline
+PRICE\_PROMOTION & 301 & 32 & 32 & 365 \\ \hline
+IS\_ADS & 1108 & 109 & 110 & 1327 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Positive count trong train và trọng số dương dùng cho loss}
+\begin{tabular}{|l|r|r|}
+\hline
+\textbf{Nhãn} & \textbf{Positive count} & \textbf{\texttt{pos\_weight}} \\
+\hline
+EFFICACY\_CLAIM & 1030 & 1.1056 \\ \hline
+CURE\_CLAIM & 327 & 2.4495 \\ \hline
+AUTHORITY\_REFERENCE & 536 & 1.8085 \\ \hline
+TESTIMONIAL & 109 & 4.0000 \\ \hline
+FEAR\_URGENCY & 114 & 4.0000 \\ \hline
+PRICE\_PROMOTION & 301 & 2.5700 \\ \hline
+IS\_ADS & 1108 & 1.0324 \\ \hline
+\end{tabular}
 \end{table}
 
 \section{Chỉ số đánh giá}
