@@ -19,6 +19,16 @@ Về tổng thể, hệ thống gồm các lớp chức năng chính sau:
 
 Luồng xử lý chính của hệ thống bắt đầu từ việc thu thập bài đăng hoặc video. Dữ liệu thô sau đó được chuẩn hóa và kiểm tra chất lượng trước khi đưa vào các lớp mô hình song song. Văn bản từ caption hoặc mô tả được đưa đồng thời vào rule-based detection và PhoBERT. Hình ảnh hoặc video được đưa đồng thời vào OCR, ASR và visual detection. Mỗi lớp trả về score, nhãn gợi ý và bằng chứng tương ứng; tầng fusion tiếp nhận các kết quả này để tạo nhãn dự đoán, xác suất cuối cùng và điểm rủi ro. Cuối cùng, hệ thống có thể sử dụng module RAG và LLM reasoning để sinh phần giải thích phục vụ rà soát thủ công.
 
+Về mặt mô hình hóa, tầng hợp nhất có thể được biểu diễn bằng một hàm tổng hợp có trọng số trên các nguồn tín hiệu:
+\[
+\mathrm{risk\_score}(x) =
+\sigma\left(
+b + w_{p}s_{p}(x) + w_{ocr}s_{ocr}(x) + w_{asr}s_{asr}(x)
++ w_{v}s_{v}(x) + w_{r}s_{r}(x)
+\right)
+\]
+Trong đó \(s_{p}\), \(s_{ocr}\), \(s_{asr}\), \(s_{v}\) và \(s_{r}\) lần lượt là điểm từ PhoBERT, OCR, ASR, visual detection và rule-based detection; \(w\) là trọng số tương ứng; \(b\) là hệ số chệch; \(\sigma(\cdot)\) là hàm sigmoid dùng để đưa điểm tổng hợp về khoảng \([0,1]\). Công thức này thể hiện nguyên tắc late fusion: mỗi nhánh chỉ đóng góp một phần bằng chứng, kết quả cuối cùng không phụ thuộc tuyệt đối vào một mô hình đơn lẻ.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{images/OveralArchitecture.png}
@@ -27,21 +37,15 @@ Luồng xử lý chính của hệ thống bắt đầu từ việc thu thập b
 \end{figure}
 
 \section{Thiết kế UC}
-Thiết kế UC mô tả các chức năng chính mà người dùng hoặc thành phần bên ngoài có thể tương tác với hệ thống. Các tác nhân chính gồm người quản trị dữ liệu, người gán nhãn hoặc rà soát, người dùng demo/API và các module AI nội bộ của hệ thống. Danh sách use case chính gồm:
+Thiết kế UC mô tả các chức năng chính mà người dùng hoặc thành phần bên ngoài có thể tương tác với hệ thống. Trong phạm vi bản báo cáo đầu tiên, chương này tập trung vào các use case đã có đủ dữ liệu, quy trình và mã nguồn thực nghiệm để đặc tả chi tiết. Các tác nhân chính gồm người quản trị dữ liệu, người gán nhãn hoặc rà soát, người nghiên cứu và các nền tảng hỗ trợ như Google Drive, Roboflow, Ultralytics, Hugging Face Transformers. Danh sách use case chính gồm:
 
 \begin{itemize}
     \item \textbf{UC01 -- Thu thập dữ liệu:} người quản trị dữ liệu thu thập bài đăng, video, metadata, đường dẫn nguồn và văn bản thô từ TikTok hoặc Facebook.
     \item \textbf{UC02 -- Xử lý và chuẩn hóa dữ liệu:} người quản trị dữ liệu chuẩn hóa dữ liệu, kiểm tra duplicate bằng Python, tải media bằng \texttt{yt-dlp} và trích frame bằng \texttt{FFmpeg}.
     \item \textbf{UC03 -- Quản lý và gán nhãn dữ liệu:} người gán nhãn sử dụng AI để hỗ trợ gán nhãn văn bản, trích evidence, review nhiều vòng và dùng Roboflow để gán nhãn hình ảnh.
-    \item \textbf{UC04 -- Chia tập và lưu phiên bản dataset:} người quản trị dữ liệu chia dữ liệu thành train, validation và test, lưu thông tin phiên bản dataset và thống kê phân phối nhãn.
-    \item \textbf{UC05 -- Phát hiện rủi ro bằng luật:} module rule-based đọc keyword, phát hiện cụm từ rủi ro, trả về nhãn gợi ý và evidence span trong văn bản.
-    \item \textbf{UC06 -- Huấn luyện mô hình PhoBERT:} người nghiên cứu huấn luyện PhoBERT trên tập train, chọn checkpoint tốt nhất và lưu mô hình.
-    \item \textbf{UC07 -- Suy luận văn bản bằng PhoBERT:} lớp PhoBERT dự đoán xác suất cho từng nhãn từ văn bản đầu vào.
-    \item \textbf{UC08 -- Phân tích ảnh và video:} các lớp OCR, ASR và visual detection chạy song song để nhận diện chữ, lời nói và tín hiệu hình ảnh rủi ro.
-    \item \textbf{UC09 -- Hợp nhất điểm rủi ro:} module fusion kết hợp phobert score, OCR score, ASR score, visual score và rule score để tạo risk score tổng hợp.
-    \item \textbf{UC10 -- Truy xuất quy định và sinh giải thích:} module RAG/LLM truy xuất quy định, nguyên tắc gán nhãn, bằng chứng liên quan và sinh phần giải thích cho kết quả dự đoán.
-    \item \textbf{UC11 -- Dự đoán qua API hoặc demo:} người dùng demo/API gửi văn bản hoặc metadata bài đăng tới endpoint dự đoán, nhận nhãn, xác suất, bằng chứng và giải thích.
-    \item \textbf{UC12 -- Xuất kết quả phục vụ rà soát:} người rà soát xuất file kết quả gồm dữ liệu, nhãn thật, nhãn dự đoán, xác suất, điểm rủi ro và ghi chú lỗi để kiểm tra thủ công.
+    \item \textbf{UC04 -- Chia tập và lưu phiên bản dataset:} người quản trị dữ liệu chia dữ liệu văn bản theo \texttt{post\_id} để tránh leakage, còn dữ liệu hình ảnh được Roboflow chia tập và lưu phiên bản.
+    \item \textbf{UC05 -- Huấn luyện mô hình PhoBERT:} người nghiên cứu huấn luyện PhoBERT trên tập train, kiểm tra leakage theo \texttt{post\_id}, chọn checkpoint tốt nhất, tune threshold và lưu mô hình.
+    \item \textbf{UC06 -- Huấn luyện mô hình YOLO v11:} người nghiên cứu tải dataset hình ảnh từ Roboflow, chuẩn hóa cấu hình YOLO, huấn luyện YOLO11m, đánh giá \texttt{best.pt} và lưu mô hình tốt nhất.
 \end{itemize}
 
 \subsection{Đặc tả UC01 -- Thu thập dữ liệu}
@@ -113,7 +117,7 @@ UC01 mô tả chức năng thu thập dữ liệu thô từ TikTok/Facebook thô
 \label{fig:uc01_data_collection}
 \end{figure}
 
-\begin{longtable}{|p{0.25\textwidth}|p{0.65\textwidth}|}
+\begin{longtable}{|L{0.25\textwidth}|L{0.65\textwidth}|}
 \caption{Đặc tả use case UC01 -- Thu thập dữ liệu}\\
 \hline
 \textbf{Thành phần} & \textbf{Nội dung} \\
@@ -231,7 +235,7 @@ UC02 mô tả chức năng xử lý dữ liệu thô sau khi thu thập. Hệ th
 \label{fig:uc02_data_processing}
 \end{figure}
 
-\begin{longtable}{|p{0.25\textwidth}|p{0.65\textwidth}|}
+\begin{longtable}{|L{0.25\textwidth}|L{0.65\textwidth}|}
 \caption{Đặc tả use case UC02 -- Xử lý và chuẩn hóa dữ liệu}\\
 \hline
 \textbf{Thành phần} & \textbf{Nội dung} \\
@@ -368,7 +372,7 @@ UC03 mô tả quy trình gán nhãn dữ liệu sau khi dữ liệu đã đượ
 \label{fig:uc03_labeling}
 \end{figure}
 
-\begin{longtable}{|p{0.25\textwidth}|p{0.65\textwidth}|}
+\begin{longtable}{|L{0.25\textwidth}|L{0.65\textwidth}|}
 \caption{Đặc tả use case UC03 -- Quản lý và gán nhãn dữ liệu}\\
 \hline
 \textbf{Thành phần} & \textbf{Nội dung} \\
@@ -422,4 +426,348 @@ Quy tắc xử lý & \texttt{post\_id} được dùng để chống leakage; vă
 Ngoại lệ & Thiếu \texttt{post\_id}, đoạn văn bản thiếu ngữ cảnh, file \texttt{keyword.json} chưa đầy đủ, nhãn AI gợi ý sai, Roboflow auto label sai, thiếu dataset hình ảnh liên quan hoặc annotation chưa đạt chất lượng. \\ \hline
 \end{longtable}
 
-Trong phạm vi đề tài, các UC liên quan đến dữ liệu và từng lớp xử lý được thiết kế theo hướng độc lập để có thể huấn luyện, suy luận và đánh giá riêng. Khi triển khai đầy đủ, các lớp PhoBERT, OCR, ASR, visual detection và rule-based detection không phụ thuộc tuần tự vào nhau mà cùng tạo đầu ra cho tầng fusion. Cách tổ chức này giúp hệ thống có thể bật/tắt từng nhánh xử lý và mở rộng thêm nguồn tín hiệu mới mà không làm thay đổi toàn bộ pipeline.
+\subsection{Đặc tả UC04 -- Chia tập và lưu phiên bản dataset}
+UC04 mô tả quy trình tạo các tập \texttt{train}, \texttt{validation} và \texttt{test} sau khi dữ liệu đã được gán nhãn và rà soát ở UC03. Điểm quan trọng của use case này là hai nhánh dữ liệu được quản lý theo hai cơ chế khác nhau. Với dữ liệu văn bản, người quản trị dữ liệu trực tiếp chia tập để bảo đảm toàn bộ mẫu hoặc đoạn văn bản có cùng \texttt{post\_id} chỉ xuất hiện trong một tập duy nhất, nhờ đó hạn chế rò rỉ thông tin giữa huấn luyện và đánh giá. Với dữ liệu hình ảnh, việc chia tập được thực hiện trên Roboflow; nền tảng này lưu phiên bản dataset, thống kê phân phối lớp và cho phép xuất dữ liệu theo định dạng YOLO khi huấn luyện mô hình thị giác.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    actor/.style={rectangle, rounded corners=2mm, draw=black, fill=gray!10, align=center, text width=2.55cm, minimum height=0.9cm, font=\small},
+    usecase/.style={ellipse, draw=black, fill=blue!5, align=center, text width=2.55cm, minimum height=1.10cm, font=\small},
+    boundary/.style={draw=black, rounded corners=2mm, inner xsep=0.50cm, inner ysep=0.70cm},
+    link/.style={->, >=Stealth, thick, shorten >=3pt, shorten <=3pt},
+    assoc/.style={-, thick, shorten >=2pt, shorten <=2pt}
+]
+\node[actor] (admin4) at (-4.65,2.25) {Người quản trị\\dữ liệu};
+\node[actor] (roboflow4) at (-4.65,-1.35) {Roboflow\\image dataset};
+\node[actor] (drive4) at (19.45,2.25) {Google Drive\\text dataset};
+\node[actor] (version4) at (19.45,-1.35) {Roboflow version\\YOLO export};
+
+\node[usecase] (textSelect4) at (0.00,2.25) {Chọn dataset\\văn bản};
+\node[usecase] (textSplit4) at (4.90,2.25) {Chia \texttt{train}/\texttt{val}/\texttt{test}\\thủ công};
+\node[usecase] (postidCheck4) at (9.80,2.25) {Kiểm tra cùng\\\texttt{post\_id}};
+\node[usecase] (textSave4) at (14.70,2.25) {Lưu text dataset\\lên Google Drive};
+
+\node[usecase] (imageSelect4) at (0.00,-1.35) {Chọn dataset\\hình ảnh};
+\node[usecase] (rfConfig4) at (4.90,-1.35) {Cấu hình split\\trên Roboflow};
+\node[usecase] (rfSplit4) at (9.80,-1.35) {Roboflow tự chia\\\texttt{train}/\texttt{val}/\texttt{test}};
+\node[usecase] (rfVersion4) at (14.70,-1.35) {Lưu version\\và export YOLO};
+
+\node[usecase] (stats4) at (14.70,-4.25) {Ghi metadata\\và thống kê split};
+
+\node[boundary, fit=(textSelect4)(textSplit4)(postidCheck4)(textSave4)(imageSelect4)(rfConfig4)(rfSplit4)(rfVersion4)(stats4)] (system4) {};
+\node[fill=white, font=\bfseries] at (system4.north) {UC04 -- Chia tập và lưu phiên bản dataset};
+
+\draw[assoc] (admin4.east) -- (textSelect4.west);
+\draw[link] (textSelect4.east) -- (textSplit4.west);
+\draw[link] (textSplit4.east) -- (postidCheck4.west);
+\draw[link] (postidCheck4.east) -- (textSave4.west);
+\draw[link] (textSave4.east) -- (drive4.west);
+\draw[link] (textSave4.south east) .. controls (17.40,1.10) and (17.40,-3.25) .. (stats4.east);
+
+\draw[assoc] (roboflow4.east) -- (imageSelect4.west);
+\draw[link] (imageSelect4.east) -- (rfConfig4.west);
+\draw[link] (rfConfig4.east) -- (rfSplit4.west);
+\draw[link] (rfSplit4.east) -- (rfVersion4.west);
+\draw[link] (rfVersion4.east) -- (version4.west);
+\draw[link] (rfVersion4.south) -- (stats4.north);
+\end{tikzpicture}
+}
+\caption{Use case UC04 -- Chia tập và lưu phiên bản dataset}
+\label{fig:uc04_dataset_split_versioning}
+\end{figure}
+
+\begin{longtable}{|L{0.25\textwidth}|L{0.65\textwidth}|}
+\caption{Đặc tả use case UC04 -- Chia tập và lưu phiên bản dataset}\\
+\hline
+\textbf{Thành phần} & \textbf{Nội dung} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Thành phần} & \textbf{Nội dung} \\
+\hline
+\endhead
+Mã use case & UC04 \\ \hline
+Tên use case & Chia tập và lưu phiên bản dataset \\ \hline
+Tác nhân chính & Người quản trị dữ liệu \\ \hline
+Tác nhân phụ & Google Drive, Roboflow, dữ liệu đã gán nhãn từ UC03 \\ \hline
+Mục tiêu & Tạo các tập \texttt{train}, \texttt{validation} và \texttt{test} cho dữ liệu văn bản và hình ảnh; bảo đảm dữ liệu văn bản không bị leakage theo \texttt{post\_id}; lưu lại phiên bản dataset, thống kê phân phối nhãn và định dạng xuất phù hợp cho PhoBERT hoặc YOLO. \\ \hline
+Tiền điều kiện & Dữ liệu văn bản và hình ảnh đã được gán nhãn, rà soát và lưu trạng thái ở UC03; mỗi mẫu văn bản có \texttt{post\_id} hoặc mã nguồn tương đương; workspace Roboflow đã có bộ dữ liệu hình ảnh và annotation cần thiết. \\ \hline
+Hậu điều kiện & Dữ liệu văn bản được chia tập thủ công và lưu trên Google Drive; dữ liệu hình ảnh được Roboflow chia tập, lưu phiên bản và có thể xuất theo định dạng YOLO; thống kê split và phân phối nhãn được ghi nhận để phục vụ huấn luyện và đánh giá. \\ \hline
+Luồng chính -- dữ liệu văn bản &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Người quản trị dữ liệu mở bộ dữ liệu văn bản đã được gán nhãn và rà soát ở UC03.
+    \item Người quản trị xác định các nhóm mẫu theo \texttt{post\_id}; mỗi nhóm có thể gồm caption gốc, các đoạn đã chia nhỏ, evidence và nhãn tương ứng.
+    \item Người quản trị chia dữ liệu thành các tập \texttt{train}, \texttt{validation} và \texttt{test} theo cách thủ công.
+    \item Trong quá trình chia tập, toàn bộ mẫu có cùng \texttt{post\_id} được đặt vào cùng một tập để tránh leakage giữa huấn luyện và đánh giá.
+    \item Người quản trị kiểm tra lại phân phối nhãn ở từng tập, đặc biệt với các nhãn có ít mẫu hoặc nhãn rủi ro cao.
+    \item Trường \texttt{split} được cập nhật cho từng dòng dữ liệu và file văn bản sau chia tập được lưu lên Google Drive.
+    \item Thống kê số mẫu, số \texttt{post\_id}, tỷ lệ nhãn và thời điểm tạo phiên bản được ghi lại trong metadata dataset.
+\end{enumerate}
+\end{minipage} \\ \hline
+Luồng chính -- dữ liệu hình ảnh &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Người quản trị kiểm tra bộ dữ liệu hình ảnh đã được annotation và review trên Roboflow.
+    \item Người quản trị cấu hình tỷ lệ chia tập hoặc sử dụng cơ chế chia tập mặc định của Roboflow.
+    \item Roboflow tự động phân chia ảnh và annotation thành các tập \texttt{train}, \texttt{validation} và \texttt{test}.
+    \item Người quản trị kiểm tra thống kê phân phối lớp hình ảnh, gồm \texttt{Lab-coat}, \texttt{logo}, \texttt{stethoscope} và lớp phụ/đối chứng \texttt{Shirt}.
+    \item Roboflow lưu lại phiên bản dataset, cấu hình tiền xử lý, thông tin augmentation nếu có và thống kê annotation.
+    \item Khi huấn luyện YOLO, người quản trị xuất dataset từ Roboflow theo định dạng YOLO tương ứng với version đã chọn.
+    \item Thông tin version Roboflow và thời điểm export được ghi lại để kết quả thực nghiệm có thể truy vết.
+\end{enumerate}
+\end{minipage} \\ \hline
+Luồng thay thế &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Nếu phát hiện các mẫu có cùng \texttt{post\_id} nằm ở nhiều tập khác nhau, người quản trị điều chỉnh lại trường \texttt{split} trước khi lưu dataset.
+    \item Nếu phân phối nhãn văn bản quá lệch, người quản trị cân nhắc chia lại theo nhóm \texttt{post\_id}, nhưng không phá vỡ ràng buộc cùng \texttt{post\_id} trong một tập.
+    \item Nếu một số mẫu văn bản thiếu \texttt{post\_id}, người quản trị dùng URL, mã video hoặc mã bài đăng làm khóa thay thế; nếu vẫn không xác định được thì đánh dấu cần kiểm tra lại.
+    \item Nếu Roboflow tạo split hình ảnh quá lệch hoặc thiếu lớp quan trọng trong tập đánh giá, người quản trị điều chỉnh cấu hình và tạo version dataset mới.
+    \item Nếu export YOLO bị lỗi, người quản trị giữ nguyên version hiện tại, kiểm tra lại annotation hoặc cấu hình định dạng rồi thực hiện export lại.
+\end{enumerate}
+\end{minipage} \\ \hline
+Dữ liệu đầu vào & Dữ liệu văn bản đã gán nhãn, \texttt{post\_id}, evidence, metadata, dữ liệu hình ảnh đã annotation trên Roboflow và cấu hình chia tập mong muốn. \\ \hline
+Dữ liệu đầu ra & File dữ liệu văn bản có trường \texttt{split} và metadata lưu trên Google Drive; version dataset hình ảnh trên Roboflow; file export định dạng YOLO; thống kê số mẫu, số ảnh, số annotation và phân phối nhãn theo từng tập. \\ \hline
+Quy tắc xử lý & Dữ liệu văn bản do người quản trị chia thủ công; tất cả mẫu cùng \texttt{post\_id} phải nằm trong cùng một tập; dữ liệu hình ảnh được Roboflow chia và lưu phiên bản; \texttt{Shirt} được ghi nhận là lớp phụ/đối chứng, không phải lớp vi phạm chính; mọi version dùng cho huấn luyện hoặc đánh giá phải có metadata để truy vết. \\ \hline
+Ngoại lệ & Thiếu khóa nhóm văn bản, nhãn phân phối quá lệch, version Roboflow chưa đồng bộ, annotation hình ảnh chưa đạt chất lượng, lỗi export YOLO hoặc file trên Google Drive chưa cập nhật đúng phiên bản. \\ \hline
+\end{longtable}
+
+\subsection{Đặc tả UC05 -- Huấn luyện mô hình PhoBERT}
+UC05 mô tả quy trình huấn luyện mô hình PhoBERT cho bài toán phân loại đa nhãn trên dữ liệu văn bản. Quy trình này sử dụng file dữ liệu đã được chia tập từ UC04, trong đó người nghiên cứu kiểm tra đầy đủ các cột bắt buộc, kiểm tra leakage theo \texttt{post\_id}, chuẩn hóa nhãn về dạng nhị phân, token hóa văn bản bằng tokenizer của PhoBERT, huấn luyện mô hình bằng loss có \texttt{pos\_weight}, chọn checkpoint tốt nhất theo chỉ số \texttt{f1\_balanced}, tune threshold trên validation set và lưu các artefact cần thiết để suy luận hoặc đánh giá lại.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    actor/.style={rectangle, rounded corners=2mm, draw=black, fill=gray!10, align=center, text width=2.75cm, minimum height=0.9cm, font=\small},
+    process/.style={rectangle, rounded corners=2mm, draw=black, fill=blue!5, align=center, text width=3.15cm, minimum height=1.05cm, font=\small},
+    boundary/.style={draw=black, rounded corners=2mm, inner xsep=0.65cm, inner ysep=0.60cm},
+    link/.style={->, >=Stealth, thick, shorten >=3pt, shorten <=3pt},
+    assoc/.style={-, thick, shorten >=2pt, shorten <=2pt}
+]
+\node[actor] (researcher5) at (-4.40,2.00) {Người nghiên cứu};
+\node[actor] (drive5) at (-4.40,0.20) {Google Drive\\text dataset};
+\node[actor] (save5) at (20.35,-2.10) {Model artefacts\\đã lưu};
+
+\node[process] (load5) at (0.00,2.00) {Đọc\\\texttt{dataset\_real.csv}};
+\node[process] (validate5) at (3.90,2.00) {Validate cột,\\split và nhãn};
+\node[process] (leak5) at (7.80,2.00) {Kiểm tra leakage\\theo \texttt{post\_id}};
+\node[process] (weight5) at (11.70,2.00) {Tạo vector nhãn\\và \texttt{pos\_weight}};
+
+\node[process] (token5) at (0.00,-2.10) {Tokenize bằng\\PhoBERT tokenizer};
+\node[process] (model5) at (3.90,-2.10) {Khởi tạo PhoBERT\\multi-label};
+\node[process] (train5) at (7.80,-2.10) {Huấn luyện\\\texttt{WeightedTrainer}};
+\node[process] (threshold5) at (11.70,-2.10) {Tune threshold\\trên validation};
+\node[process] (eval5) at (15.60,-2.10) {Đánh giá, lưu\\model và metadata};
+
+\node[boundary, fit=(load5)(validate5)(leak5)(weight5)(token5)(model5)(train5)(threshold5)(eval5)] (system5) {};
+\node[fill=white, font=\bfseries] at (system5.north) {UC05 -- Huấn luyện mô hình PhoBERT};
+
+\draw[assoc] (researcher5.east) -- (load5.west);
+\draw[assoc] (drive5.east) -- (load5.south west);
+\draw[link] (load5.east) -- (validate5.west);
+\draw[link] (validate5.east) -- (leak5.west);
+\draw[link] (leak5.east) -- (weight5.west);
+\draw[link] (weight5.south) .. controls (11.70,0.35) and (0.00,-0.35) .. (token5.north);
+\draw[link] (token5.east) -- (model5.west);
+\draw[link] (model5.east) -- (train5.west);
+\draw[link] (train5.east) -- (threshold5.west);
+\draw[link] (threshold5.east) -- (eval5.west);
+\draw[link] (eval5.east) -- (save5.west);
+\end{tikzpicture}
+}
+\caption{Use case UC05 -- Huấn luyện mô hình PhoBERT}
+\label{fig:uc05_phobert_training}
+\end{figure}
+
+\begin{longtable}{|L{0.25\textwidth}|L{0.65\textwidth}|}
+\caption{Đặc tả use case UC05 -- Huấn luyện mô hình PhoBERT}\\
+\hline
+\textbf{Thành phần} & \textbf{Nội dung} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Thành phần} & \textbf{Nội dung} \\
+\hline
+\endhead
+Mã use case & UC05 \\ \hline
+Tên use case & Huấn luyện mô hình PhoBERT \\ \hline
+Tác nhân chính & Người nghiên cứu \\ \hline
+Tác nhân phụ & Google Drive, file dữ liệu văn bản từ UC04, tokenizer PhoBERT, thư viện Hugging Face Transformers, PyTorch, scikit-learn \\ \hline
+Mục tiêu & Huấn luyện mô hình PhoBERT cho phân loại đa nhãn trên văn bản quảng cáo thực phẩm chức năng; kiểm soát leakage theo \texttt{post\_id}; chọn checkpoint tốt nhất; tune threshold theo validation; lưu model, tokenizer, threshold, metadata và file dự đoán test để phục vụ đánh giá hoặc suy luận sau này. \\ \hline
+Tiền điều kiện & File \texttt{dataset\_real.csv} đã có các cột \texttt{text}, \texttt{split} và các cột nhãn; dữ liệu văn bản đã được chia thành \texttt{train}, \texttt{val}, \texttt{test} ở UC04; các mẫu cùng \texttt{post\_id} phải nằm trong cùng một tập; môi trường huấn luyện có Python, PyTorch và Transformers. \\ \hline
+Hậu điều kiện & Mô hình PhoBERT tốt nhất được lưu tại thư mục kết quả; tokenizer, \texttt{thresholds.json}, \texttt{labels.json}, \texttt{training\_metadata.json} và file \texttt{test\_predictions\_with\_probs.csv} được tạo để truy vết, đánh giá và kiểm tra thủ công. \\ \hline
+Luồng chính -- kiểm tra dữ liệu &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Người nghiên cứu cấu hình đường dẫn dữ liệu, tên mô hình \texttt{vinai/phobert-base-v2}, thư mục lưu, \texttt{MAX\_LENGTH}, \texttt{SEED}, danh sách nhãn và threshold ban đầu.
+    \item Hệ thống đặt seed cho \texttt{random}, \texttt{numpy} và \texttt{torch}, đồng thời xác định thiết bị huấn luyện là CPU hoặc GPU.
+    \item Hệ thống đọc \texttt{dataset\_real.csv}, kiểm tra các cột bắt buộc gồm \texttt{text}, \texttt{split} và các cột nhãn.
+    \item Hệ thống loại mẫu thiếu \texttt{text}, chuẩn hóa giá trị \texttt{split}, kiểm tra split chỉ thuộc \texttt{train}, \texttt{val}, \texttt{test}, đồng thời ép nhãn về giá trị 0 hoặc 1.
+    \item Nếu có cột \texttt{post\_id}, hệ thống kiểm tra từng \texttt{post\_id} không xuất hiện ở nhiều split khác nhau để tránh leakage.
+\end{enumerate}
+\end{minipage} \\ \hline
+Luồng chính -- tạo dữ liệu huấn luyện &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Nếu có cột nguồn dữ liệu, hệ thống kiểm tra dữ liệu synthetic không nằm ngoài tập train.
+    \item Hệ thống gộp các cột nhãn thành vector multi-label, tách dữ liệu thành \texttt{train\_df}, \texttt{val\_df} và \texttt{test\_df}, đồng thời in thống kê phân phối nhãn theo từng split.
+    \item Hệ thống tính \texttt{pos\_weight} từ tập train, làm mềm bằng căn bậc hai và chặn trong khoảng hợp lý để tránh loss bị chi phối quá mạnh bởi nhãn hiếm.
+    \item Hệ thống chuyển dữ liệu sang Hugging Face Dataset, token hóa bằng tokenizer PhoBERT với \texttt{MAX\_LENGTH = 256} và kiểm tra tỷ lệ mẫu bị truncate.
+\end{enumerate}
+\end{minipage} \\ \hline
+Luồng chính -- huấn luyện và đánh giá &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Hệ thống khởi tạo \texttt{AutoModelForSequenceClassification} với \texttt{problem\_type = multi\_label\_classification} và số nhãn bằng độ dài danh sách nhãn.
+    \item Hệ thống huấn luyện bằng \texttt{WeightedTrainer}, sử dụng \texttt{BCEWithLogitsLoss} có \texttt{pos\_weight}, batch size 16, learning rate \(2e^{-5}\), tối đa 12 epoch và early stopping.
+    \item Trong quá trình huấn luyện, hệ thống chọn checkpoint tốt nhất theo \texttt{f1\_balanced}, được tính từ trung bình của \texttt{f1\_macro} và \texttt{f1\_micro}.
+    \item Sau huấn luyện, hệ thống dự đoán trên validation set, tune threshold riêng cho từng nhãn, sau đó chặn threshold trong khoảng đã cấu hình để hạn chế overfit validation nhỏ.
+    \item Hệ thống đánh giá lại validation và test bằng threshold cuối cùng, tính \texttt{exact\_match\_accuracy}, \texttt{f1\_macro}, \texttt{f1\_micro}, \texttt{precision\_macro}, \texttt{recall\_macro} và metric theo từng nhãn.
+    \item Hệ thống lưu model, tokenizer, threshold, danh sách nhãn, metadata huấn luyện và file dự đoán test có xác suất để phục vụ kiểm tra thủ công.
+\end{enumerate}
+\end{minipage} \\ \hline
+Luồng thay thế -- kiểm tra dữ liệu &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Nếu thiếu cột bắt buộc, hệ thống dừng huấn luyện và báo danh sách cột thiếu.
+    \item Nếu tồn tại split khác \texttt{train}, \texttt{val}, \texttt{test}, hệ thống dừng để người nghiên cứu chỉnh lại file dữ liệu.
+    \item Nếu phát hiện \texttt{post\_id} xuất hiện ở nhiều split, hệ thống dừng và yêu cầu chia lại dữ liệu ở UC04.
+    \item Nếu một split rỗng, hệ thống dừng vì không thể huấn luyện hoặc đánh giá đúng quy trình.
+\end{enumerate}
+\end{minipage} \\ \hline
+Luồng thay thế -- cấu hình huấn luyện &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Nếu tỷ lệ mẫu dài hơn \texttt{MAX\_LENGTH} vượt 20\%, hệ thống cảnh báo để người nghiên cứu cân nhắc tăng độ dài đầu vào nếu tài nguyên GPU cho phép.
+    \item Nếu nhãn hiếm làm \texttt{pos\_weight} quá lớn, hệ thống dùng cơ chế căn bậc hai và chặn trên để giảm rủi ro mô hình dự đoán quá nhiều positive.
+    \item Nếu validation nhỏ khiến threshold tự động dao động mạnh, threshold cuối cùng được chặn bằng \texttt{THRESHOLD\_BOUNDS}.
+\end{enumerate}
+\end{minipage} \\ \hline
+Dữ liệu đầu vào & File \texttt{dataset\_real.csv}, cột \texttt{text}, cột \texttt{split}, \texttt{post\_id} nếu có, các nhãn \texttt{EFFICACY\_CLAIM}, \texttt{CURE\_CLAIM}, \texttt{AUTHORITY\_REFERENCE}, \texttt{TESTIMONIAL}, \texttt{FEAR\_URGENCY}, \texttt{PRICE\_PROMOTION}, \texttt{IS\_ADS}. \\ \hline
+Dữ liệu đầu ra & Mô hình PhoBERT đã huấn luyện, tokenizer, \texttt{thresholds.json}, \texttt{labels.json}, \texttt{training\_metadata.json}, kết quả validation/test, classification report và \texttt{test\_predictions\_with\_probs.csv}. \\ \hline
+Quy tắc xử lý & Bài toán được xử lý theo hướng multi-label; mỗi nhãn có threshold riêng; checkpoint được chọn bằng \texttt{f1\_balanced}; dữ liệu có cùng \texttt{post\_id} không được xuất hiện ở nhiều split; dữ liệu synthetic nếu có chỉ được nằm trong train; kết quả test cần lưu xác suất để người nghiên cứu rà soát lỗi. \\ \hline
+Ngoại lệ & Thiếu file dữ liệu, thiếu cột bắt buộc, split sai, leakage theo \texttt{post\_id}, một split rỗng, lỗi tải tokenizer/model, thiếu tài nguyên GPU, lỗi ghi artefact hoặc file dự đoán. \\ \hline
+\end{longtable}
+
+\subsection{Đặc tả UC06 -- Huấn luyện mô hình YOLO v11}
+UC06 mô tả quy trình huấn luyện mô hình YOLO v11 cho nhánh thị giác của hệ thống. Quy trình này sử dụng bộ dữ liệu hình ảnh đã được quản lý trên Roboflow ở UC04, cụ thể là project \texttt{doctor-and-medical}, version 7, export theo định dạng YOLO. Người nghiên cứu tải dataset về môi trường huấn luyện, chuẩn hóa file \texttt{data.yaml}, kiểm tra số lượng ảnh, file nhãn và phân phối lớp, sau đó fine-tune mô hình \texttt{yolo11m.pt} bằng thư viện Ultralytics. Sau huấn luyện, hệ thống dùng \texttt{best.pt} để đánh giá trên tập \texttt{test} nếu tồn tại, hoặc \texttt{val} nếu không có tập test, sinh biểu đồ đánh giá, chạy dự đoán thử trên ảnh đánh giá và sao chép mô hình tốt nhất sang file artefact cuối cùng.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    actor/.style={rectangle, rounded corners=2mm, draw=black, fill=gray!10, align=center, text width=2.80cm, minimum height=0.9cm, font=\small},
+    process/.style={rectangle, rounded corners=2mm, draw=black, fill=blue!5, align=center, text width=3.05cm, minimum height=1.05cm, font=\small},
+    boundary/.style={draw=black, rounded corners=2mm, inner xsep=0.65cm, inner ysep=0.60cm},
+    link/.style={->, >=Stealth, thick, shorten >=3pt, shorten <=3pt},
+    assoc/.style={-, thick, shorten >=2pt, shorten <=2pt}
+]
+\node[actor] (researcher6) at (-4.40,2.00) {Người nghiên cứu};
+\node[actor] (roboflow6) at (-4.40,0.15) {Roboflow\\version 7};
+\node[actor] (drive6) at (20.20,-2.10) {Google Drive\\YOLO artefacts};
+
+\node[process] (setup6) at (0.00,2.00) {Cài thư viện,\\mount Drive};
+\node[process] (download6) at (3.90,2.00) {Tải dataset\\Roboflow};
+\node[process] (yaml6) at (7.80,2.00) {Chuẩn hóa\\\texttt{data.yaml}};
+\node[process] (inspect6) at (11.70,2.00) {Kiểm tra ảnh,\\nhãn và lớp};
+
+\node[process] (train6) at (0.00,-2.10) {Huấn luyện\\\texttt{yolo11m.pt}};
+\node[process] (plots6) at (3.90,-2.10) {Sinh biểu đồ\\kết quả};
+\node[process] (validate6) at (7.80,-2.10) {Validate\\\texttt{best.pt}};
+\node[process] (predict6) at (11.70,-2.10) {Predict trên\\test/valid};
+\node[process] (export6) at (15.60,-2.10) {Copy model\\tốt nhất};
+
+\node[boundary, fit=(setup6)(download6)(yaml6)(inspect6)(train6)(plots6)(validate6)(predict6)(export6)] (system6) {};
+\node[fill=white, font=\bfseries] at (system6.north) {UC06 -- Huấn luyện mô hình YOLO v11};
+
+\draw[assoc] (researcher6.east) -- (setup6.west);
+\draw[assoc] (roboflow6.east) -- (download6.south west);
+\draw[link] (setup6.east) -- (download6.west);
+\draw[link] (download6.east) -- (yaml6.west);
+\draw[link] (yaml6.east) -- (inspect6.west);
+\draw[link] (inspect6.south) .. controls (11.70,0.35) and (0.00,-0.35) .. (train6.north);
+\draw[link] (train6.east) -- (plots6.west);
+\draw[link] (plots6.east) -- (validate6.west);
+\draw[link] (validate6.east) -- (predict6.west);
+\draw[link] (predict6.east) -- (export6.west);
+\draw[link] (export6.east) -- (drive6.west);
+\end{tikzpicture}
+}
+\caption{Use case UC06 -- Huấn luyện mô hình YOLO v11}
+\label{fig:uc06_yolo11_training}
+\end{figure}
+
+\begin{longtable}{|L{0.25\textwidth}|L{0.65\textwidth}|}
+\caption{Đặc tả use case UC06 -- Huấn luyện mô hình YOLO v11}\\
+\hline
+\textbf{Thành phần} & \textbf{Nội dung} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Thành phần} & \textbf{Nội dung} \\
+\hline
+\endhead
+Mã use case & UC06 \\ \hline
+Tên use case & Huấn luyện mô hình YOLO v11 \\ \hline
+Tác nhân chính & Người nghiên cứu \\ \hline
+Tác nhân phụ & Google Colab hoặc môi trường GPU, Google Drive, Roboflow, Ultralytics YOLO, file \texttt{data.yaml}, bộ dữ liệu hình ảnh từ UC04 \\ \hline
+Mục tiêu & Huấn luyện mô hình YOLO v11 để phát hiện các đối tượng hình ảnh liên quan đến bối cảnh quảng cáo thực phẩm chức năng; kiểm tra cấu trúc dataset Roboflow; đánh giá mô hình tốt nhất bằng các chỉ số object detection; lưu \texttt{best.pt} và các biểu đồ phục vụ phân tích kết quả. \\ \hline
+Tiền điều kiện & Dataset hình ảnh đã được gán nhãn và version hóa trên Roboflow; workspace Roboflow có quyền truy cập API; môi trường huấn luyện đã có GPU hoặc tài nguyên đủ chạy YOLO; Google Drive đã sẵn sàng để lưu kết quả; các lớp hình ảnh được định nghĩa nhất quán, gồm \texttt{Lab-coat}, \texttt{logo}, \texttt{stethoscope} và lớp phụ/đối chứng \texttt{Shirt}. \\ \hline
+Hậu điều kiện & Thư mục kết quả YOLO được lưu trên Google Drive; \texttt{best.pt}, \texttt{last.pt}, biểu đồ huấn luyện, confusion matrix, PR/F1/P/R curve, kết quả validation và ảnh dự đoán mẫu được tạo; mô hình tốt nhất được sao chép thành \texttt{best\_doctor\_medical\_yolo11m\_v7.pt}. \\ \hline
+Luồng chính -- chuẩn bị môi trường và dataset &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Người nghiên cứu cài hoặc kiểm tra các thư viện cần thiết gồm \texttt{ultralytics}, \texttt{roboflow}, \texttt{supervision} và \texttt{pyyaml}.
+    \item Hệ thống kiểm tra môi trường Ultralytics để xác nhận phiên bản thư viện, thiết bị và cấu hình thực thi.
+    \item Người nghiên cứu mount Google Drive và tạo thư mục lưu kết quả \texttt{/content/drive/MyDrive/tpcn\_yolo\_runs}.
+    \item Người nghiên cứu nhập Roboflow API key để truy cập workspace \texttt{hs-workspace-8odgk}.
+    \item Hệ thống tải project \texttt{doctor-and-medical}, version 7, theo định dạng \texttt{yolov11} về thư mục \texttt{/content/datasets/doctor-and-medical-v7}.
+    \item Hệ thống đọc file \texttt{data.yaml}, chuẩn hóa trường \texttt{path}, \texttt{train}, \texttt{val} và \texttt{test} để Ultralytics có thể huấn luyện đúng vị trí ảnh và nhãn.
+    \item Hệ thống kiểm tra số lượng ảnh, số file nhãn ở từng split và in danh sách lớp từ \texttt{data.yaml}.
+    \item Hệ thống đếm phân phối object theo lớp trong tập train để người nghiên cứu phát hiện sớm mất cân bằng dữ liệu hoặc lớp hiếm.
+\end{enumerate}
+\end{minipage} \\ \hline
+Luồng chính -- huấn luyện mô hình &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Người nghiên cứu chọn mô hình khởi tạo \texttt{MODEL\_NAME = yolo11m.pt} và tên phiên chạy \texttt{doctor\_medical\_yolo11m\_v7\_640\_fast}.
+    \item Hệ thống thiết lập cấu hình huấn luyện gồm \texttt{EPOCHS = 100}, \texttt{IMGSZ = 640}, \texttt{BATCH = 16} và \texttt{PATIENCE = 25}.
+    \item Hệ thống khởi tạo đối tượng \texttt{YOLO(MODEL\_NAME)} từ thư viện Ultralytics.
+    \item Hệ thống gọi \texttt{model.train} với \texttt{task = detect}, optimizer \texttt{AdamW}, learning rate ban đầu \texttt{lr0 = 0.001}, \texttt{cos\_lr = True}, \texttt{close\_mosaic = 10}, \texttt{augment = True}, \texttt{seed = 42}, \texttt{deterministic = True}, \texttt{device = 0}, \texttt{workers = 2} và \texttt{amp = True}.
+    \item Trong quá trình huấn luyện, Ultralytics lưu checkpoint, log, metric và biểu đồ vào thư mục \texttt{SAVE\_DIR/RUN\_NAME}; nếu validation không cải thiện sau số epoch kiên nhẫn, cơ chế early stopping dừng huấn luyện.
+\end{enumerate}
+\end{minipage} \\ \hline
+Luồng chính -- đánh giá, dự đoán và xuất mô hình &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Hệ thống mở các biểu đồ kết quả nếu tồn tại, gồm \texttt{results.png}, \texttt{confusion\_matrix.png}, \texttt{PR\_curve.png}, \texttt{F1\_curve.png}, \texttt{P\_curve.png} và \texttt{R\_curve.png}.
+    \item Hệ thống lấy checkpoint tốt nhất tại \texttt{RUN\_DIR/weights/best.pt} và khởi tạo lại mô hình YOLO từ checkpoint này.
+    \item Hệ thống chọn split đánh giá là \texttt{test} nếu thư mục \texttt{test/images} tồn tại, ngược lại dùng \texttt{val}.
+    \item Hệ thống chạy \texttt{trained\_model.val} với \texttt{imgsz = 640}, sinh plot đánh giá và in các chỉ số \texttt{mAP50-95}, \texttt{mAP50} và \texttt{mAP75}.
+    \item Hệ thống chạy \texttt{trained\_model.predict} trên ảnh của split đánh giá với \texttt{conf = 0.25}, \texttt{iou = 0.5} và lưu ảnh có bounding box dự đoán.
+    \item Người nghiên cứu xem một số ảnh dự đoán đầu tiên để kiểm tra trực quan chất lượng phát hiện.
+    \item Hệ thống sao chép \texttt{best.pt} thành \texttt{best\_doctor\_medical\_yolo11m\_v7.pt} trong thư mục lưu kết quả cuối cùng.
+\end{enumerate}
+\end{minipage} \\ \hline
+Luồng thay thế -- dữ liệu và cấu hình &
+\begin{minipage}[t]{\linewidth}
+\begin{enumerate}[label=\textbf{Bước \arabic*:}, leftmargin=1.55cm, itemsep=0pt, topsep=0pt]
+    \item Nếu Roboflow API key không hợp lệ hoặc không có quyền truy cập project, hệ thống dừng ở bước tải dataset và yêu cầu người nghiên cứu kiểm tra lại quyền truy cập.
+    \item Nếu \texttt{data.yaml} thiếu đường dẫn \texttt{valid/images}, hệ thống kiểm tra biến thể \texttt{val/images}; nếu cả hai không tồn tại, người nghiên cứu phải kiểm tra lại export dataset.
+    \item Nếu số ảnh và số file nhãn ở một split chênh lệch bất thường, người nghiên cứu kiểm tra lại quá trình export hoặc annotation trên Roboflow trước khi train.
+    \item Nếu phân phối lớp quá lệch hoặc lớp quan trọng gần như không có mẫu trong validation/test, người nghiên cứu tạo lại version Roboflow hoặc điều chỉnh dữ liệu trước khi đánh giá chính thức.
+    \item Nếu môi trường không có GPU, thiếu bộ nhớ hoặc batch size 16 gây lỗi, người nghiên cứu giảm batch size, tắt AMP hoặc chuyển sang máy có tài nguyên phù hợp.
+    \item Nếu không có tập test, hệ thống dùng tập validation để đánh giá tạm thời và ghi rõ split đã dùng trong tên thư mục kết quả.
+\end{enumerate}
+\end{minipage} \\ \hline
+Dữ liệu đầu vào & Roboflow API key, project \texttt{doctor-and-medical}, version 7, file \texttt{data.yaml}, ảnh và label định dạng YOLO, mô hình khởi tạo \texttt{yolo11m.pt}, cấu hình huấn luyện và thư mục Google Drive để lưu kết quả. \\ \hline
+Dữ liệu đầu ra & Thư mục chạy \texttt{doctor\_medical\_yolo11m\_v7\_640\_fast}, checkpoint \texttt{best.pt} và \texttt{last.pt}, file \texttt{best\_doctor\_medical\_yolo11m\_v7.pt}, biểu đồ huấn luyện, kết quả validation, ảnh dự đoán mẫu và các metric object detection. \\ \hline
+Quy tắc xử lý & YOLO chỉ phát hiện đối tượng hình ảnh và trả về bounding box, class, confidence; kết quả của nhánh này là bằng chứng thị giác, không phải kết luận vi phạm pháp lý. Dataset hình ảnh được chia và version hóa trên Roboflow; lớp \texttt{Shirt} được dùng như lớp phụ/đối chứng; mọi lần huấn luyện phải ghi lại version dataset, cấu hình mô hình, seed và thư mục kết quả để truy vết. \\ \hline
+Ngoại lệ & Lỗi cài thư viện, lỗi mount Drive, API key Roboflow sai, project/version không tồn tại, thiếu file \texttt{data.yaml}, thiếu ảnh hoặc label, lỗi cấu hình split, lỗi GPU, huấn luyện dừng sớm, thiếu checkpoint \texttt{best.pt}, lỗi lưu hoặc sao chép mô hình cuối. \\ \hline
+\end{longtable}
+
+Trong phạm vi bản báo cáo đầu tiên, sáu use case trên tập trung vào chuỗi công việc đã có căn cứ triển khai: thu thập dữ liệu, xử lý dữ liệu, gán nhãn, chia tập, huấn luyện PhoBERT và huấn luyện YOLO v11. Các chức năng suy luận, OCR, ASR, rule-based detection, fusion, API demo và xuất kết quả rà soát vẫn thuộc kiến trúc tổng thể của đề tài, nhưng sẽ được đặc tả thành use case riêng ở các phiên bản báo cáo tiếp theo khi quy trình triển khai đã đủ ổn định.

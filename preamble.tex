@@ -1,7 +1,8 @@
 \usepackage{iftex}
 \ifXeTeX
   \usepackage{fontspec}
-  \IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{\IfFontExistsTF{Tinos}{\setmainfont{Tinos}}{\setmainfont{Liberation Serif}}}
+  \IfFontExistsTF{Times New Roman}{\setmainfont[Ligatures=TeX]{Times New Roman}}{\IfFontExistsTF{Tinos}{\setmainfont[Ligatures=TeX]{Tinos}}{\setmainfont[Ligatures=TeX]{Liberation Serif}}}
+  \IfFontExistsTF{Consolas}{\setmonofont[Scale=MatchLowercase]{Consolas}}{\IfFontExistsTF{Courier New}{\setmonofont[Scale=MatchLowercase]{Courier New}}{}}
 \else
   \errmessage{Vui lòng biên dịch bằng XeLaTeX}
 \fi
@@ -18,6 +19,7 @@
 \onehalfspacing
 \setlength{\parindent}{1.25cm}
 \setlength{\parskip}{0pt}
+\emergencystretch=2em
 
 \usepackage{graphicx}
 \usepackage{tikz}
@@ -27,6 +29,7 @@
 \usepackage{longtable}
 \usepackage{tabularx}
 \usepackage{array}
+\usepackage{ragged2e}
 \usepackage{multirow}
 \usepackage{enumitem}
 \usepackage{amsmath,amssymb}
@@ -71,5 +74,6 @@
 \renewcommand{\tablename}{Bảng}
 \renewcommand{\figurename}{Hình}
 
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
 \newcommand{\placeholder}[1]{\textit{<#1>}}

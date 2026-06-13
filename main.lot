@@ -1,26 +1,30 @@
 \babel@toc {vietnamese}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {2.1}{\ignorespaces Nhóm dấu hiệu sai phạm trong nội dung văn bản}}{13}{table.2.1}%
+\contentsline {table}{\numberline {2.1}{\ignorespaces Nhóm dấu hiệu rủi ro trong quảng cáo thực phẩm chức năng}}{6}{table.2.1}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Ưu điểm, nhược điểm và lý do sử dụng các công cụ trong đề tài}}{7}{table.2.2}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces Định dạng dữ liệu văn bản đề xuất}}{16}{table.caption.1}%
-\contentsline {table}{\numberline {3.2}{\ignorespaces Định dạng dữ liệu hình ảnh đề xuất}}{17}{table.caption.2}%
-\contentsline {table}{\numberline {3.3}{\ignorespaces Bộ nhãn phân loại văn bản dự kiến}}{18}{table.caption.3}%
-\contentsline {table}{\numberline {3.4}{\ignorespaces Bộ nhãn hình ảnh dự kiến}}{19}{table.caption.4}%
+\contentsline {table}{\numberline {3.1}{\ignorespaces Định dạng dữ liệu văn bản đề xuất}}{14}{table.caption.1}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Định dạng dữ liệu hình ảnh đề xuất}}{14}{table.caption.2}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces Bộ nhãn phân loại văn bản}}{15}{table.caption.3}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces Bộ nhãn hình ảnh dùng cho object detection}}{16}{table.caption.4}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Đặc tả use case UC01 -- Thu thập dữ liệu}}{26}{table.4.1}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Đặc tả use case UC02 -- Xử lý và chuẩn hóa dữ liệu}}{29}{table.4.2}%
-\contentsline {table}{\numberline {4.3}{\ignorespaces Đặc tả use case UC03 -- Quản lý và gán nhãn dữ liệu}}{34}{table.4.3}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Đặc tả use case UC01 -- Thu thập dữ liệu}}{22}{table.4.1}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Đặc tả use case UC02 -- Xử lý và chuẩn hóa dữ liệu}}{25}{table.4.2}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Đặc tả use case UC03 -- Quản lý và gán nhãn dữ liệu}}{30}{table.4.3}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Đặc tả use case UC04 -- Chia tập và lưu phiên bản dataset}}{35}{table.4.4}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Đặc tả use case UC05 -- Huấn luyện mô hình PhoBERT}}{41}{table.4.5}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Đặc tả use case UC06 -- Huấn luyện mô hình YOLO v11}}{48}{table.4.6}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {5.1}{\ignorespaces Tóm tắt các cấu hình thử nghiệm với mô hình PhoBERT}}{41}{table.caption.10}%
-\contentsline {table}{\numberline {5.2}{\ignorespaces Bảng ngưỡng dự đoán cho từng nhãn}}{42}{table.caption.11}%
+\contentsline {table}{\numberline {5.1}{\ignorespaces Tóm tắt pipeline nhánh PhoBERT}}{58}{table.caption.12}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Cấu hình huấn luyện chính của nhánh YOLO}}{60}{table.caption.13}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {6.1}{\ignorespaces Thống kê số lượng mẫu theo tập dữ liệu}}{43}{table.caption.12}%
-\contentsline {table}{\numberline {6.2}{\ignorespaces Thống kê phân phối nhãn}}{44}{table.caption.13}%
-\contentsline {table}{\numberline {6.3}{\ignorespaces Phân bố nhãn theo từng tập dữ liệu}}{44}{table.caption.14}%
-\contentsline {table}{\numberline {6.4}{\ignorespaces Positive count trong train và trọng số dương dùng cho loss}}{45}{table.caption.15}%
-\contentsline {table}{\numberline {6.5}{\ignorespaces Threshold cuối cùng dùng để đánh giá validation/test}}{45}{table.caption.16}%
-\contentsline {table}{\numberline {6.6}{\ignorespaces Kết quả tổng quan trên validation và test}}{46}{table.caption.17}%
-\contentsline {table}{\numberline {6.7}{\ignorespaces Kết quả đánh giá theo từng nhãn trên tập test}}{46}{table.caption.18}%
-\contentsline {table}{\numberline {6.8}{\ignorespaces So sánh F1 theo từng nhãn trên validation và test}}{47}{table.caption.19}%
+\contentsline {table}{\numberline {6.1}{\ignorespaces Thống kê số lượng mẫu văn bản theo tập dữ liệu}}{63}{table.caption.14}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces Thống kê phân phối nhãn văn bản}}{64}{table.caption.15}%
+\contentsline {table}{\numberline {6.3}{\ignorespaces Threshold cuối cùng dùng để đánh giá validation/test}}{66}{table.caption.16}%
+\contentsline {table}{\numberline {6.4}{\ignorespaces Kết quả tổng quan của PhoBERT trên validation và test}}{66}{table.caption.17}%
+\contentsline {table}{\numberline {6.5}{\ignorespaces Kết quả PhoBERT theo từng nhãn trên tập test}}{67}{table.caption.18}%
+\contentsline {table}{\numberline {6.6}{\ignorespaces Kết quả tổng thể của YOLO11m trên test set}}{68}{table.caption.19}%
+\contentsline {table}{\numberline {6.7}{\ignorespaces Kết quả YOLO11m theo từng lớp trên test set}}{69}{table.caption.20}%
+\contentsline {table}{\numberline {6.8}{\ignorespaces mAP50-95 theo từng lớp của YOLO11m}}{69}{table.caption.21}%
 \addvspace {10\p@ }

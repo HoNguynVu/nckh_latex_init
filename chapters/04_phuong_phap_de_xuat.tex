@@ -1,214 +1,140 @@
 \chapter{PHƯƠNG PHÁP ĐỀ XUẤT}
 
-\section{Tổng quan kiến trúc hệ thống}
-Hệ thống được đề xuất theo pipeline đa phương thức gồm thu thập dữ liệu, tiền xử lý văn bản, OCR chữ trong ảnh/video, ASR lời nói, trích xuất tín hiệu hình ảnh, phân loại đa nhãn và hậu xử lý kết quả bằng luật hỗ trợ. Trong kiến trúc tổng thể, PhoBERT, OCR, ASR, visual detection và rule-based detection được xem là các nhánh xử lý song song; mỗi nhánh tạo score riêng trước khi tầng fusion tổng hợp kết quả cuối cùng. Phần thực nghiệm hiện tại tập trung minh họa nhánh PhoBERT cho phân loại đa nhãn văn bản; pipeline huấn luyện nhánh này được trình bày trong Hình~\ref{fig:phobert_pipeline}.
+\section{Tổng quan phương pháp}
+Phương pháp đề xuất được xây dựng theo hướng đa phương thức, trong đó mỗi nhánh mô hình khai thác một dạng tín hiệu khác nhau của quảng cáo thực phẩm chức năng trên mạng xã hội. Nhánh PhoBERT xử lý văn bản; nhánh YOLO xử lý hình ảnh; OCR và ASR chuyển chữ trong ảnh/video và lời nói thành văn bản; rule-based detection phát hiện các mẫu biểu đạt rủi ro rõ ràng. Các nhánh này không thay thế nhau mà cùng đóng góp vào tầng hợp nhất rủi ro.
 
-\begin{figure}[H]
-\centering
-\resizebox{0.90\textwidth}{!}{
-\begin{tikzpicture}[
-    font=\scriptsize,
-    box/.style={
-        rectangle,
-        rounded corners=3pt,
-        draw,
-        fill=white,
-        align=center,
-        text width=3.15cm,
-        minimum height=1.05cm,
-        inner sep=5pt
-    },
-    main/.style={box, thick},
-    arrow/.style={-{Latex[length=2.4mm]}, thick},
-    grouptitle/.style={font=\bfseries, fill=white, inner xsep=5pt, inner ysep=1pt},
-    group/.style={
-        rectangle,
-        rounded corners=5pt,
-        draw,
-        dashed,
-        inner sep=10pt
-    }
-]
+Đầu ra của từng nhánh gồm score, nhãn gợi ý và bằng chứng tương ứng. Tầng fusion tổng hợp các score này để tạo \texttt{risk\_score}. Cách thiết kế này phù hợp với bài toán vì dấu hiệu rủi ro có thể nằm ở nhiều kênh khác nhau: caption, chữ trên poster, lời thoại, đối tượng hình ảnh hoặc cách dùng logo/biểu tượng uy tín.
 
-\node[main] (csv) at (0,0) {
-    \textbf{Dataset CSV}\\
-    \texttt{dataset\_real.csv}\\
-    Text + split + 7 labels
-};
+\section{Nhánh phân tích văn bản bằng PhoBERT}
+\subsection{Biểu diễn bài toán}
+Bài toán văn bản được mô hình hóa dưới dạng phân loại đa nhãn. Với mỗi văn bản đầu vào, mô hình dự đoán xác suất cho từng nhãn như \texttt{IS\_ADS}, \texttt{EFFICACY\_CLAIM}, \texttt{CURE\_CLAIM}, \texttt{AUTHORITY\_REFERENCE}, \texttt{TESTIMONIAL}, \texttt{FEAR\_URGENCY} và \texttt{PRICE\_PROMOTION}. Một mẫu có thể được gán nhiều nhãn cùng lúc vì nội dung quảng cáo thường chứa nhiều dạng tín hiệu rủi ro.
 
-\node[main] (validate) at (4.2,0) {
-    \textbf{Validate dữ liệu}\\
-    Kiểm tra cột bắt buộc\\
-    Chuẩn hóa split, label
-};
+\subsection{Tiền xử lý văn bản}
+Các bước tiền xử lý gồm chuẩn hóa Unicode, loại bỏ ký tự nhiễu không cần thiết, xử lý khoảng trắng, kiểm tra trường dữ liệu bắt buộc và tách dữ liệu theo \texttt{post\_id}. Với dữ liệu mạng xã hội, một số ký hiệu đặc trưng như emoji, dấu chấm xen giữa chữ hoặc cách viết biến dạng cần được xem xét thận trọng vì có thể là tín hiệu lách kiểm duyệt.
 
-\node[main] (quality) at (8.4,0) {
-    \textbf{Kiểm tra chất lượng}\\
-    Post leakage\\
-    Synthetic chỉ ở train
-};
+\subsection{Huấn luyện và tối ưu}
+Đề tài sử dụng \texttt{PhoBERT-base-v2} làm encoder tiếng Việt và bổ sung classification head gồm 7 đầu ra sigmoid. Mô hình được triển khai bằng lớp phân loại chuỗi của Transformers, với \texttt{problem\_type} đặt ở chế độ phân loại đa nhãn.
 
-\node[main] (split) at (12.6,0) {
-    \textbf{Chia tập}\\
-    Train / Validation / Test
-};
+Với mỗi nhãn \(i\), mô hình sinh ra logit \(z_i\). Xác suất dự đoán được tính bằng hàm sigmoid:
+\[
+p_i = \sigma(z_i) = \frac{1}{1 + e^{-z_i}}
+\]
+Sau đó, xác suất được so sánh với threshold riêng của từng nhãn:
+\[
+\hat{y}_i =
+\begin{cases}
+1, & p_i \geq \tau_i \\
+0, & p_i < \tau_i
+\end{cases}
+\]
+Trong đó \(\tau_i\) là ngưỡng quyết định của nhãn \(i\). Cách thiết lập threshold riêng theo nhãn phù hợp với dữ liệu mất cân bằng, vì các nhãn hiếm và nhãn phổ biến thường cần ngưỡng khác nhau.
 
-\node[main] (weight) at (4.2,-3.05) {
-    \textbf{Class weight}\\
-    Tính \texttt{pos\_weight}\\
-    Xử lý mất cân bằng nhãn
-};
+Do dữ liệu có hiện tượng mất cân bằng, đặc biệt ở các nhãn hiếm, quá trình huấn luyện sử dụng \texttt{BCEWithLogitsLoss} kết hợp \texttt{pos\_weight}. Trọng số dương được tính dựa trên tỷ lệ âm/dương trong tập huấn luyện, sau đó làm mềm và giới hạn trong khoảng hợp lý để giảm nguy cơ tăng false positive quá mức.
 
-\node[main] (hf) at (8.4,-3.05) {
-    \textbf{HF Dataset}\\
-    Convert DataFrame\\
-    sang Dataset
-};
+Hàm mất mát nhị phân có trọng số cho bài toán đa nhãn được biểu diễn như sau:
+\[
+\mathcal{L}_{BCE}
+= -\frac{1}{C}\sum_{i=1}^{C}
+\left[
+w_i y_i \log(p_i) + (1-y_i)\log(1-p_i)
+\right]
+\]
+Trong đó \(C\) là số nhãn, \(y_i\) là nhãn thật, \(p_i\) là xác suất dự đoán và \(w_i\) là trọng số dương của nhãn \(i\). Đoạn code huấn luyện PhoBERT là hợp lý vì có kiểm tra cột bắt buộc, kiểm tra leakage theo \texttt{post\_id}, làm mềm \texttt{pos\_weight}, chọn checkpoint theo F1 cân bằng và tune threshold cuối cùng trên validation set. Điểm cần lưu ý là threshold được tune trên validation nhỏ có thể overfit, vì vậy việc chặn biên threshold trong code là phù hợp.
 
-\node[main] (tokenize) at (12.6,-3.05) {
-    \textbf{Tokenization}\\
-    PhoBERT tokenizer\\
-    Max length = 256
-};
-
-\node[main] (model) at (4.2,-6.1) {
-    \textbf{PhoBERT-base-v2}\\
-    Multi-label classifier\\
-    7 sigmoid outputs
-};
-
-\node[main] (trainer) at (8.4,-6.1) {
-    \textbf{Weighted Trainer}\\
-    BCEWithLogits\\
-    Loss + \texttt{pos\_weight}
-};
-
-\node[main] (train) at (12.6,-6.1) {
-    \textbf{Training}\\
-    12 epochs\\
-    Early stopping\\
-    Best by F1 balanced
-};
-
-\node[main] (threshold) at (12.6,-9.15) {
-    \textbf{Tune threshold}\\
-    Tối ưu trên validation\\
-    Chặn bằng threshold bounds
-};
-
-\node[main] (eval) at (8.4,-9.15) {
-    \textbf{Evaluation}\\
-    Validation + Test\\
-    Macro/Micro F1\\
-    Per-label metrics
-};
-
-\node[main] (pred) at (4.2,-9.15) {
-    \textbf{File dự đoán}\\
-    Test predictions\\
-    + probabilities
-};
-
-\node[main] (save) at (8.4,-11.5) {
-    \textbf{Lưu mô hình}\\
-    Model + tokenizer\\
-    thresholds.json\\
-    labels.json\\
-    metadata.json
-};
-
-\draw[arrow] (csv.east) -- (validate.west);
-\draw[arrow] (validate.east) -- (quality.west);
-\draw[arrow] (quality.east) -- (split.west);
-
-\draw[arrow] (split.south) -- (tokenize.north);
-\draw[arrow] (tokenize.west) -- (hf.east);
-\draw[arrow] (hf.west) -- (weight.east);
-
-\draw[arrow] (weight.south) -- (model.north);
-\draw[arrow] (model.east) -- (trainer.west);
-\draw[arrow] (trainer.east) -- (train.west);
-
-\draw[arrow] (train.south) -- (threshold.north);
-\draw[arrow] (threshold.west) -- (eval.east);
-\draw[arrow] (eval.west) -- (pred.east);
-\draw[arrow] (eval.south) -- (save.north);
-
-\node[grouptitle] (titledata) at (6.3,1.2) {1. Data Loading \& Validation};
-\node[grouptitle] (titlepreprocess) at (8.4,-2.05) {2. Preprocessing};
-\node[grouptitle] (titletraining) at (8.4,-5.1) {3. Model Training};
-\node[grouptitle] (titleeval) at (8.4,-7.75) {4. Threshold Tuning \& Evaluation};
-
-\begin{scope}[on background layer]
-\node[group, fit=(titledata)(csv)(validate)(quality)(split)] (groupdata) {};
-
-\node[group, fit=(titlepreprocess)(weight)(hf)(tokenize)] (grouppreprocess) {};
-
-\node[group, fit=(titletraining)(model)(trainer)(train)] (grouptraining) {};
-
-\node[group, fit=(titleeval)(threshold)(eval)(pred)(save)] (groupeval) {};
-\end{scope}
-
-\end{tikzpicture}
-}
-\caption{Pipeline huấn luyện mô hình PhoBERT multi-label để phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng.}
-\label{fig:phobert_pipeline}
-\end{figure}
-
-\section{Tiền xử lý văn bản}
-Các bước tiền xử lý bao gồm chuẩn hóa Unicode, loại bỏ ký tự nhiễu không cần thiết, xử lý teencode, chuẩn hóa viết hoa/viết thường và tách dữ liệu theo đầu vào của mô hình. Đối với nội dung mạng xã hội, cần giữ lại một số ký hiệu đặc trưng như emoji, dấu chấm xen giữa chữ hoặc cách viết né tránh vì chúng có thể là tín hiệu lách luật.
-
-\section{Mô hình phân loại đa nhãn}
-Bài toán được xây dựng dưới dạng phân loại đa nhãn. Với mỗi văn bản đầu vào, mô hình dự đoán xác suất cho từng nhãn. Sau đó, mỗi nhãn được so sánh với ngưỡng riêng để quyết định nhãn cuối cùng.
-
-\subsection{Thử nghiệm và tối ưu mô hình PhoBERT cho phân loại đa nhãn}
-Trong thực nghiệm với dữ liệu văn bản, đề tài sử dụng \texttt{PhoBERT-base-v2} làm encoder tiếng Việt và bổ sung classification head gồm 7 đầu ra sigmoid tương ứng với 7 nhãn. Mô hình được triển khai bằng lớp \texttt{AutoModelForSequenceClassification}. Tham số \texttt{problem\_type} được đặt ở chế độ \texttt{multi\_label\_classification}. Cách thiết lập này phù hợp với bài toán vì một nội dung quảng cáo có thể đồng thời chứa nhiều dấu hiệu sai phạm, ví dụ vừa tuyên bố công dụng, vừa nhắc đến bác sĩ/chuyên gia, vừa kèm ưu đãi hoặc lời cam kết bán hàng.
-
-Do dữ liệu có hiện tượng mất cân bằng, đặc biệt ở các nhãn hiếm, đề tài thử nghiệm thêm weighted binary cross entropy. Loss được cài đặt thông qua \texttt{BCEWithLogitsLoss} và \texttt{pos\_weight}. Trọng số dương được tính dựa trên tỷ lệ âm/dương trong tập huấn luyện, sau đó làm mềm bằng căn bậc hai và giới hạn trong khoảng hợp lý. Cách này giúp mô hình chú ý hơn đến nhãn hiếm, nhưng nếu trọng số quá lớn thì dễ làm tăng false positive.
-
-Quá trình thử nghiệm cũng cho thấy việc chọn checkpoint tốt nhất theo \texttt{eval\_loss} không nhất thiết cho kết quả F1 tốt nhất trong bài toán phân loại đa nhãn mất cân bằng. Loss phản ánh mức độ khớp xác suất, nhưng chưa trực tiếp phản ánh chất lượng dự đoán sau khi áp threshold. Vì vậy, đề tài sử dụng chỉ số cân bằng giữa macro F1 và micro F1 để lựa chọn checkpoint:
+Checkpoint được chọn theo chỉ số cân bằng giữa macro F1 và micro F1:
 \[
 F1_{balanced} = 0.5 \times F1_{macro} + 0.5 \times F1_{micro}
 \]
-Chỉ số này giúp cân bằng giữa hiệu quả trên toàn bộ nhãn và hiệu quả tổng thể của mô hình.
-
-Sau khi chọn checkpoint, threshold của từng nhãn được tune riêng trên tập validation thay vì dùng cố định 0.5. Tuy nhiên, do validation set nhỏ và một số nhãn có số mẫu dương thấp, threshold tự động có thể bị lệch theo một vài mẫu cụ thể. Vì vậy, threshold cuối cùng được chặn trong khoảng giá trị hợp lý theo từng nhãn để hạn chế overfit validation.
-
-Ngoài ra, dữ liệu được chia lại theo \texttt{post\_id} nhằm hạn chế leakage: các đoạn hoặc chunk thuộc cùng một bài đăng không được xuất hiện đồng thời trong train, validation và test. Cách chia này giúp đánh giá khách quan hơn so với split ngẫu nhiên, dù kết quả có thể thấp hơn do mô hình phải tổng quát hóa trên bài đăng mới.
+Sau khi chọn checkpoint, threshold của từng nhãn được tune trên validation set và chặn trong khoảng hợp lý. Cách làm này giúp quyết định nhãn cuối cùng phù hợp hơn so với dùng ngưỡng cố định 0.5 cho mọi nhãn.
 
 \begin{table}[H]
 \centering
-\caption{Tóm tắt các cấu hình thử nghiệm với mô hình PhoBERT}
-\begin{tabularx}{\textwidth}{|p{0.22\textwidth}|p{0.26\textwidth}|p{0.24\textwidth}|Y|}
+\caption{Tóm tắt pipeline nhánh PhoBERT}
+\label{tab:phobert_method_pipeline}
+\begin{tabularx}{\textwidth}{|L{0.25\textwidth}|L{0.30\textwidth}|Y|}
 \hline
-\textbf{Thành phần} & \textbf{Cấu hình thử nghiệm} & \textbf{Mục tiêu} & \textbf{Nhận xét} \\
+\textbf{Giai đoạn} & \textbf{Thành phần} & \textbf{Mục tiêu} \\
 \hline
-Loss & Loss mặc định multi-label; \texttt{BCEWithLogitsLoss} với \texttt{pos\_weight} & Xử lý mất cân bằng nhãn & Weighted loss giúp nhãn hiếm được chú ý hơn, nhưng cần làm mềm và clipping trọng số để tránh false positive. \\ \hline
-Checkpoint & Chọn theo \texttt{eval\_loss}; chọn theo F1 sau threshold & Tìm checkpoint có khả năng phân loại tốt & \texttt{eval\_loss} không luôn tương ứng với F1 tốt nhất trong bài toán đa nhãn. \\ \hline
-Threshold & Threshold 0.5; auto threshold theo validation; threshold có chặn biên & Tối ưu quyết định nhãn cuối cùng & Threshold riêng theo nhãn hiệu quả hơn, nhưng cần chặn biên với nhãn hiếm. \\ \hline
-Split dữ liệu & Split ngẫu nhiên; split theo \texttt{post\_id} & Hạn chế leakage giữa các tập & Split theo \texttt{post\_id} cho đánh giá khách quan hơn. \\ \hline
+Dữ liệu & CSV, split theo \texttt{post\_id} & Hạn chế leakage và chuẩn hóa đầu vào. \\ \hline
+Tiền xử lý & Tokenizer PhoBERT, max length & Chuyển văn bản thành input cho mô hình. \\ \hline
+Huấn luyện & PhoBERT, weighted BCE & Học các nhãn rủi ro trong văn bản. \\ \hline
+Tối ưu & Checkpoint theo F1 cân bằng, tune threshold & Cân bằng hiệu quả tổng thể và hiệu quả trên nhãn hiếm. \\ \hline
+Đầu ra & \texttt{phobert\_score}, nhãn dự đoán, evidence & Cung cấp tín hiệu văn bản cho tầng fusion. \\ \hline
 \end{tabularx}
 \end{table}
 
-\section{Điều chỉnh ngưỡng dự đoán}
-Thay vì sử dụng ngưỡng cố định 0.5 cho mọi nhãn, đề tài có thể tìm ngưỡng tốt nhất trên tập validation cho từng nhãn. Cách làm này đặc biệt hữu ích khi dữ liệu mất cân bằng hoặc một số nhãn khó học hơn các nhãn còn lại.
+\section{Nhánh phát hiện hình ảnh bằng YOLO}
+\subsection{Mục tiêu của nhánh hình ảnh}
+Nhánh YOLO được dùng để phát hiện các đối tượng hình ảnh có liên quan đến bối cảnh y tế hoặc dấu hiệu mạo danh/lợi dụng uy tín trong ảnh, poster hoặc frame video quảng cáo. Mô hình chỉ phát hiện sự xuất hiện của đối tượng và tạo bằng chứng hình ảnh; việc xác định mức độ rủi ro cuối cùng cần kết hợp với NLP, OCR, ASR, rule-based detection và logic hợp nhất.
+
+\subsection{Nhãn và vai trò}
+Ba lớp mục tiêu chính gồm \texttt{Lab-coat}, \texttt{logo} và \texttt{stethoscope}. \texttt{Lab-coat} giúp nhận diện hình ảnh áo blouse trắng, thường gắn với bác sĩ hoặc chuyên gia y tế. \texttt{logo} hỗ trợ phát hiện nguy cơ mạo danh hoặc lợi dụng uy tín của tổ chức, cơ quan hoặc truyền thông. \texttt{stethoscope} giúp nhận diện bối cảnh y khoa thông qua ống nghe.
+
+Lớp \texttt{Shirt} được bổ sung như lớp phụ/đối chứng nhằm giúp mô hình phân biệt áo thông thường với áo blouse y tế. Lớp này không được xem là lớp vi phạm chính và không nên diễn giải như một dấu hiệu rủi ro pháp lý độc lập.
+
+\subsection{Công nghệ và cấu hình huấn luyện}
+Dataset hình ảnh được quản lý và gán nhãn trên Roboflow với tên \texttt{doctor-and-medical}, version 7, export theo YOLO format. Mô hình được huấn luyện trên Google Colab với GPU Tesla T4 bằng framework Ultralytics YOLO. Model sử dụng là YOLO11m pretrained weights cho task object detection, input image size 640 x 640 và file cấu hình dataset \texttt{data.yaml}. Checkpoint \texttt{best.pt} được chọn để đánh giá.
 
 \begin{table}[H]
 \centering
-\caption{Bảng ngưỡng dự đoán cho từng nhãn}
-\begin{tabularx}{\textwidth}{|p{0.35\textwidth}|p{0.25\textwidth}|Y|}
+\caption{Cấu hình huấn luyện chính của nhánh YOLO}
+\label{tab:yolo_training_config}
+\begin{tabularx}{\textwidth}{|L{0.34\textwidth}|Y|}
 \hline
-\textbf{Nhãn} & \textbf{Ngưỡng} & \textbf{Ghi chú} \\
+\textbf{Thành phần} & \textbf{Giá trị} \\
 \hline
-\texttt{EFFICACY\_CLAIM} & 0.57 & Giữ theo threshold tự động trên validation. \\ \hline
-\texttt{CURE\_CLAIM} & 0.73 & Threshold cao hơn nhằm hạn chế false positive ở tuyên bố chữa bệnh. \\ \hline
-\texttt{AUTHORITY\_REFERENCE} & 0.59 & Giữ theo threshold tự động trên validation. \\ \hline
-\texttt{TESTIMONIAL} & 0.65 & Threshold tự động thấp được chặn biên do support validation nhỏ. \\ \hline
-\texttt{FEAR\_URGENCY} & 0.27 & Threshold thấp để tăng recall cho nhãn hiếm. \\ \hline
-\texttt{PRICE\_PROMOTION} & 0.60 & Threshold tự động được chặn biên để tránh quá lệch validation. \\ \hline
-\texttt{IS\_ADS} & 0.65 & Threshold cuối cùng sau khi chặn biên. \\ \hline
+Model & YOLO11m pretrained weights \\ \hline
+Task & Object Detection \\ \hline
+Input size & 640 x 640 \\ \hline
+Epochs & 100 \\ \hline
+Batch size & 16 \\ \hline
+Optimizer & AdamW \\ \hline
+Learning rate khởi tạo & \texttt{lr0 = 0.001} \\ \hline
+Cosine learning rate & True \\ \hline
+Patience & 25 \\ \hline
+Augmentation & True \\ \hline
+\texttt{close\_mosaic} & 10 \\ \hline
+Mixed precision AMP & True \\ \hline
 \end{tabularx}
 \end{table}
 
-\section{Hậu xử lý và luật hỗ trợ}
-Bên cạnh dự đoán từ mô hình, có thể kết hợp các luật hỗ trợ nhằm phát hiện các cụm từ có rủi ro cao như ``khỏi 100\%'', ``trị tận gốc'', ``bác sĩ khuyên dùng'', hoặc các mẫu teencode. Tuy nhiên, luật từ khóa chỉ nên đóng vai trò hỗ trợ vì nếu dùng đơn độc sẽ dễ sinh false positive.
+Cấu hình huấn luyện YOLO trong code là hợp lý với bối cảnh Google Colab và GPU Tesla T4: mô hình YOLO11m có năng lực tốt hơn các biến thể nhỏ, \texttt{imgsz=640} là kích thước phổ biến cho object detection, \texttt{batch=16} có thể chấp nhận được khi bật AMP, AdamW và cosine learning rate giúp quá trình tối ưu ổn định hơn, còn \texttt{close\_mosaic=10} giúp giảm ảnh hưởng augmentation mosaic ở các epoch cuối. Cấu hình \texttt{seed=42}, \texttt{deterministic=True}, \texttt{workers=2} và \texttt{amp=True} cũng phù hợp để tăng khả năng tái lập và kiểm soát tài nguyên. Nếu Colab hết bộ nhớ GPU, batch size có thể giảm xuống 8 nhưng không làm thay đổi logic phương pháp.
+
+\subsection{Đầu ra của nhánh YOLO}
+Đầu ra của YOLO gồm bounding box, nhãn đối tượng và confidence. Các kết quả này được chuyển thành \texttt{visual\_score} hoặc bằng chứng hình ảnh cho tầng fusion. Ví dụ, một frame có \texttt{Lab-coat} và \texttt{logo} sẽ được ghi nhận là có tín hiệu thị giác cần xem xét, nhưng mức rủi ro chỉ được đánh giá đầy đủ khi kết hợp với nội dung văn bản hoặc OCR/ASR liên quan.
+
+Confidence score của một dự đoán object detection có thể được hiểu là mức tin cậy tổng hợp giữa khả năng có đối tượng trong bounding box và xác suất lớp tương ứng:
+\[
+\mathrm{Conf}(B,c)
+= P(\mathrm{object}\mid B)\times P(c\mid B,\mathrm{object})
+\]
+Trong đó \(B\) là bounding box dự đoán, \(c\) là lớp đối tượng, \(P(\mathrm{object}\mid B)\) là xác suất vùng \(B\) thật sự chứa đối tượng và \(P(c\mid B,\mathrm{object})\) là xác suất đối tượng thuộc lớp \(c\). Trong báo cáo này, confidence được dùng để xếp hạng và lọc các dự đoán hình ảnh, không được diễn giải như xác suất vi phạm pháp lý.
+
+Độ khớp giữa bounding box dự đoán \(B_p\) và bounding box thật \(B_{gt}\) được đo bằng Intersection over Union (IoU):
+\[
+\mathrm{IoU}(B_p, B_{gt}) =
+\frac{|B_p \cap B_{gt}|}{|B_p \cup B_{gt}|}
+\]
+IoU càng cao thì vùng dự đoán càng trùng khớp với vùng gán nhãn. Trong đánh giá object detection, một dự đoán thường được xem là đúng nếu nhãn lớp đúng và IoU vượt qua ngưỡng đánh giá.
+
+Ở mức tổng quát, loss của YOLO có thể được mô tả như tổ hợp của các thành phần định vị hộp, phân loại lớp và phân phối vị trí:
+\[
+\mathcal{L}_{YOLO}
+= \lambda_{box}\mathcal{L}_{box}
++ \lambda_{cls}\mathcal{L}_{cls}
++ \lambda_{dfl}\mathcal{L}_{dfl}
+\]
+Trong đó \(\mathcal{L}_{box}\) phản ánh sai lệch vị trí bounding box, \(\mathcal{L}_{cls}\) phản ánh sai lệch phân loại lớp, \(\mathcal{L}_{dfl}\) là thành phần distribution focal loss trong các phiên bản YOLO hiện đại, còn \(\lambda\) là trọng số cân bằng giữa các thành phần. Công thức này được dùng để giải thích nguyên lý huấn luyện ở mức khái quát, không thay thế chi tiết cài đặt nội bộ của Ultralytics.
+
+\section{OCR, ASR và rule-based detection}
+OCR được sử dụng để trích xuất chữ trong poster, ảnh sản phẩm hoặc frame video. Nội dung OCR sau đó được đưa vào nhánh phân tích văn bản và rule-based detection. ASR được sử dụng để chuyển lời nói trong video thành transcript, giúp hệ thống phát hiện các tuyên bố rủi ro không xuất hiện trong caption.
+
+Rule-based detection đóng vai trò phát hiện các mẫu ngôn ngữ rõ ràng như cụm từ cam kết khỏi bệnh, khẳng định công dụng tuyệt đối, hoặc cách viết biến dạng có thể được mô tả bằng luật. Nhánh này có ưu điểm dễ giải thích nhưng không đủ linh hoạt nếu dùng độc lập, vì vậy chỉ nên xem là một nguồn tín hiệu hỗ trợ.
+
+\section{Hợp nhất điểm rủi ro}
+Tầng fusion nhận các đầu ra từ PhoBERT, YOLO, OCR, ASR và rule-based detection. Mục tiêu của tầng này là tổng hợp bằng chứng từ nhiều nhánh để tạo \texttt{risk\_score} và nhãn gợi ý cuối cùng.
+
+Trong phiên bản ban đầu, fusion có thể được triển khai theo hướng late fusion với trọng số hoặc luật tổng hợp đơn giản. Các phiên bản sau có thể học trọng số fusion từ dữ liệu đã được review thủ công. Dù sử dụng cơ chế nào, kết quả cuối cùng vẫn cần lưu lại bằng chứng theo từng nhánh để người rà soát hiểu vì sao mẫu được đánh dấu rủi ro.
+
+\section{Nguyên tắc diễn giải kết quả}
+Kết quả của từng nhánh cần được diễn giải theo đúng phạm vi. PhoBERT cho biết khả năng văn bản chứa một nhóm dấu hiệu rủi ro; YOLO cho biết ảnh hoặc frame có đối tượng hình ảnh liên quan; OCR và ASR bổ sung nội dung chữ hoặc lời nói; rule-based detection cung cấp evidence theo mẫu luật. Không nhánh nào tự chứng minh vi phạm pháp lý nếu đứng riêng lẻ. Kết luận phục vụ rà soát cần dựa trên tổng hợp nhiều tín hiệu và ngữ cảnh cụ thể của quảng cáo.

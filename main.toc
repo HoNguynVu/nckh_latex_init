@@ -4,68 +4,79 @@
 \contentsline {section}{\numberline {1.2}Vấn đề nghiên cứu}{1}{section.1.2}%
 \contentsline {section}{\numberline {1.3}Mục tiêu đề tài}{2}{section.1.3}%
 \contentsline {section}{\numberline {1.4}Phạm vi nghiên cứu}{3}{section.1.4}%
-\contentsline {subsection}{\numberline {1.4.1}Yêu cầu chức năng hệ thống}{4}{subsection.1.4.1}%
-\contentsline {subsection}{\numberline {1.4.2}Yêu cầu chức năng dữ liệu}{5}{subsection.1.4.2}%
-\contentsline {section}{\numberline {1.5}Đóng góp dự kiến}{6}{section.1.5}%
-\contentsline {chapter}{\numberline {2}CƠ SỞ LÝ THUYẾT VÀ PHÁP LÝ}{7}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Tổng quan về quảng cáo thực phẩm chức năng}{7}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Cơ sở pháp lý}{7}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Các công nghệ sử dụng}{7}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Google Colab và GPU NVIDIA T4}{8}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Python}{8}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Pandas và NumPy}{9}{subsection.2.3.3}%
-\contentsline {subsection}{\numberline {2.3.4}PyTorch}{9}{subsection.2.3.4}%
-\contentsline {subsection}{\numberline {2.3.5}Hugging Face Transformers}{10}{subsection.2.3.5}%
-\contentsline {subsection}{\numberline {2.3.6}PhoBERT-base-v2}{10}{subsection.2.3.6}%
-\contentsline {subsection}{\numberline {2.3.7}Hugging Face Datasets}{11}{subsection.2.3.7}%
-\contentsline {subsection}{\numberline {2.3.8}Scikit-learn}{11}{subsection.2.3.8}%
-\contentsline {subsection}{\numberline {2.3.9}Định dạng CSV và JSON}{12}{subsection.2.3.9}%
-\contentsline {subsection}{\numberline {2.3.10}Weighted loss và early stopping}{12}{subsection.2.3.10}%
-\contentsline {section}{\numberline {2.4}Các nhóm dấu hiệu sai phạm trong văn bản}{13}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Bài toán phân loại đa nhãn}{13}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Các hướng tiếp cận liên quan}{14}{section.2.6}%
-\contentsline {chapter}{\numberline {3}DỮ LIỆU VÀ QUY TRÌNH GÁN NHÃN}{15}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Nguồn dữ liệu}{15}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Dữ liệu văn bản}{15}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}Dữ liệu hình ảnh}{15}{subsection.3.1.2}%
-\contentsline {section}{\numberline {3.2}Quy trình thu thập dữ liệu}{15}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Dữ liệu văn bản}{15}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Dữ liệu hình ảnh}{16}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}Định dạng dữ liệu}{16}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Dữ liệu văn bản}{16}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Dữ liệu hình ảnh}{17}{subsection.3.3.2}%
-\contentsline {section}{\numberline {3.4}Bộ nhãn sử dụng}{18}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}Dữ liệu văn bản}{18}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Dữ liệu hình ảnh}{19}{subsection.3.4.2}%
-\contentsline {section}{\numberline {3.5}Nguyên tắc gán nhãn}{19}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}Dữ liệu văn bản}{19}{subsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.5.2}Dữ liệu hình ảnh}{20}{subsection.3.5.2}%
-\contentsline {section}{\numberline {3.6}Chia tập dữ liệu}{20}{section.3.6}%
-\contentsline {subsection}{\numberline {3.6.1}Dữ liệu văn bản}{20}{subsection.3.6.1}%
-\contentsline {subsection}{\numberline {3.6.2}Dữ liệu hình ảnh}{20}{subsection.3.6.2}%
-\contentsline {chapter}{\numberline {4}PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG}{22}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Kiến trúc hệ thống}{22}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Thiết kế UC}{24}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Đặc tả UC01 -- Thu thập dữ liệu}{26}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Đặc tả UC02 -- Xử lý và chuẩn hóa dữ liệu}{28}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Đặc tả UC03 -- Quản lý và gán nhãn dữ liệu}{33}{subsection.4.2.3}%
-\contentsline {chapter}{\numberline {5}PHƯƠNG PHÁP ĐỀ XUẤT}{38}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Tổng quan kiến trúc hệ thống}{38}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Tiền xử lý văn bản}{39}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Mô hình phân loại đa nhãn}{40}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Thử nghiệm và tối ưu mô hình PhoBERT cho phân loại đa nhãn}{40}{subsection.5.3.1}%
-\contentsline {section}{\numberline {5.4}Điều chỉnh ngưỡng dự đoán}{42}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Hậu xử lý và luật hỗ trợ}{42}{section.5.5}%
-\contentsline {chapter}{\numberline {6}THỰC NGHIỆM VÀ ĐÁNH GIÁ}{43}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Thiết lập thực nghiệm}{43}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Thống kê dữ liệu}{43}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Chỉ số đánh giá}{45}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Kết quả thực nghiệm}{45}{section.6.4}%
-\contentsline {section}{\numberline {6.5}Phân tích lỗi}{47}{section.6.5}%
-\contentsline {section}{\numberline {6.6}Thảo luận}{47}{section.6.6}%
-\contentsline {chapter}{\numberline {7}KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}{49}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Kết luận}{49}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Ưu điểm}{49}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Hạn chế}{49}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Hướng phát triển}{49}{section.7.4}%
-\contentsline {chapter}{TÀI LIỆU THAM KHẢO}{51}{section.7.4}%
+\contentsline {section}{\numberline {1.5}Yêu cầu chức năng tổng quát}{3}{section.1.5}%
+\contentsline {section}{\numberline {1.6}Đóng góp dự kiến}{4}{section.1.6}%
+\contentsline {chapter}{\numberline {2}CƠ SỞ LÝ THUYẾT VÀ PHÁP LÝ}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Tổng quan về quảng cáo thực phẩm chức năng}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Cơ sở pháp lý liên quan}{5}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Các nhóm dấu hiệu rủi ro}{6}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Nền tảng xử lý ngôn ngữ tự nhiên}{6}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Nền tảng thị giác máy tính}{7}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Công cụ và framework sử dụng}{7}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Chỉ số đánh giá liên quan}{10}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Các hướng tiếp cận liên quan}{11}{section.2.8}%
+\contentsline {chapter}{\numberline {3}DỮ LIỆU VÀ QUY TRÌNH GÁN NHÃN}{12}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Nguồn dữ liệu}{12}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Dữ liệu văn bản}{12}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Dữ liệu hình ảnh}{12}{subsection.3.1.2}%
+\contentsline {section}{\numberline {3.2}Quy trình thu thập và xử lý dữ liệu}{13}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Dữ liệu văn bản}{13}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Dữ liệu hình ảnh}{13}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Định dạng dữ liệu}{14}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Dữ liệu văn bản}{14}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Dữ liệu hình ảnh}{14}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Bộ nhãn sử dụng}{15}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Bộ nhãn văn bản}{15}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Bộ nhãn hình ảnh}{16}{subsection.3.4.2}%
+\contentsline {section}{\numberline {3.5}Nguyên tắc gán nhãn}{16}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Dữ liệu văn bản}{16}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Dữ liệu hình ảnh}{16}{subsection.3.5.2}%
+\contentsline {section}{\numberline {3.6}Chia tập dữ liệu}{17}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}Dữ liệu văn bản}{17}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}Dữ liệu hình ảnh}{17}{subsection.3.6.2}%
+\contentsline {chapter}{\numberline {4}PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG}{18}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Kiến trúc hệ thống}{18}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Thiết kế UC}{20}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Đặc tả UC01 -- Thu thập dữ liệu}{21}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Đặc tả UC02 -- Xử lý và chuẩn hóa dữ liệu}{24}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Đặc tả UC03 -- Quản lý và gán nhãn dữ liệu}{29}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Đặc tả UC04 -- Chia tập và lưu phiên bản dataset}{34}{subsection.4.2.4}%
+\contentsline {subsection}{\numberline {4.2.5}Đặc tả UC05 -- Huấn luyện mô hình PhoBERT}{40}{subsection.4.2.5}%
+\contentsline {subsection}{\numberline {4.2.6}Đặc tả UC06 -- Huấn luyện mô hình YOLO v11}{47}{subsection.4.2.6}%
+\contentsline {chapter}{\numberline {5}PHƯƠNG PHÁP ĐỀ XUẤT}{56}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Tổng quan phương pháp}{56}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Nhánh phân tích văn bản bằng PhoBERT}{56}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Biểu diễn bài toán}{56}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Tiền xử lý văn bản}{57}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Huấn luyện và tối ưu}{57}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}Nhánh phát hiện hình ảnh bằng YOLO}{59}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Mục tiêu của nhánh hình ảnh}{59}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Nhãn và vai trò}{59}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Công nghệ và cấu hình huấn luyện}{59}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Đầu ra của nhánh YOLO}{60}{subsection.5.3.4}%
+\contentsline {section}{\numberline {5.4}OCR, ASR và rule-based detection}{62}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Hợp nhất điểm rủi ro}{62}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Nguyên tắc diễn giải kết quả}{62}{section.5.6}%
+\contentsline {chapter}{\numberline {6}THỰC NGHIỆM VÀ ĐÁNH GIÁ}{63}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Thiết lập thực nghiệm đa phương thức}{63}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Dữ liệu và chỉ số đánh giá}{63}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Dữ liệu văn bản}{63}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Dữ liệu hình ảnh}{64}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Chỉ số đánh giá}{64}{subsection.6.2.3}%
+\contentsline {section}{\numberline {6.3}Kết quả nhánh văn bản PhoBERT}{66}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Threshold và kết quả tổng quan}{66}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Kết quả theo nhãn}{67}{subsection.6.3.2}%
+\contentsline {section}{\numberline {6.4}Kết quả nhánh hình ảnh YOLO}{68}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Kết quả tổng thể}{68}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Kết quả theo từng lớp}{69}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}Trực quan hóa kết quả YOLO}{70}{subsection.6.4.3}%
+\contentsline {subsection}{\numberline {6.4.4}Phân tích kết quả YOLO}{71}{subsection.6.4.4}%
+\contentsline {section}{\numberline {6.5}Thảo luận chung}{72}{section.6.5}%
+\contentsline {section}{\numberline {6.6}Hạn chế và hướng cải thiện}{72}{section.6.6}%
+\contentsline {chapter}{\numberline {7}KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}{74}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Kết luận}{74}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Ưu điểm}{74}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Hạn chế}{75}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Hướng phát triển}{75}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Kết luận chung}{76}{section.7.5}%
+\contentsline {chapter}{TÀI LIỆU THAM KHẢO}{77}{section.7.5}%

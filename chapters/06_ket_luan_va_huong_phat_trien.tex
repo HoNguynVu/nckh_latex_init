@@ -1,27 +1,36 @@
 \chapter{KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
 
 \section{Kết luận}
-Đề tài đã xây dựng hướng tiếp cận phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng trên mạng xã hội theo bài toán phân loại đa nhãn. Quy trình gồm thu thập dữ liệu, gán nhãn, huấn luyện mô hình, điều chỉnh ngưỡng và đánh giá kết quả trên từng nhóm dấu hiệu.
+Đề tài đã xây dựng hướng tiếp cận phát hiện dấu hiệu rủi ro trong quảng cáo thực phẩm chức năng trên mạng xã hội theo kiến trúc đa phương thức. Thay vì chỉ dựa vào một mô hình đơn lẻ, hệ thống kết hợp các nhánh PhoBERT, YOLO, OCR, ASR, rule-based detection và tầng hợp nhất rủi ro. Cách tiếp cận này phù hợp với đặc điểm quảng cáo mạng xã hội, nơi tín hiệu rủi ro có thể xuất hiện đồng thời trong văn bản, hình ảnh, video và lời nói.
+
+Kết quả thực nghiệm cho thấy PhoBERT có khả năng phát hiện tương đối tốt một số nhóm tín hiệu văn bản phổ biến như quảng cáo tổng quát, tuyên bố công dụng, tuyên bố chữa bệnh, tham chiếu uy tín và khuyến mãi. Nhánh YOLO bước đầu phát hiện được các đối tượng hình ảnh liên quan đến bối cảnh y tế hoặc mạo danh uy tín như \texttt{Lab-coat}, \texttt{logo} và \texttt{stethoscope}. Các kết quả này là cơ sở để xây dựng \texttt{risk\_score} tổng hợp, nhưng chưa thay thế vai trò đánh giá pháp lý hoặc rà soát chuyên môn.
 
 \section{Ưu điểm}
 \begin{itemize}
-    \item Bộ nhãn bám sát các dạng vi phạm thường gặp trong quảng cáo thực phẩm chức năng.
-    \item Hướng tiếp cận đa nhãn phù hợp với thực tế một quảng cáo có thể chứa nhiều dấu hiệu sai phạm.
-    \item Quy trình có thể mở rộng sang dữ liệu hình ảnh, video và âm thanh.
+    \item Kiến trúc hệ thống được thiết kế theo hướng module, giúp các nhánh PhoBERT, YOLO, OCR, ASR và rule-based detection có thể phát triển độc lập nhưng vẫn đóng góp vào tầng fusion chung.
+    \item Bộ nhãn văn bản phản ánh nhiều nhóm dấu hiệu rủi ro thường gặp trong quảng cáo thực phẩm chức năng, phù hợp với bài toán phân loại đa nhãn.
+    \item Bộ nhãn hình ảnh đã tách rõ các lớp mục tiêu chính và lớp phụ/đối chứng \texttt{Shirt}, giúp hạn chế diễn giải sai vai trò của nhãn.
+    \item Kết quả được trình bày theo hướng hỗ trợ rà soát, có metric, bằng chứng và phân tích hạn chế thay vì khẳng định kết luận tuyệt đối.
 \end{itemize}
 
 \section{Hạn chế}
 \begin{itemize}
-    \item Dữ liệu mạng xã hội có nhiều cách diễn đạt lách luật, gây khó khăn cho mô hình.
-    \item Một số nhãn có thể bị mất cân bằng dữ liệu, làm giảm F1 macro.
-    \item Giai đoạn hiện tại chủ yếu tập trung vào văn bản, chưa khai thác đầy đủ tín hiệu đa phương thức.
+    \item Dữ liệu mạng xã hội có nhiều cách diễn đạt gián tiếp, teencode hoặc lách luật, gây khó khăn cho mô hình văn bản.
+    \item Một số nhãn văn bản còn mất cân bằng, đặc biệt \texttt{TESTIMONIAL} và \texttt{FEAR\_URGENCY}, làm giảm macro F1.
+    \item Test set hình ảnh hiện còn nhỏ; lớp \texttt{stethoscope} có số lượng instance ít nên cần thận trọng khi đánh giá độ ổn định.
+    \item Dataset hình ảnh cần được chuẩn hóa thêm để tránh lẫn giữa bounding box và segmentation annotation.
+    \item Cơ chế fusion hiện mới ở mức thiết kế và cần thêm dữ liệu đa phương thức đã review để đánh giá định lượng đầy đủ.
 \end{itemize}
 
 \section{Hướng phát triển}
 \begin{itemize}
-    \item Mở rộng bộ dữ liệu bằng cách thu thập thêm mẫu từ nhiều nền tảng và nhóm sản phẩm khác nhau.
-    \item Bổ sung OCR để phát hiện chữ nhúng trong ảnh hoặc video.
-    \item Bổ sung ASR để phân tích lời thoại trong video quảng cáo.
-    \item Kết hợp mô hình nhận diện hình ảnh nhằm phát hiện áo blouse, logo giả mạo hoặc bối cảnh y tế.
-    \item Xây dựng giao diện hỗ trợ kiểm duyệt viên xem kết quả, lý do cảnh báo và bằng chứng liên quan.
+    \item Mở rộng bộ dữ liệu văn bản và hình ảnh từ nhiều nền tảng, nhóm sản phẩm và phong cách quảng cáo khác nhau.
+    \item Bổ sung dữ liệu cho các nhãn hiếm trong văn bản và các lớp hình ảnh có ít mẫu, đặc biệt \texttt{stethoscope}.
+    \item Chuẩn hóa lại dataset Roboflow ở các version sau, bảo đảm annotation nhất quán theo bounding box cho bài toán object detection.
+    \item Đánh giá riêng các module OCR và ASR, sau đó đưa kết quả vào pipeline văn bản và rule-based detection.
+    \item Hoàn thiện tầng fusion/risk scoring, có thể bắt đầu bằng late fusion có trọng số và tiến tới học trọng số từ dữ liệu đã được review thủ công.
+    \item Xây dựng giao diện hỗ trợ người rà soát xem nhãn dự đoán, điểm rủi ro, bounding box, evidence văn bản và nguồn tín hiệu đóng góp vào kết quả.
 \end{itemize}
+
+\section{Kết luận chung}
+Nhìn chung, đề tài đã đặt nền tảng cho một hệ thống hỗ trợ phát hiện dấu hiệu rủi ro quảng cáo thực phẩm chức năng theo hướng đa phương thức. PhoBERT và YOLO không được xem là các mô hình thay thế nhau, mà là hai nguồn tín hiệu bổ sung trong cùng pipeline. Khi được kết hợp với OCR, ASR, rule-based detection và quy trình review thủ công, hệ thống có thể hỗ trợ ưu tiên các nội dung cần kiểm tra sâu hơn trong các phiên bản tiếp theo.

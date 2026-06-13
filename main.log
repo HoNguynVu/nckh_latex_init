@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.9)  9 JUN 2026 14:19
+This is XeTeX, Version 3.141592653-2.6-0.999998 (MiKTeX 26.5) (preloaded format=xelatex 2026.6.9)  13 JUN 2026 16:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -67,7 +67,7 @@ Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
 
 Package fontspec Info: 
 (fontspec)             Font family 'TimesNewRoman(0)' created for font 'Times
-(fontspec)             New Roman' with options [Ligatures=TeX].
+(fontspec)             New Roman' with options [Ligatures=TeX,Ligatures=TeX].
 (fontspec)              
 (fontspec)              This font family consists of the following NFSS
 (fontspec)             series/shapes:
@@ -96,6 +96,49 @@ ext;"
 (fontspec)             <->"Times New
 (fontspec)             Roman/BI/OT:script=latn;language=dflt;+smcp;mapping=tex-
 text;"
+
+
+Package fontspec Info: 
+(fontspec)             Consolas scale = 0.9123482311684742.
+
+
+Package fontspec Info: 
+(fontspec)             Consolas scale = 0.9123482311684742.
+
+
+Package fontspec Info: 
+(fontspec)             Consolas/B scale = 0.9015724922785119.
+
+
+Package fontspec Info: 
+(fontspec)             Consolas/I scale = 0.9123482311684742.
+
+
+Package fontspec Info: 
+(fontspec)             Consolas/BI scale = 0.9015724922785119.
+
+
+Package fontspec Info: 
+(fontspec)             Font family 'Consolas(0)' created for font 'Consolas'
+(fontspec)             with options
+(fontspec)             [WordSpace={1,0,0},HyphenChar=None,PunctuationSpace=Word
+Space,Scale=MatchLowercase].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->s*[0.9123482311684742]"Consolas/OT:script=latn;langua
+ge=dflt;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->s*[0.9015724922785119]"Consolas/B/OT:script=latn;lang
+uage=dflt;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.:
+(fontspec)             <->s*[0.9123482311684742]"Consolas/I/OT:script=latn;lang
+uage=dflt;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->s*[0.9015724922785119]"Consolas/BI/OT:script=latn;lan
+guage=dflt;"
 
 
 (D:\MiKTeX\tex/generic/babel\babel.sty
@@ -560,16 +603,33 @@ Package: array 2026/02/24 v2.7b Tabular extension package (FMi)
 \TX@cols=\count333
 \TX@ftn=\toks35
 )
+(D:\MiKTeX\tex/latex/ragged2e\ragged2e.sty
+Package: ragged2e 2023/06/22 v3.6 ragged2e Package
+\CenteringLeftskip=\skip57
+\RaggedLeftLeftskip=\skip58
+\RaggedRightLeftskip=\skip59
+\CenteringRightskip=\skip60
+\RaggedLeftRightskip=\skip61
+\RaggedRightRightskip=\skip62
+\CenteringParfillskip=\skip63
+\RaggedLeftParfillskip=\skip64
+\RaggedRightParfillskip=\skip65
+\JustifyingParfillskip=\skip66
+\CenteringParindent=\skip67
+\RaggedLeftParindent=\skip68
+\RaggedRightParindent=\skip69
+\JustifyingParindent=\skip70
+)
 (D:\MiKTeX\tex/latex/multirow\multirow.sty
 Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
-\multirow@colwidth=\skip57
+\multirow@colwidth=\skip71
 \multirow@cntb=\count334
-\multirow@dima=\skip58
+\multirow@dima=\skip72
 \bigstrutjot=\dimen296
 )
 (D:\MiKTeX\tex/latex/enumitem\enumitem.sty
 Package: enumitem 2025/02/06 v3.11 Customized lists
-\labelindent=\skip59
+\labelindent=\skip73
 \enit@outerparindent=\dimen297
 \enit@toks=\toks36
 \enit@inbox=\box75
@@ -578,7 +638,7 @@ Package: enumitem 2025/02/06 v3.11 Customized lists
 )
 (D:\MiKTeX\tex/latex/amsmath\amsmath.sty
 Package: amsmath 2026/05/19 v2.18d AMS math features
-\@mathmargin=\skip60
+\@mathmargin=\skip74
 
 For additional information on amsmath, use the `?' option.
 (D:\MiKTeX\tex/latex/amsmath\amstext.sty
@@ -638,8 +698,8 @@ LaTeX Info: Redefining \Relbar on input line 970.
 \totwidth@=\dimen305
 \lineht@=\dimen306
 \@envbody=\toks40
-\multlinegap=\skip61
-\multlinetaggap=\skip62
+\multlinegap=\skip75
+\multlinetaggap=\skip76
 \mathdisplay@stack=\toks41
 LaTeX Info: Redefining \[ on input line 2965.
 LaTeX Info: Redefining \] on input line 2966.
@@ -688,8 +748,8 @@ Package caption Info: New subtype `subtable' on input line 238.
 (D:\MiKTeX\tex/latex/titlesec\titlesec.sty
 Package: titlesec 2025/01/04 v2.17 Sectioning titles
 \ttl@box=\box78
-\beforetitleunit=\skip63
-\aftertitleunit=\skip64
+\beforetitleunit=\skip77
+\aftertitleunit=\skip78
 \ttl@plus=\dimen315
 \ttl@minus=\dimen316
 \ttl@toksa=\toks42
@@ -700,60 +760,60 @@ Package: titlesec 2025/01/04 v2.17 Sectioning titles
 (D:\MiKTeX\tex/latex/tocloft\tocloft.sty
 Package: tocloft 2017/08/31 v2.3i parameterised ToC, etc., typesetting
 Package tocloft Info: The document has chapter divisions on input line 51.
-\cftparskip=\skip65
-\cftbeforetoctitleskip=\skip66
-\cftaftertoctitleskip=\skip67
-\cftbeforepartskip=\skip68
-\cftpartnumwidth=\skip69
-\cftpartindent=\skip70
-\cftbeforechapskip=\skip71
-\cftchapindent=\skip72
-\cftchapnumwidth=\skip73
-\cftbeforesecskip=\skip74
-\cftsecindent=\skip75
-\cftsecnumwidth=\skip76
-\cftbeforesubsecskip=\skip77
-\cftsubsecindent=\skip78
-\cftsubsecnumwidth=\skip79
-\cftbeforesubsubsecskip=\skip80
-\cftsubsubsecindent=\skip81
-\cftsubsubsecnumwidth=\skip82
-\cftbeforeparaskip=\skip83
-\cftparaindent=\skip84
-\cftparanumwidth=\skip85
-\cftbeforesubparaskip=\skip86
-\cftsubparaindent=\skip87
-\cftsubparanumwidth=\skip88
-\cftbeforeloftitleskip=\skip89
-\cftafterloftitleskip=\skip90
-\cftbeforefigskip=\skip91
-\cftfigindent=\skip92
-\cftfignumwidth=\skip93
+\cftparskip=\skip79
+\cftbeforetoctitleskip=\skip80
+\cftaftertoctitleskip=\skip81
+\cftbeforepartskip=\skip82
+\cftpartnumwidth=\skip83
+\cftpartindent=\skip84
+\cftbeforechapskip=\skip85
+\cftchapindent=\skip86
+\cftchapnumwidth=\skip87
+\cftbeforesecskip=\skip88
+\cftsecindent=\skip89
+\cftsecnumwidth=\skip90
+\cftbeforesubsecskip=\skip91
+\cftsubsecindent=\skip92
+\cftsubsecnumwidth=\skip93
+\cftbeforesubsubsecskip=\skip94
+\cftsubsubsecindent=\skip95
+\cftsubsubsecnumwidth=\skip96
+\cftbeforeparaskip=\skip97
+\cftparaindent=\skip98
+\cftparanumwidth=\skip99
+\cftbeforesubparaskip=\skip100
+\cftsubparaindent=\skip101
+\cftsubparanumwidth=\skip102
+\cftbeforeloftitleskip=\skip103
+\cftafterloftitleskip=\skip104
+\cftbeforefigskip=\skip105
+\cftfigindent=\skip106
+\cftfignumwidth=\skip107
 \c@lofdepth=\count353
 \c@lotdepth=\count354
-\cftbeforelottitleskip=\skip94
-\cftafterlottitleskip=\skip95
-\cftbeforetabskip=\skip96
-\cfttabindent=\skip97
-\cfttabnumwidth=\skip98
+\cftbeforelottitleskip=\skip108
+\cftafterlottitleskip=\skip109
+\cftbeforetabskip=\skip110
+\cfttabindent=\skip111
+\cfttabnumwidth=\skip112
 )
 (D:\MiKTeX\tex/latex/fancyhdr\fancyhdr.sty
 Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 
-\f@nch@headwidth=\skip99
-\f@nch@offset@elh=\skip100
-\f@nch@offset@erh=\skip101
-\f@nch@offset@olh=\skip102
-\f@nch@offset@orh=\skip103
-\f@nch@offset@elf=\skip104
-\f@nch@offset@erf=\skip105
-\f@nch@offset@olf=\skip106
-\f@nch@offset@orf=\skip107
-\f@nch@height=\skip108
-\f@nch@footalignment=\skip109
-\f@nch@widthL=\skip110
-\f@nch@widthC=\skip111
-\f@nch@widthR=\skip112
+\f@nch@headwidth=\skip113
+\f@nch@offset@elh=\skip114
+\f@nch@offset@erh=\skip115
+\f@nch@offset@olh=\skip116
+\f@nch@offset@orh=\skip117
+\f@nch@offset@elf=\skip118
+\f@nch@offset@erf=\skip119
+\f@nch@offset@olf=\skip120
+\f@nch@offset@orf=\skip121
+\f@nch@height=\skip122
+\f@nch@footalignment=\skip123
+\f@nch@widthL=\skip124
+\f@nch@widthC=\skip125
+\f@nch@widthR=\skip126
 \@temptokenb=\toks43
 )
 (D:\MiKTeX\tex/latex/hyperref\hyperref.sty
@@ -877,7 +937,7 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 84.
 )
-\Hy@SectionHShift=\skip113
+\Hy@SectionHShift=\skip127
 )) (metadata.tex)
 (main.aux
 Package babel Info: 'vietnamese' activates 'vietnamese' shorthands.
@@ -962,7 +1022,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
 (Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 7.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 7.
+(Font)                  OT1/cmtt/m/n --> TU/Consolas(0)/m/n on input line 7.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/b/n on 
 input line 7.
@@ -972,7 +1032,7 @@ e 7.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
 (Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 7.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 7.
+(Font)                  OT1/cmtt/m/n --> TU/Consolas(0)/b/n on input line 7.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1017,35 +1077,37 @@ Package hyperref Info: Link coloring OFF on input line 7.
 \openout4 = `main.out'.
 
  (cover.tex
-LaTeX Font Info:    Calculating math sizes for size <13> on input line 17.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 17.
+File: images/logo_UIT.png Graphic file (type bmp)
+<images/logo_UIT.png>
+LaTeX Font Info:    Calculating math sizes for size <13> on input line 23.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 23.
 
  (D:\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 17.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 23.
 
 
 (D:\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-]) (main.toc [1] [2])
+]) (main.toc [1] [2] [3])
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
- [3] (main.lot)
+ [4]
+(main.lot [5
+
+])
 \tf@lot=\write6
 \openout6 = `main.lot'.
 
-
-[4
-
-] (main.lof)
+ [6] (main.lof)
 \tf@lof=\write7
 \openout7 = `main.lof'.
 
- [5
+ [7
 
 ]
 \openout2 = `chapters/01_mo_dau.aux'.
@@ -1056,33 +1118,38 @@ Chương 1.
 
 
 
-] [2] [3] [4] [5]) [6]
+] [2]
+LaTeX Font Info:    Font shape `TU/Consolas(0)/m/n' will be
+(Font)              scaled to size 11.8606pt on input line 26.
+ [3]) [4]
 \openout2 = `chapters/02_co_so_ly_thuyet_va_phap_ly.aux'.
 
  (chapters/02_co_so_ly_thuyet_va_phap_ly.tex
 Chương 2.
-[7
+[5
 
 
 
 
-] [8] [9] [10] [11] [12]) [13] [14]
+] [6]
+LaTeX Font Info:    Font shape `TU/Consolas(0)/m/n' will be
+(Font)              scaled to size 9.99026pt on input line 66.
+ [7] [8] [9] [10]) [11]
 \openout2 = `chapters/03_du_lieu_va_gan_nhan.aux'.
 
  (chapters/03_du_lieu_va_gan_nhan.tex
 Chương 3.
-[15
+[12
 
 
 
 
-] [16] [17] [18] [19]) [20] [21]
+] [13] [14] [15] [16]) [17]
 \openout2 = `chapters/04_phan_tich_va_thiet_ke_he_thong.aux'.
 
-
-(chapters/04_phan_tich_va_thiet_ke_he_thong.tex
+ (chapters/04_phan_tich_va_thiet_ke_he_thong.tex
 Chương 4.
-[22
+[18
 
 
 
@@ -1090,103 +1157,1122 @@ Chương 4.
 ]
 File: images/OveralArchitecture.png Graphic file (type bmp)
 <images/OveralArchitecture.png>
- [23] [24] [25] [26] [27] [28]
-Underfull \hbox (badness 1331) in paragraph at lines 269--270
-[]\TU/TimesNewRoman(0)/m/n/13 Nếu video lỗi hoặc \TU/lmtt/m/n/13 FFmpeg \TU/Tim
-esNewRoman(0)/m/n/13 không trích được
+ [19] [20] [21]
+Underfull \hbox (badness 10000) in paragraph at lines 141--142
+[]\TU/TimesNewRoman(0)/m/n/13 Người quản trị nhập từ khóa, nhóm sản phẩm
  []
 
-[29] [30] [31] [32]
-Underfull \hbox (badness 10000) in paragraph at lines 393--394
+
+Underfull \hbox (badness 10000) in paragraph at lines 144--145
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống trích xuất hoặc chuẩn hóa text thô,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--153
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu URL không hợp lệ, bài đăng/video không
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--153
+\TU/TimesNewRoman(0)/m/n/13 truy cập được hoặc Apify trả lỗi, hệ thống ghi
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 153--154
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu dữ liệu đã tồn tại trên Google Drive, hệ
+ []
+
+[22] [23]
+LaTeX Font Info:    Font shape `TU/Consolas(0)/m/n' will be
+(Font)              scaled to size 9.12354pt on input line 233.
+ [24]
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+[]\TU/TimesNewRoman(0)/m/n/13 Người quản trị dữ liệu cấu hình quy trình xử lý
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 260--261
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống chuẩn hóa văn bản, metadata, source
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 261--262
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống sử dụng Python để kiểm tra duplicate
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 261--262
+\TU/TimesNewRoman(0)/m/n/13 theo nội dung, URL, post/video id hoặc metadata
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 262--263
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống dùng \TU/Consolas(0)/m/n/13 yt-dlp \TU/T
+imesNewRoman(0)/m/n/13 để tải ảnh/video từ các
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 263--264
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống dùng \TU/Consolas(0)/m/n/13 FFmpeg \TU/T
+imesNewRoman(0)/m/n/13 để cắt video thành các
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 264--265
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống so sánh các frame liên tiếp và chỉ giữ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 264--265
+\TU/TimesNewRoman(0)/m/n/13 frame có độ khác biệt lớn hơn 70% so với frame
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 265--266
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống lưu dữ liệu đã xử lý, log lỗi, danh sách
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 265--266
+\TU/TimesNewRoman(0)/m/n/13 duplicate và đường dẫn frame/media lên Google
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 271--272
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu bản ghi bị thiếu text hoặc metadata quan
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 271--272
+\TU/TimesNewRoman(0)/m/n/13 trọng, hệ thống đánh dấu trạng thái cần kiểm tra
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 272--273
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu URL media không tải được bằng \TU/Consolas(0)
+/m/n/13 yt-dlp\TU/TimesNewRoman(0)/m/n/13 , hệ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 272--273
+\TU/TimesNewRoman(0)/m/n/13 thống ghi log lỗi và vẫn giữ phần text/metadata
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 273--274
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu video lỗi hoặc \TU/Consolas(0)/m/n/13 FFmpeg 
+\TU/TimesNewRoman(0)/m/n/13 không trích được
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 273--274
+\TU/TimesNewRoman(0)/m/n/13 frame, hệ thống bỏ qua nhánh frame và ghi lý do
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 274--275
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu các frame liên tiếp có độ khác biệt không
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 274--275
+\TU/TimesNewRoman(0)/m/n/13 vượt quá 70%, hệ thống loại frame sau để giảm
+ []
+
+[25] [26] [27] [28] [29]
+Underfull \hbox (badness 1789) in paragraph at lines 390--390
+[]|\TU/TimesNewRoman(0)/m/n/13 Dữ liệu đã được xử lý ở UC02; văn bản, meta- 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 395--396
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống gắn hoặc kiểm tra \TU/Consolas(0)/m/n/13
+ post_id
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 395--396
+\TU/TimesNewRoman(0)/m/n/13 cho từng mẫu để tránh leakage khi chia
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 396--397
+[]\TU/TimesNewRoman(0)/m/n/13 AI hỗ trợ chia các đoạn văn bản dài thành nhiều
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 396--397
+\TU/TimesNewRoman(0)/m/n/13 đoạn nhỏ đủ phù hợp với giới hạn đầu vào của
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 397--398
 []\TU/TimesNewRoman(0)/m/n/13 AI sử dụng nội dung văn bản và file
  []
 
 
-Underfull \hbox (badness 3058) in paragraph at lines 399--399
-[]|\TU/TimesNewRoman(0)/m/n/13 Luồng chính – hình
+Underfull \hbox (badness 10000) in paragraph at lines 398--399
+[]\TU/TimesNewRoman(0)/m/n/13 AI trích evidence tương ứng với nhãn, ưu tiên các
+
  []
 
 
-Underfull \hbox (badness 2744) in paragraph at lines 405--406
+Underfull \hbox (badness 10000) in paragraph at lines 398--399
+\TU/TimesNewRoman(0)/m/n/13 cụm từ hoặc đoạn văn bản thể hiện rõ dấu hiệu rủi
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 399--400
+[]\TU/TimesNewRoman(0)/m/n/13 Người rà soát kiểm tra nhãn, evidence và trạng
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 400--401
+[]\TU/TimesNewRoman(0)/m/n/13 Quy trình gán nhãn và rà soát được lặp lại ba lần
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 406--407
+[]\TU/TimesNewRoman(0)/m/n/13 Người rà soát chuẩn bị các dataset hình ảnh liên
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 407--408
+[]\TU/TimesNewRoman(0)/m/n/13 Roboflow được dùng làm nền tảng chính để quản
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 407--408
+\TU/TimesNewRoman(0)/m/n/13 lý dataset và tạo model gán nhãn hình ảnh ban
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 408--409
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống thêm các frame đã cắt ở UC02 vào
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 409--410
 []\TU/TimesNewRoman(0)/m/n/13 Roboflow thực hiện auto label cho các hình
  []
 
 
-Underfull \hbox (badness 4120) in paragraph at lines 422--422
-[]|\TU/TimesNewRoman(0)/m/n/13 Thiếu \TU/lmtt/m/n/13 post_id\TU/TimesNewRoman(0
-)/m/n/13 , đoạn văn bản thiếu ngữ cảnh, file
+Underfull \hbox (badness 10000) in paragraph at lines 410--411
+[]\TU/TimesNewRoman(0)/m/n/13 Người rà soát kiểm tra, sửa và xác nhận annota-
  []
 
-[33] [34] [35] [36]) [37]
+
+Underfull \hbox (badness 10000) in paragraph at lines 411--412
+[]\TU/TimesNewRoman(0)/m/n/13 Annotation đã review được lưu vào bộ dữ liệu
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 417--418
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu AI chia đoạn làm mất ngữ cảnh, người rà
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 417--418
+\TU/TimesNewRoman(0)/m/n/13 soát điều chỉnh lại đoạn văn bản hoặc gộp đoạn
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 418--419
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu evidence không khớp với nhãn, người rà soát
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 419--420
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu auto label trên Roboflow sai hoặc thiếu vùng
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 420--421
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu một mẫu không đủ thông tin để gán nhãn, hệ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 420--421
+\TU/TimesNewRoman(0)/m/n/13 thống đánh dấu trạng thái cần xem lại hoặc loại
+ []
+
+[30] [31] [32] [33] [34]
+Underfull \hbox (badness 10000) in paragraph at lines 501--502
+[]\TU/TimesNewRoman(0)/m/n/13 Người quản trị dữ liệu mở bộ dữ liệu văn bản đã
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 502--503
+[]\TU/TimesNewRoman(0)/m/n/13 Người quản trị xác định các nhóm mẫu theo
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 502--503
+\TU/Consolas(0)/m/n/13 post_id\TU/TimesNewRoman(0)/m/n/13 ; mỗi nhóm có thể gồm
+ caption gốc, các
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 503--504
+[]\TU/TimesNewRoman(0)/m/n/13 Người quản trị chia dữ liệu thành các tập \TU/Con
+solas(0)/m/n/13 train\TU/TimesNewRoman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 504--505
+[]\TU/TimesNewRoman(0)/m/n/13 Trong quá trình chia tập, toàn bộ mẫu có cùng
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 504--505
+\TU/Consolas(0)/m/n/13 post_id \TU/TimesNewRoman(0)/m/n/13 được đặt vào cùng mộ
+t tập để tránh
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 505--506
+[]\TU/TimesNewRoman(0)/m/n/13 Người quản trị kiểm tra lại phân phối nhãn ở từng
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 505--506
+\TU/TimesNewRoman(0)/m/n/13 tập, đặc biệt với các nhãn có ít mẫu hoặc nhãn rủi
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 506--507
+[]\TU/TimesNewRoman(0)/m/n/13 Trường \TU/Consolas(0)/m/n/13 split \TU/TimesNewR
+oman(0)/m/n/13 được cập nhật cho từng dòng dữ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 506--507
+\TU/TimesNewRoman(0)/m/n/13 liệu và file văn bản sau chia tập được lưu lên
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 507--508
+[]\TU/TimesNewRoman(0)/m/n/13 Thống kê số mẫu, số \TU/Consolas(0)/m/n/13 post_i
+d\TU/TimesNewRoman(0)/m/n/13 , tỷ lệ nhãn và thời
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 507--508
+\TU/TimesNewRoman(0)/m/n/13 điểm tạo phiên bản được ghi lại trong metadata
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 513--514
+[]\TU/TimesNewRoman(0)/m/n/13 Người quản trị kiểm tra bộ dữ liệu hình ảnh đã
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 514--515
+[]\TU/TimesNewRoman(0)/m/n/13 Người quản trị cấu hình tỷ lệ chia tập hoặc sử
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 515--516
+[]\TU/TimesNewRoman(0)/m/n/13 Roboflow tự động phân chia ảnh và annotation
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 516--517
+[]\TU/TimesNewRoman(0)/m/n/13 Người quản trị kiểm tra thống kê phân phối lớp
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 516--517
+\TU/TimesNewRoman(0)/m/n/13 hình ảnh, gồm \TU/Consolas(0)/m/n/13 Lab-coat\TU/Ti
+mesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 logo\TU/TimesNewRoman(0)/m/n/13 
+, \TU/Consolas(0)/m/n/13 stethoscope \TU/TimesNewRoman(0)/m/n/13 và
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 517--518
+[]\TU/TimesNewRoman(0)/m/n/13 Roboflow lưu lại phiên bản dataset, cấu hình tiền
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 517--518
+\TU/TimesNewRoman(0)/m/n/13 xử lý, thông tin augmentation nếu có và thống kê
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 518--519
+[]\TU/TimesNewRoman(0)/m/n/13 Khi huấn luyện YOLO, người quản trị xuất
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 518--519
+\TU/TimesNewRoman(0)/m/n/13 dataset từ Roboflow theo định dạng YOLO tương
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 519--520
+[]\TU/TimesNewRoman(0)/m/n/13 Thông tin version Roboflow và thời điểm export
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 519--520
+\TU/TimesNewRoman(0)/m/n/13 được ghi lại để kết quả thực nghiệm có thể truy
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 525--526
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu phát hiện các mẫu có cùng \TU/Consolas(0)/m/n
+/13 post_id \TU/TimesNewRoman(0)/m/n/13 nằm ở
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 525--526
+\TU/TimesNewRoman(0)/m/n/13 nhiều tập khác nhau, người quản trị điều chỉnh lại
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 526--527
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu phân phối nhãn văn bản quá lệch, người
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 526--527
+\TU/TimesNewRoman(0)/m/n/13 quản trị cân nhắc chia lại theo nhóm \TU/Consolas(0
+)/m/n/13 post_id\TU/TimesNewRoman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 526--527
+\TU/TimesNewRoman(0)/m/n/13 nhưng không phá vỡ ràng buộc cùng \TU/Consolas(0)/m
+/n/13 post_id
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 527--528
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu một số mẫu văn bản thiếu \TU/Consolas(0)/m/n/
+13 post_id\TU/TimesNewRoman(0)/m/n/13 , người
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 527--528
+\TU/TimesNewRoman(0)/m/n/13 quản trị dùng URL, mã video hoặc mã bài đăng
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 527--528
+\TU/TimesNewRoman(0)/m/n/13 làm khóa thay thế; nếu vẫn không xác định được
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 528--529
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu Roboflow tạo split hình ảnh quá lệch hoặc
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 528--529
+\TU/TimesNewRoman(0)/m/n/13 thiếu lớp quan trọng trong tập đánh giá, người
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 528--529
+\TU/TimesNewRoman(0)/m/n/13 quản trị điều chỉnh cấu hình và tạo version dataset
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 529--530
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu export YOLO bị lỗi, người quản trị giữ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 529--530
+\TU/TimesNewRoman(0)/m/n/13 nguyên version hiện tại, kiểm tra lại annotation
+ []
+
+[35] [36] [37] [38] [39] [40]
+Underfull \hbox (badness 3158) in paragraph at lines 602--602
+[]|\TU/TimesNewRoman(0)/m/n/13 Mô hình PhoBERT tốt nhất được lưu tại thư 
+ []
+
+
+Underfull \hbox (badness 3635) in paragraph at lines 602--602
+\TU/TimesNewRoman(0)/m/n/13 mục kết quả; tokenizer, \TU/Consolas(0)/m/n/13 thre
+sholds.json\TU/TimesNewRoman(0)/m/n/13 , 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 606--607
+[]\TU/TimesNewRoman(0)/m/n/13 Người nghiên cứu cấu hình đường dẫn dữ liệu,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 606--607
+\TU/TimesNewRoman(0)/m/n/13 tên mô hình \TU/Consolas(0)/m/n/13 vinai/phobert-ba
+se-v2\TU/TimesNewRoman(0)/m/n/13 , thư
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 606--607
+\TU/TimesNewRoman(0)/m/n/13 mục lưu, \TU/Consolas(0)/m/n/13 MAX_LENGTH\TU/Times
+NewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 SEED\TU/TimesNewRoman(0)/m/n/13 , d
+anh sách nhãn và
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 607--608
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống đặt seed cho \TU/Consolas(0)/m/n/13 rand
+om\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 numpy \TU/TimesNewRoman(
+0)/m/n/13 và \TU/Consolas(0)/m/n/13 torch\TU/TimesNewRoman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 607--608
+\TU/TimesNewRoman(0)/m/n/13 đồng thời xác định thiết bị huấn luyện là CPU
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 608--609
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống đọc \TU/Consolas(0)/m/n/13 dataset_real.
+csv\TU/TimesNewRoman(0)/m/n/13 , kiểm tra các
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 609--610
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống loại mẫu thiếu \TU/Consolas(0)/m/n/13 te
+xt\TU/TimesNewRoman(0)/m/n/13 , chuẩn hóa giá trị
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 609--610
+\TU/Consolas(0)/m/n/13 split\TU/TimesNewRoman(0)/m/n/13 , kiểm tra split chỉ th
+uộc \TU/Consolas(0)/m/n/13 train\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m
+/n/13 val\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 test\TU/TimesNewR
+oman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 610--611
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu có cột \TU/Consolas(0)/m/n/13 post_id\TU/Time
+sNewRoman(0)/m/n/13 , hệ thống kiểm tra từng
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 610--611
+\TU/Consolas(0)/m/n/13 post_id \TU/TimesNewRoman(0)/m/n/13 không xuất hiện ở nh
+iều split khác nhau
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 616--617
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu có cột nguồn dữ liệu, hệ thống kiểm tra dữ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 617--618
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống gộp các cột nhãn thành vector multi-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 617--618
+\TU/TimesNewRoman(0)/m/n/13 label, tách dữ liệu thành \TU/Consolas(0)/m/n/13 tr
+ain_df\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 val_df \TU/TimesNewR
+oman(0)/m/n/13 và
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 617--618
+\TU/Consolas(0)/m/n/13 test_df\TU/TimesNewRoman(0)/m/n/13 , đồng thời in thống 
+kê phân phối nhãn
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 618--619
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống tính \TU/Consolas(0)/m/n/13 pos_weight \
+TU/TimesNewRoman(0)/m/n/13 từ tập train, làm mềm
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 618--619
+\TU/TimesNewRoman(0)/m/n/13 bằng căn bậc hai và chặn trong khoảng hợp lý để
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 619--620
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống chuyển dữ liệu sang Hugging Face
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 619--620
+\TU/TimesNewRoman(0)/m/n/13 Dataset, token hóa bằng tokenizer PhoBERT
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 619--620
+\TU/TimesNewRoman(0)/m/n/13 với \TU/Consolas(0)/m/n/13 MAX_LENGTH = 256 \TU/Tim
+esNewRoman(0)/m/n/13 và kiểm tra tỷ lệ mẫu bị
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 625--626
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống khởi tạo
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 625--626
+\TU/Consolas(0)/m/n/13 AutoModelForSequenceClassification
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 625--626
+\TU/TimesNewRoman(0)/m/n/13 với \TU/Consolas(0)/m/n/13 problem_type =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 625--626
+\TU/Consolas(0)/m/n/13 multi_label_classification \TU/TimesNewRoman(0)/m/n/13 v
+à số nhãn
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 626--627
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống huấn luyện bằng \TU/Consolas(0)/m/n/13 W
+eightedTrainer\TU/TimesNewRoman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 626--627
+\TU/TimesNewRoman(0)/m/n/13 sử dụng \TU/Consolas(0)/m/n/13 BCEWithLogitsLoss \T
+U/TimesNewRoman(0)/m/n/13 có \TU/Consolas(0)/m/n/13 pos_weight\TU/TimesNewRoman
+(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 626--627
+\TU/TimesNewRoman(0)/m/n/13 batch size 16, learning rate $\OT1/cmr/m/n/12 2\OML
+/cmm/m/it/12 e[]$\TU/TimesNewRoman(0)/m/n/13 , tối đa 12 epoch
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 627--628
+[]\TU/TimesNewRoman(0)/m/n/13 Trong quá trình huấn luyện, hệ thống chọn check-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 627--628
+\TU/TimesNewRoman(0)/m/n/13 point tốt nhất theo \TU/Consolas(0)/m/n/13 f1_balan
+ced\TU/TimesNewRoman(0)/m/n/13 , được tính từ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 628--629
+[]\TU/TimesNewRoman(0)/m/n/13 Sau huấn luyện, hệ thống dự đoán trên validation
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 628--629
+\TU/TimesNewRoman(0)/m/n/13 set, tune threshold riêng cho từng nhãn, sau đó
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 628--629
+\TU/TimesNewRoman(0)/m/n/13 chặn threshold trong khoảng đã cấu hình để hạn
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 629--630
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống đánh giá lại validation và
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 629--630
+\TU/TimesNewRoman(0)/m/n/13 test bằng threshold cuối cùng, tính
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 629--630
+\TU/Consolas(0)/m/n/13 exact_match_accuracy\TU/TimesNewRoman(0)/m/n/13 , \TU/Co
+nsolas(0)/m/n/13 f1_macro\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 f
+1_micro\TU/TimesNewRoman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 629--630
+\TU/Consolas(0)/m/n/13 precision_macro\TU/TimesNewRoman(0)/m/n/13 , \TU/Consola
+s(0)/m/n/13 recall_macro \TU/TimesNewRoman(0)/m/n/13 và metric theo
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 630--631
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống lưu model, tokenizer, threshold, danh
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 630--631
+\TU/TimesNewRoman(0)/m/n/13 sách nhãn, metadata huấn luyện và file dự đoán
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 636--637
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu thiếu cột bắt buộc, hệ thống dừng huấn luyện
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 637--638
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu tồn tại split khác \TU/Consolas(0)/m/n/13 tra
+in\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 val\TU/TimesNewRoman(0)/
+m/n/13 , \TU/Consolas(0)/m/n/13 test\TU/TimesNewRoman(0)/m/n/13 , hệ thống
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 638--639
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu phát hiện \TU/Consolas(0)/m/n/13 post_id \TU/
+TimesNewRoman(0)/m/n/13 xuất hiện ở nhiều split, hệ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 639--640
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu một split rỗng, hệ thống dừng vì không thể
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 645--646
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu tỷ lệ mẫu dài hơn \TU/Consolas(0)/m/n/13 MAX_
+LENGTH \TU/TimesNewRoman(0)/m/n/13 vượt 20%,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 645--646
+\TU/TimesNewRoman(0)/m/n/13 hệ thống cảnh báo để người nghiên cứu cân nhắc
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 645--646
+\TU/TimesNewRoman(0)/m/n/13 tăng độ dài đầu vào nếu tài nguyên GPU cho
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 646--647
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu nhãn hiếm làm \TU/Consolas(0)/m/n/13 pos_weig
+ht \TU/TimesNewRoman(0)/m/n/13 quá lớn, hệ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 646--647
+\TU/TimesNewRoman(0)/m/n/13 thống dùng cơ chế căn bậc hai và chặn trên để
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 647--648
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu validation nhỏ khiến threshold tự động dao
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 647--648
+\TU/TimesNewRoman(0)/m/n/13 động mạnh, threshold cuối cùng được chặn bằng
+ []
+
+
+Underfull \hbox (badness 7522) in paragraph at lines 651--651
+[]|\TU/TimesNewRoman(0)/m/n/13 Mô hình PhoBERT đã huấn luyện, tok- 
+ []
+
+
+Underfull \hbox (badness 4967) in paragraph at lines 651--651
+\TU/TimesNewRoman(0)/m/n/13 enizer, \TU/Consolas(0)/m/n/13 thresholds.json\TU/T
+imesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 labels.json\TU/TimesNewRoman(0)
+/m/n/13 , 
+ []
+
+
+Underfull \hbox (badness 1038) in paragraph at lines 652--652
+[]|\TU/TimesNewRoman(0)/m/n/13 Bài toán được xử lý theo hướng multi-label; mỗi 
+
+ []
+
+[41] [42] [43] [44] [45] [46] [47]
+Underfull \hbox (badness 10000) in paragraph at lines 724--725
+[]\TU/TimesNewRoman(0)/m/n/13 Người nghiên cứu cài hoặc kiểm tra các thư
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 724--725
+\TU/TimesNewRoman(0)/m/n/13 viện cần thiết gồm \TU/Consolas(0)/m/n/13 ultralyti
+cs\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 roboflow\TU/TimesNewRoma
+n(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 725--726
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống kiểm tra môi trường Ultralytics để xác
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 725--726
+\TU/TimesNewRoman(0)/m/n/13 nhận phiên bản thư viện, thiết bị và cấu hình thực
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 726--727
+[]\TU/TimesNewRoman(0)/m/n/13 Người nghiên cứu mount Google
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 726--727
+\TU/TimesNewRoman(0)/m/n/13 Drive và tạo thư mục lưu kết quả
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 727--728
+[]\TU/TimesNewRoman(0)/m/n/13 Người nghiên cứu nhập Roboflow API key để
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 728--729
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống tải project \TU/Consolas(0)/m/n/13 docto
+r-and-medical\TU/TimesNewRoman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 728--729
+\TU/TimesNewRoman(0)/m/n/13 version 7, theo định dạng \TU/Consolas(0)/m/n/13 yo
+lov11 \TU/TimesNewRoman(0)/m/n/13 về thư mục
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 729--730
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống đọc file \TU/Consolas(0)/m/n/13 data.yam
+l\TU/TimesNewRoman(0)/m/n/13 , chuẩn hóa trường
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 729--730
+\TU/Consolas(0)/m/n/13 path\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13
+ train\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 val \TU/TimesNewRoma
+n(0)/m/n/13 và \TU/Consolas(0)/m/n/13 test \TU/TimesNewRoman(0)/m/n/13 để Ultra
+lytics có thể
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 730--731
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống kiểm tra số lượng ảnh, số file nhãn ở
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 731--732
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống đếm phân phối object theo lớp trong tập
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 731--732
+\TU/TimesNewRoman(0)/m/n/13 train để người nghiên cứu phát hiện sớm mất cân
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 737--738
+[]\TU/TimesNewRoman(0)/m/n/13 Người nghiên cứu chọn mô hình khởi tạo
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 737--738
+\TU/Consolas(0)/m/n/13 MODEL_NAME = yolo11m.pt \TU/TimesNewRoman(0)/m/n/13 và t
+ên phiên chạy
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 738--739
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống thiết lập cấu hình huấn luyện gồm
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 738--739
+\TU/Consolas(0)/m/n/13 EPOCHS = 100\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0
+)/m/n/13 IMGSZ = 640\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 BATCH 
+= 16 \TU/TimesNewRoman(0)/m/n/13 và
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 739--740
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống khởi tạo đối tượng \TU/Consolas(0)/m/n/1
+3 YOLO(MODEL_NAME)
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 740--741
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống gọi \TU/Consolas(0)/m/n/13 model.train \
+TU/TimesNewRoman(0)/m/n/13 với \TU/Consolas(0)/m/n/13 task = detect\TU/TimesNew
+Roman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 740--741
+\TU/TimesNewRoman(0)/m/n/13 optimizer \TU/Consolas(0)/m/n/13 AdamW\TU/TimesNewR
+oman(0)/m/n/13 , learning rate ban đầu \TU/Consolas(0)/m/n/13 lr0 =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 740--741
+\TU/Consolas(0)/m/n/13 0.001\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/1
+3 cos_lr = True\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 close_mosai
+c = 10\TU/TimesNewRoman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 740--741
+\TU/Consolas(0)/m/n/13 augment = True\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas
+(0)/m/n/13 seed = 42\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 determ
+inistic
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 740--741
+\TU/Consolas(0)/m/n/13 = True\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/
+13 device = 0\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 workers = 2 \
+TU/TimesNewRoman(0)/m/n/13 và \TU/Consolas(0)/m/n/13 amp =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 741--742
+[]\TU/TimesNewRoman(0)/m/n/13 Trong quá trình huấn luyện, Ultralytics lưu
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 741--742
+\TU/TimesNewRoman(0)/m/n/13 checkpoint, log, metric và biểu đồ vào thư mục
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 741--742
+\TU/Consolas(0)/m/n/13 SAVE_DIR/RUN_NAME\TU/TimesNewRoman(0)/m/n/13 ; nếu valid
+ation không
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 741--742
+\TU/TimesNewRoman(0)/m/n/13 cải thiện sau số epoch kiên nhẫn, cơ chế early
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 747--748
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống mở các biểu đồ kết quả nếu tồn tại,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 747--748
+\TU/TimesNewRoman(0)/m/n/13 gồm \TU/Consolas(0)/m/n/13 results.png\TU/TimesNewR
+oman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 confusion_matrix.png\TU/TimesNewRoman(0
+)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 747--748
+\TU/Consolas(0)/m/n/13 PR_curve.png\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0
+)/m/n/13 F1_curve.png\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 P_cur
+ve.png \TU/TimesNewRoman(0)/m/n/13 và
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 748--749
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống lấy checkpoint tốt nhất tại
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 748--749
+\TU/Consolas(0)/m/n/13 RUN_DIR/weights/best.pt \TU/TimesNewRoman(0)/m/n/13 và k
+hởi tạo lại
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 749--750
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống chọn split đánh giá là \TU/Consolas(0)/m
+/n/13 test \TU/TimesNewRoman(0)/m/n/13 nếu thư mục
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 750--751
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống chạy \TU/Consolas(0)/m/n/13 trained_mode
+l.val \TU/TimesNewRoman(0)/m/n/13 với \TU/Consolas(0)/m/n/13 imgsz =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 750--751
+\TU/Consolas(0)/m/n/13 640\TU/TimesNewRoman(0)/m/n/13 , sinh plot đánh giá và i
+n các chỉ số \TU/Consolas(0)/m/n/13 mAP50-95\TU/TimesNewRoman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 751--752
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống chạy \TU/Consolas(0)/m/n/13 trained_mode
+l.predict \TU/TimesNewRoman(0)/m/n/13 trên
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 751--752
+\TU/TimesNewRoman(0)/m/n/13 ảnh của split đánh giá với \TU/Consolas(0)/m/n/13 c
+onf = 0.25\TU/TimesNewRoman(0)/m/n/13 , \TU/Consolas(0)/m/n/13 iou =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 752--753
+[]\TU/TimesNewRoman(0)/m/n/13 Người nghiên cứu xem một số ảnh dự đoán đầu
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 753--754
+[]\TU/TimesNewRoman(0)/m/n/13 Hệ thống sao chép \TU/Consolas(0)/m/n/13 best.pt 
+\TU/TimesNewRoman(0)/m/n/13 thành
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 753--754
+\TU/Consolas(0)/m/n/13 best_doctor_medical_yolo11m_v7.pt \TU/TimesNewRoman(0)/m
+/n/13 trong
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 759--760
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu Roboflow API key không hợp lệ hoặc không
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 759--760
+\TU/TimesNewRoman(0)/m/n/13 có quyền truy cập project, hệ thống dừng ở bước
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 759--760
+\TU/TimesNewRoman(0)/m/n/13 tải dataset và yêu cầu người nghiên cứu kiểm tra
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 760--761
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu \TU/Consolas(0)/m/n/13 data.yaml \TU/TimesNew
+Roman(0)/m/n/13 thiếu đường dẫn \TU/Consolas(0)/m/n/13 valid/images\TU/TimesNew
+Roman(0)/m/n/13 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 760--761
+\TU/TimesNewRoman(0)/m/n/13 hệ thống kiểm tra biến thể \TU/Consolas(0)/m/n/13 v
+al/images\TU/TimesNewRoman(0)/m/n/13 ; nếu cả
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 760--761
+\TU/TimesNewRoman(0)/m/n/13 hai không tồn tại, người nghiên cứu phải kiểm tra
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 761--762
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu số ảnh và số file nhãn ở một split chênh lệch
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 761--762
+\TU/TimesNewRoman(0)/m/n/13 bất thường, người nghiên cứu kiểm tra lại quá
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 761--762
+\TU/TimesNewRoman(0)/m/n/13 trình export hoặc annotation trên Roboflow trước
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 762--763
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu phân phối lớp quá lệch hoặc lớp quan trọng
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 762--763
+\TU/TimesNewRoman(0)/m/n/13 gần như không có mẫu trong validation/test,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 762--763
+\TU/TimesNewRoman(0)/m/n/13 người nghiên cứu tạo lại version Roboflow hoặc
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 763--764
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu môi trường không có GPU, thiếu bộ nhớ
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 763--764
+\TU/TimesNewRoman(0)/m/n/13 hoặc batch size 16 gây lỗi, người nghiên cứu
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 763--764
+\TU/TimesNewRoman(0)/m/n/13 giảm batch size, tắt AMP hoặc chuyển sang máy
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 764--765
+[]\TU/TimesNewRoman(0)/m/n/13 Nếu không có tập test, hệ thống dùng tập valida-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 764--765
+\TU/TimesNewRoman(0)/m/n/13 tion để đánh giá tạm thời và ghi rõ split đã dùng
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 768--768
+\TU/TimesNewRoman(0)/m/n/13 checkpoint \TU/Consolas(0)/m/n/13 best.pt \TU/Times
+NewRoman(0)/m/n/13 và \TU/Consolas(0)/m/n/13 last.pt\TU/TimesNewRoman(0)/m/n/13
+ , file 
+ []
+
+[48] [49] [50] [51] [52] [53]) [54] [55]
 \openout2 = `chapters/04_phuong_phap_de_xuat.aux'.
 
  (chapters/04_phuong_phap_de_xuat.tex
 Chương 5.
-[38
+[56
 
 
 
 
-] [39] [40]
-Underfull \hbox (badness 10000) in paragraph at lines 190--190
-[]|\TU/TimesNewRoman(0)/m/n/12 Loss mặc định
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 190--190
-\TU/TimesNewRoman(0)/m/n/12 multi-label;
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 190--190
-\TU/lmtt/m/n/12 BCEWithLogitsLoss
- []
-
-
-Underfull \hbox (badness 2818) in paragraph at lines 190--190
-[]|\TU/TimesNewRoman(0)/m/n/12 Xử lý mất cân bằng
- []
-
-
-Underfull \hbox (badness 4303) in paragraph at lines 190--190
-[]|\TU/TimesNewRoman(0)/m/n/12 Chọn theo \TU/lmtt/m/n/12 eval_loss\TU/TimesNewR
-oman(0)/m/n/12 ;
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 190--190
-[]|\TU/TimesNewRoman(0)/m/n/12 Threshold 0.5; auto
- []
-
-
-Underfull \hbox (badness 4886) in paragraph at lines 190--190
-[]|\TU/TimesNewRoman(0)/m/n/12 Split ngẫu nhiên; split
- []
-
-[41]) [42]
+] [57] [58] [59] [60] [61]) [62]
 \openout2 = `chapters/05_thuc_nghiem_va_danh_gia.aux'.
 
  (chapters/05_thuc_nghiem_va_danh_gia.tex
 Chương 6.
-[43
+[63
 
 
 
 
-]
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 61.
- [44] [45] [46]) [47] [48]
+] [64] [65] [66] [67] [68]
+File: images/confusion_matrix.png Graphic file (type bmp)
+<images/confusion_matrix.png>
+File: images/confusion_matrix_normalized.png Graphic file (type bmp)
+<images/confusion_matrix_normalized.png>
+ [69]
+File: images/BoxPR_curve.png Graphic file (type bmp)
+<images/BoxPR_curve.png>
+File: images/BoxF1_curve.png Graphic file (type bmp)
+<images/BoxF1_curve.png>
+File: images/BoxP_curve.png Graphic file (type bmp)
+<images/BoxP_curve.png>
+File: images/BoxR_curve.png Graphic file (type bmp)
+<images/BoxR_curve.png>
+ [70] [71]) [72] [73]
 \openout2 = `chapters/06_ket_luan_va_huong_phat_trien.aux'.
 
- (chapters/06_ket_luan_va_huong_phat_trien.tex
+
+(chapters/06_ket_luan_va_huong_phat_trien.tex
 Chương 7.
-[49
+[74
 
 
 
 
-]) [50] (references.tex) [51
+] [75]) [76] (references.tex) [77
 
 
 
@@ -1202,15 +2288,15 @@ LaTeX2e <2026-06-01>
 L3 programming layer <2026-05-26>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 7CFE74D1B76A4049D8569AAA6FD9E3D2;12646.
+(rerunfilecheck)             Checksum: 4F0E399EF415455E0BBDDC8D6FD4A696;15808.
  ) 
 Here is how much of TeX's memory you used:
- 28934 strings out of 402628
- 577487 string characters out of 5446359
- 1074311 words of memory out of 5000000
- 57509 multiletter control sequences out of 15000+600000
- 635813 words of font info for 104 fonts, out of 8000000 for 9000
+ 29299 strings out of 402628
+ 586110 string characters out of 5446359
+ 1087039 words of memory out of 5000000
+ 57847 multiletter control sequences out of 15000+600000
+ 635941 words of font info for 120 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 89i,12n,107p,784b,1008s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,12n,116p,807b,889s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (57 pages).
+Output written on main.pdf (85 pages).

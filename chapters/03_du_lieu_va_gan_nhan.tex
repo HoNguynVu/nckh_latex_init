@@ -2,30 +2,34 @@
 
 \section{Nguồn dữ liệu}
 \subsection{Dữ liệu văn bản}
-Dữ liệu văn bản được thu thập từ các nền tảng mạng xã hội như TikTok và Facebook. Các mẫu dữ liệu được ưu tiên lấy từ nội dung có liên quan đến quảng cáo thực phẩm chức năng, thực phẩm bảo vệ sức khỏe, sản phẩm hỗ trợ sinh lý, xương khớp, tiểu đường, giảm cân, làm đẹp hoặc các nhóm sản phẩm sức khỏe phổ biến khác. Nguồn văn bản chính gồm caption, mô tả bài đăng, bình luận, phụ đề, transcript hoặc nội dung OCR/ASR được trích xuất từ ảnh và video.
+Dữ liệu văn bản được thu thập từ các nền tảng mạng xã hội như TikTok và Facebook, ưu tiên các nội dung liên quan đến quảng cáo thực phẩm chức năng, thực phẩm bảo vệ sức khỏe và các nhóm sản phẩm sức khỏe phổ biến. Nguồn văn bản bao gồm caption, mô tả bài đăng, bình luận, phụ đề, transcript và nội dung OCR/ASR được trích xuất từ ảnh hoặc video.
+
+Mỗi mẫu văn bản cần được lưu kèm thông tin nguồn, thời điểm thu thập nếu có, định danh bài đăng hoặc video và metadata cần thiết. Các trường này giúp truy vết dữ liệu, kiểm tra trùng lặp và hạn chế leakage khi chia tập.
 
 \subsection{Dữ liệu hình ảnh}
-Dữ liệu hình ảnh được lấy từ ảnh trong bài đăng, frame được cắt từ video và các dataset hình ảnh liên quan trên Roboflow. Nhóm dữ liệu này tập trung vào các dấu hiệu thị giác có thể làm tăng mức độ tin cậy sai lệch của quảng cáo, ví dụ áo blouse trắng, ống nghe, logo truyền hình, hình ảnh quầy thuốc hoặc con dấu/cam kết an toàn. Các frame được trích xuất từ video ở UC02 và chỉ giữ lại những frame có mức khác biệt đủ lớn để giảm trùng lặp hình ảnh.
+Dữ liệu hình ảnh bao gồm ảnh trong bài đăng, frame được cắt từ video và bộ dữ liệu hình ảnh được quản lý trên Roboflow. Trong phiên bản thực nghiệm hiện tại, dataset hình ảnh sử dụng workspace Roboflow với tên \texttt{doctor-and-medical}, version 7 và export theo định dạng YOLO. Dữ liệu tập trung vào các đối tượng có thể gợi bối cảnh y tế hoặc dấu hiệu mạo danh/lợi dụng uy tín trong quảng cáo.
 
-\section{Quy trình thu thập dữ liệu}
+Các frame trích từ video cần được lọc để giảm trùng lặp, ví dụ chỉ giữ các frame có mức khác biệt đủ lớn so với frame liền trước. Cách làm này giúp giảm số lượng ảnh gần giống nhau và hạn chế nguy cơ mô hình học lệch theo các frame lặp.
+
+\section{Quy trình thu thập và xử lý dữ liệu}
 \subsection{Dữ liệu văn bản}
-Quy trình thu thập dữ liệu văn bản gồm các bước chính:
+Quy trình dữ liệu văn bản gồm các bước chính:
 \begin{enumerate}
     \item Xác định từ khóa, nhóm sản phẩm và danh sách URL cần thu thập.
-    \item Cào dữ liệu bài đăng hoặc video từ nền tảng mạng xã hội.
-    \item Trích xuất văn bản từ caption, mô tả, bình luận, phụ đề hoặc transcript.
-    \item Chuẩn hóa dữ liệu, loại bỏ mẫu trùng lặp và gắn \texttt{post\_id} để phục vụ chia tập.
-    \item Lưu trữ các trường thông tin cần thiết để phục vụ gán nhãn và truy vết.
+    \item Thu thập bài đăng, caption, mô tả, bình luận, phụ đề hoặc transcript từ nền tảng nguồn.
+    \item Chuẩn hóa Unicode, loại bỏ mẫu rỗng, kiểm tra trùng lặp và gán \texttt{post\_id}.
+    \item Gán nhãn đa nhãn theo nội dung thực tế và lưu evidence nếu có.
+    \item Chia dữ liệu thành train, validation và test theo quy tắc hạn chế leakage.
 \end{enumerate}
 
 \subsection{Dữ liệu hình ảnh}
-Quy trình thu thập dữ liệu hình ảnh gồm các bước chính:
+Quy trình dữ liệu hình ảnh gồm các bước chính:
 \begin{enumerate}
-    \item Tải ảnh hoặc video từ các đường dẫn media hợp lệ bằng \texttt{yt-dlp}.
-    \item Cắt video thành frame bằng \texttt{FFmpeg}.
-    \item So sánh các frame liên tiếp và chỉ giữ frame có độ khác biệt lớn hơn 70\%.
-    \item Bổ sung các frame đã chọn vào workspace Roboflow.
-    \item Kết hợp thêm dataset hình ảnh liên quan để huấn luyện hoặc hỗ trợ auto label.
+    \item Tải ảnh hoặc video từ các đường dẫn media hợp lệ bằng công cụ phù hợp.
+    \item Cắt video thành frame và lọc các frame gần trùng lặp.
+    \item Đưa ảnh/frame vào Roboflow để gán nhãn đối tượng bằng bounding box.
+    \item Review thủ công các nhãn dễ nhầm lẫn như \texttt{Lab-coat} và \texttt{Shirt}.
+    \item Export dataset version 7 theo YOLO format để huấn luyện bằng Ultralytics YOLO.
 \end{enumerate}
 
 \section{Định dạng dữ liệu}
@@ -33,18 +37,18 @@ Quy trình thu thập dữ liệu hình ảnh gồm các bước chính:
 \begin{table}[H]
 \centering
 \caption{Định dạng dữ liệu văn bản đề xuất}
-\begin{tabularx}{\textwidth}{|p{0.22\textwidth}|Y|}
+\label{tab:text_data_format}
+\begin{tabularx}{\textwidth}{|L{0.24\textwidth}|Y|}
 \hline
 \textbf{Trường} & \textbf{Ý nghĩa} \\
 \hline
-id & Mã định danh duy nhất của mẫu dữ liệu. \\ \hline
-post\_id & Mã bài đăng/video gốc, dùng để tránh leakage khi chia train/validation/test. \\ \hline
-text & Nội dung văn bản đã trích xuất từ bài đăng, phụ đề, transcript, OCR hoặc mô tả. \\ \hline
-source & Nền tảng hoặc nguồn thu thập. \\ \hline
-posted\_at & Thời gian đăng tải nếu có. \\ \hline
-labels & Các nhãn văn bản được gán cho mẫu dữ liệu. \\ \hline
-evidence & Cụm từ hoặc đoạn văn bản làm bằng chứng cho nhãn. \\ \hline
-split & Tập dữ liệu tương ứng: train, validation hoặc test. \\ \hline
+\texttt{id} & Mã định danh duy nhất của mẫu dữ liệu. \\ \hline
+\texttt{post\_id} & Mã bài đăng hoặc video gốc, dùng để hạn chế leakage khi chia tập. \\ \hline
+\texttt{text} & Nội dung văn bản đã trích xuất từ caption, mô tả, phụ đề, OCR hoặc ASR. \\ \hline
+\texttt{source} & Nền tảng hoặc nguồn thu thập dữ liệu. \\ \hline
+\texttt{labels} & Các nhãn văn bản được gán cho mẫu. \\ \hline
+\texttt{evidence} & Cụm từ hoặc đoạn văn bản làm bằng chứng cho nhãn nếu có. \\ \hline
+\texttt{split} & Tập dữ liệu tương ứng: train, validation hoặc test. \\ \hline
 \end{tabularx}
 \end{table}
 
@@ -52,75 +56,71 @@ split & Tập dữ liệu tương ứng: train, validation hoặc test. \\ \hlin
 \begin{table}[H]
 \centering
 \caption{Định dạng dữ liệu hình ảnh đề xuất}
-\begin{tabularx}{\textwidth}{|p{0.22\textwidth}|Y|}
+\label{tab:image_data_format}
+\begin{tabularx}{\textwidth}{|L{0.24\textwidth}|Y|}
 \hline
 \textbf{Trường} & \textbf{Ý nghĩa} \\
 \hline
-image\_id & Mã định danh duy nhất của ảnh hoặc frame. \\ \hline
-post\_id & Mã bài đăng/video gốc để tránh leakage giữa các tập dữ liệu. \\ \hline
-frame\_path & Đường dẫn tới ảnh hoặc frame đã được lưu. \\ \hline
-source\_media & Đường dẫn hoặc mã media gốc. \\ \hline
-frame\_time & Thời điểm frame trong video nếu có. \\ \hline
-labels & Các nhãn hình ảnh được gán cho ảnh/frame. \\ \hline
-annotation & Thông tin vùng đánh dấu, ví dụ bounding box hoặc polygon trên Roboflow. \\ \hline
-split & Tập dữ liệu tương ứng: train, validation hoặc test. \\ \hline
+\texttt{image\_id} & Mã định danh duy nhất của ảnh hoặc frame. \\ \hline
+\texttt{post\_id} & Mã bài đăng, video hoặc media gốc dùng để kiểm soát trùng lặp. \\ \hline
+\texttt{frame\_path} & Đường dẫn tới ảnh hoặc frame đã lưu. \\ \hline
+\texttt{source\_media} & Đường dẫn hoặc mã media gốc. \\ \hline
+\texttt{labels} & Các nhãn đối tượng được gán trong ảnh/frame. \\ \hline
+\texttt{annotation} & Thông tin bounding box theo định dạng YOLO hoặc định dạng trung gian từ Roboflow. \\ \hline
+\texttt{split} & Tập dữ liệu tương ứng: train, validation hoặc test. \\ \hline
 \end{tabularx}
 \end{table}
 
 \section{Bộ nhãn sử dụng}
-\subsection{Dữ liệu văn bản}
+\subsection{Bộ nhãn văn bản}
 \begin{table}[H]
 \centering
-\caption{Bộ nhãn phân loại văn bản dự kiến}
-\begin{tabularx}{\textwidth}{|p{0.33\textwidth}|Y|}
+\caption{Bộ nhãn phân loại văn bản}
+\label{tab:text_label_set}
+\begin{tabularx}{\textwidth}{|L{0.34\textwidth}|Y|}
 \hline
 \textbf{Nhãn} & \textbf{Ý nghĩa} \\
 \hline
-IS\_ADS & Mẫu có bản chất là quảng cáo hoặc nội dung bán hàng. \\ \hline
-EFFICACY\_CLAIM & Có tuyên bố công dụng, hiệu quả hoặc lợi ích sức khỏe. \\ \hline
-CURE\_CLAIM & Có tuyên bố chữa bệnh, điều trị, thay thế thuốc hoặc khỏi bệnh. \\ \hline
-AUTHORITY\_REFERENCE & Có sử dụng hoặc gợi nhắc uy tín bác sĩ, bệnh viện, cơ quan, chuyên gia. \\ \hline
-TESTIMONIAL & Có câu chuyện nhân chứng, phản hồi khách hàng, hành trình khỏi bệnh. \\ \hline
-FEAR\_URGENCY & Có yếu tố hù dọa, cảnh báo biến chứng, khan hiếm hoặc thúc ép hành động. \\ \hline
-PRICE\_PROMOTION & Có ưu đãi, giảm giá, khuyến mãi, cam kết hoàn tiền hoặc deal giới hạn. \\ \hline
+\texttt{IS\_ADS} & Nội dung có bản chất quảng cáo hoặc bán hàng. \\ \hline
+\texttt{EFFICACY\_CLAIM} & Có tuyên bố công dụng, hiệu quả hoặc lợi ích sức khỏe. \\ \hline
+\texttt{CURE\_CLAIM} & Có tuyên bố chữa bệnh, điều trị, thay thế thuốc hoặc khỏi bệnh. \\ \hline
+\texttt{AUTHORITY\_REFERENCE} & Có sử dụng hoặc gợi nhắc uy tín bác sĩ, bệnh viện, cơ quan, chuyên gia hoặc truyền thông. \\ \hline
+\texttt{TESTIMONIAL} & Có câu chuyện nhân chứng, phản hồi khách hàng hoặc trải nghiệm khỏi bệnh. \\ \hline
+\texttt{FEAR\_URGENCY} & Có yếu tố hù dọa, cảnh báo biến chứng, khan hiếm hoặc thúc ép hành động. \\ \hline
+\texttt{PRICE\_PROMOTION} & Có ưu đãi, giảm giá, khuyến mãi, cam kết hoàn tiền hoặc deal giới hạn. \\ \hline
 \end{tabularx}
 \end{table}
 
-\subsection{Dữ liệu hình ảnh}
+\subsection{Bộ nhãn hình ảnh}
 \begin{table}[H]
 \centering
-\caption{Bộ nhãn hình ảnh dự kiến}
-\begin{tabularx}{\textwidth}{|p{0.28\textwidth}|Y|}
+\caption{Bộ nhãn hình ảnh dùng cho object detection}
+\label{tab:image_label_set}
+\begin{tabularx}{\textwidth}{|L{0.22\textwidth}|L{0.20\textwidth}|Y|}
 \hline
-\textbf{Nhãn} & \textbf{Ý nghĩa} \\
+\textbf{Nhãn} & \textbf{Vai trò} & \textbf{Ý nghĩa} \\
 \hline
-labcoat & Có áo blouse trắng hoặc trang phục thường được liên tưởng tới bác sĩ/nhân viên y tế. \\ \hline
-logo\_tv & Có logo truyền hình, logo kênh hoặc dấu hiệu thị giác tạo cảm giác nội dung được truyền thông chính thống bảo chứng. \\ \hline
-stethoscope & Có ống nghe của bác sĩ. Nên thống nhất dùng \texttt{stethoscope}; nếu dataset đang ghi \texttt{sterescope} thì cần đổi lại để tránh lệch nhãn. \\ \hline
-shirt & Có áo thường, được dùng như nhãn phân biệt với \texttt{labcoat} nhằm giảm nguy cơ mô hình học vẹt theo màu áo hoặc hình dáng trang phục. \\ \hline
-pharmacy & Dự kiến bổ sung; có hình ảnh quầy thuốc, nhà thuốc hoặc không gian bán thuốc/sản phẩm sức khỏe. \\ \hline
-safety\_seal & Dự kiến bổ sung; có con dấu, biểu tượng hoặc nhãn thể hiện cam kết an toàn, chứng nhận hoặc bảo đảm chất lượng. \\ \hline
+\texttt{Lab-coat} & Lớp mục tiêu chính & Phát hiện áo blouse trắng, thường liên quan đến hình ảnh bác sĩ, chuyên gia y tế hoặc nhân vật được trình bày như chuyên gia. \\ \hline
+\texttt{logo} & Lớp mục tiêu chính & Phát hiện logo hoặc biểu tượng xuất hiện trong ảnh quảng cáo, đặc biệt các logo có thể liên quan đến cơ quan, truyền thông hoặc tổ chức uy tín. \\ \hline
+\texttt{stethoscope} & Lớp mục tiêu chính & Phát hiện ống nghe y tế, hỗ trợ nhận diện bối cảnh y khoa hoặc hình ảnh chuyên môn y tế. \\ \hline
+\texttt{Shirt} & Lớp phụ/đối chứng & Phát hiện áo thông thường nhằm giúp mô hình phân biệt với áo blouse y tế. Lớp này không phải dấu hiệu rủi ro pháp lý độc lập. \\ \hline
 \end{tabularx}
 \end{table}
 
 \section{Nguyên tắc gán nhãn}
 \subsection{Dữ liệu văn bản}
-Mỗi mẫu văn bản được gán nhãn dựa trên nội dung thực tế thay vì chỉ dựa vào sự xuất hiện của từ khóa. Trường hợp một mẫu không phải quảng cáo nhưng có chứa thông tin sức khỏe chung, nhãn \texttt{IS\_ADS} có thể bằng 0 trong khi các nhãn nội dung khác vẫn cần được xem xét tùy ngữ cảnh. Các mẫu giáo dục sức khỏe thông thường, không có dấu hiệu bán hàng hoặc thúc đẩy sử dụng sản phẩm, cần được gán nhãn thận trọng để tránh làm mô hình học sai.
+Mỗi mẫu văn bản được gán nhãn dựa trên nội dung thực tế và ngữ cảnh sử dụng, không chỉ dựa vào sự xuất hiện của từ khóa. Với nội dung dài, dữ liệu có thể được chia thành các đoạn phù hợp với đầu vào của mô hình, nhưng cần giữ liên kết với \texttt{post\_id} gốc để kiểm soát leakage.
 
-Với văn bản dài, dữ liệu được chia thành nhiều đoạn nhỏ đủ phù hợp với đầu vào của PhoBERT. AI được sử dụng để gợi ý nhãn và trích evidence dựa trên nội dung văn bản và file \texttt{keyword.json}. Người rà soát sẽ kiểm tra lại nhãn, evidence và trạng thái của từng mẫu. Quy trình gán nhãn văn bản được lặp lại ba lần nhằm tăng độ tin cậy của dữ liệu trước khi đưa vào huấn luyện.
+Các nhãn rủi ro được hiểu là tín hiệu hỗ trợ rà soát. Một mẫu có thể đồng thời có nhiều nhãn, ví dụ vừa là quảng cáo, vừa tuyên bố công dụng, vừa lợi dụng uy tín chuyên gia. Evidence nên được lưu lại khi có đoạn văn bản làm căn cứ rõ ràng.
 
 \subsection{Dữ liệu hình ảnh}
-Mỗi ảnh hoặc frame được gán nhãn dựa trên đối tượng thị giác xuất hiện trong ảnh, không chỉ dựa vào ngữ cảnh bài đăng. Các annotation cần xác định rõ vùng đối tượng, đặc biệt với những nhãn dễ gây nhầm lẫn như \texttt{labcoat} và \texttt{shirt}. Roboflow được sử dụng để quản lý dataset, huấn luyện model hỗ trợ auto label và review annotation.
+Mỗi ảnh hoặc frame được gán nhãn theo đối tượng thị giác xuất hiện trong ảnh. Annotation cần xác định rõ bounding box của đối tượng, đặc biệt với các lớp dễ nhầm lẫn như \texttt{Lab-coat} và \texttt{Shirt}. Việc thêm \texttt{Shirt} nhằm tạo lớp đối chứng để giảm nhầm lẫn trang phục, không nhằm mở rộng nhóm vi phạm chính.
 
-Sau khi Roboflow auto label các frame mới từ UC02, người rà soát cần kiểm tra lại bounding box, nhãn và các trường hợp nhầm lẫn. Những nhãn dự kiến bổ sung như \texttt{pharmacy} và \texttt{safety\_seal} cần được tách rõ khỏi các nhãn hiện có để tránh mô hình gán nhãn sai do bối cảnh hoặc biểu tượng gần giống.
+Các nhãn \texttt{Lab-coat}, \texttt{logo} và \texttt{stethoscope} được xem là dấu hiệu hình ảnh có thể làm tăng rủi ro khi kết hợp với nội dung quảng cáo. Tuy nhiên, chỉ riêng sự xuất hiện của các đối tượng này chưa đủ để kết luận vi phạm; kết quả cần được hợp nhất với OCR, NLP, ASR, rule-based detection và ngữ cảnh bài đăng.
 
 \section{Chia tập dữ liệu}
 \subsection{Dữ liệu văn bản}
-Dữ liệu văn bản sau khi làm sạch được chia thành các tập huấn luyện, kiểm định và kiểm tra. Việc chia tập cần dựa trên \texttt{post\_id} để các đoạn văn bản hoặc chunk thuộc cùng một bài đăng không xuất hiện đồng thời ở nhiều tập. Cách chia này giúp hạn chế leakage và phản ánh tốt hơn khả năng tổng quát hóa của mô hình PhoBERT trên bài đăng mới.
-
-Cần đảm bảo phân phối nhãn giữa các tập tương đối ổn định, đặc biệt với các nhãn ít xuất hiện như \texttt{TESTIMONIAL} hoặc \texttt{FEAR\_URGENCY}. Nếu một nhãn quá hiếm, cần ghi chú rõ số lượng mẫu trong từng tập để tránh đánh giá sai năng lực mô hình.
+Dữ liệu văn bản được chia thành train, validation và test theo \texttt{post\_id} để các đoạn thuộc cùng một bài đăng không xuất hiện đồng thời ở nhiều tập. Cách chia này giúp đánh giá khách quan hơn khả năng tổng quát hóa của mô hình trên bài đăng mới.
 
 \subsection{Dữ liệu hình ảnh}
-Dữ liệu hình ảnh cũng cần được chia theo \texttt{post\_id}, video gốc hoặc nguồn media gốc để tránh trường hợp các frame gần giống nhau xuất hiện ở cả train và test. Với dữ liệu được lấy từ Roboflow hoặc dataset bên ngoài, cần lưu thông tin nguồn để kiểm soát trùng lặp và tránh leakage giữa các phiên bản dataset.
-
-Khi chia tập, cần cân bằng các nhãn hình ảnh chính như \texttt{labcoat}, \texttt{stethoscope}, \texttt{logo\_tv} và \texttt{shirt}. Các nhãn dự kiến bổ sung như \texttt{pharmacy} hoặc \texttt{safety\_seal} cần được theo dõi riêng vì ban đầu có thể có số lượng mẫu ít.
+Dữ liệu hình ảnh cần được chia theo nguồn media gốc, video gốc hoặc \texttt{post\_id} nếu có, nhằm tránh trường hợp các frame gần giống nhau xuất hiện ở cả train và test. Với dữ liệu Roboflow, cần lưu rõ version dataset, format export và các cảnh báo liên quan đến annotation để thuận tiện tái lập thực nghiệm.
