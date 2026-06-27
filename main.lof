@@ -3,16 +3,16 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Kiến trúc tổng thể của hệ thống phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng}}{20}{figure.caption.5}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Use case UC01 -- Thu thập dữ liệu}}{22}{figure.caption.6}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Use case UC02 -- Xử lý và chuẩn hóa dữ liệu}}{25}{figure.caption.7}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Use case UC03 -- Quản lý và gán nhãn dữ liệu}}{30}{figure.caption.8}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Use case UC04 -- Chia tập và lưu phiên bản dataset}}{35}{figure.caption.9}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Use case UC05 -- Huấn luyện mô hình PhoBERT}}{41}{figure.caption.10}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Use case UC06 -- Huấn luyện mô hình YOLO v11}}{48}{figure.caption.11}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Kiến trúc tổng thể của hệ thống phát hiện dấu hiệu sai phạm trong quảng cáo thực phẩm chức năng}}{21}{figure.caption.5}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Use case UC01 -- Thu thập dữ liệu}}{23}{figure.caption.6}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Use case UC02 -- Xử lý và chuẩn hóa dữ liệu}}{26}{figure.caption.7}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Use case UC03 -- Quản lý và gán nhãn dữ liệu}}{31}{figure.caption.8}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Use case UC04 -- Chia tập và lưu phiên bản dataset}}{36}{figure.caption.9}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Use case UC05 -- Huấn luyện mô hình PhoBERT}}{42}{figure.caption.10}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Use case UC06 -- Huấn luyện mô hình YOLO v11}}{49}{figure.caption.11}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Ma trận nhầm lẫn của YOLO11m trên tập test}}{70}{figure.caption.22}%
-\contentsline {figure}{\numberline {6.2}{\ignorespaces Đường cong PR và F1 của YOLO11m trên tập test}}{70}{figure.caption.23}%
-\contentsline {figure}{\numberline {6.3}{\ignorespaces Đường cong Precision và Recall của YOLO11m trên tập test}}{71}{figure.caption.24}%
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Ma trận nhầm lẫn của YOLO11m trên tập test}}{71}{figure.caption.22}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Đường cong PR và F1 của YOLO11m trên tập test}}{71}{figure.caption.23}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Đường cong Precision và Recall của YOLO11m trên tập test}}{72}{figure.caption.24}%
 \addvspace {10\p@ }

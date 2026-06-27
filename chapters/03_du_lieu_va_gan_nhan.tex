@@ -34,42 +34,46 @@ Quy trình dữ liệu hình ảnh gồm các bước chính:
 
 \section{Định dạng dữ liệu}
 \subsection{Dữ liệu văn bản}
+Dữ liệu văn bản trong đề tài được lưu ở dạng bảng, trong đó mỗi dòng tương ứng với một đoạn văn bản sau khi tách từ bài đăng gốc. Các trường \texttt{post\_id}, \texttt{chunk\_id} và \texttt{split} được giữ lại để truy vết nguồn và chia tập theo bài đăng, tránh để các đoạn của cùng một bài xuất hiện đồng thời ở train và test.
+
 \begin{table}[H]
 \centering
-\caption{Định dạng dữ liệu văn bản đề xuất}
+\caption{Định dạng dữ liệu văn bản sử dụng trong đề tài}
 \label{tab:text_data_format}
-\begin{tabularx}{\textwidth}{|L{0.24\textwidth}|Y|}
+\begin{tabularx}{\textwidth}{|L{0.36\textwidth}|Y|}
 \hline
-\textbf{Trường} & \textbf{Ý nghĩa} \\
+\textbf{Nhóm trường} & \textbf{Ý nghĩa} \\
 \hline
-\texttt{id} & Mã định danh duy nhất của mẫu dữ liệu. \\ \hline
-\texttt{post\_id} & Mã bài đăng hoặc video gốc, dùng để hạn chế leakage khi chia tập. \\ \hline
-\texttt{text} & Nội dung văn bản đã trích xuất từ caption, mô tả, phụ đề, OCR hoặc ASR. \\ \hline
-\texttt{source} & Nền tảng hoặc nguồn thu thập dữ liệu. \\ \hline
-\texttt{labels} & Các nhãn văn bản được gán cho mẫu. \\ \hline
-\texttt{evidence} & Cụm từ hoặc đoạn văn bản làm bằng chứng cho nhãn nếu có. \\ \hline
-\texttt{split} & Tập dữ liệu tương ứng: train, validation hoặc test. \\ \hline
+\texttt{source\_index}, \texttt{post\_id}, \texttt{chunk\_id} & Các trường định danh và truy vết. \texttt{source\_index} xác định nguồn hoặc dòng dữ liệu ban đầu; \texttt{post\_id} xác định bài đăng gốc; \texttt{chunk\_id} xác định đoạn văn bản sau khi tách. \\ \hline
+\texttt{split} & Tập dữ liệu tương ứng, ví dụ train, validation hoặc test. Trường này được tạo sau bước chia tập và cần ưu tiên chia theo \texttt{post\_id}. \\ \hline
+\texttt{text}, \texttt{url} & Nội dung văn bản đầu vào và đường dẫn nguồn. Trường \texttt{text} có thể là caption, mô tả, phụ đề, transcript, OCR hoặc ASR; \texttt{url} giúp kiểm tra lại ngữ cảnh khi cần. \\ \hline
+\texttt{EFFICACY\_CLAIM}, \texttt{CURE\_CLAIM}, \texttt{AUTHORITY\_REFERENCE}, \texttt{TESTIMONIAL}, \texttt{FEAR\_URGENCY}, \texttt{PRICE\_PROMOTION}, \texttt{IS\_ADS} & Các nhãn nhị phân của bài toán phân loại đa nhãn. Mỗi trường thường nhận giá trị 0/1, trong đó 1 thể hiện đoạn văn bản có dấu hiệu tương ứng. \\ \hline
+\texttt{EFFICACY\_CLAIM\_reason}, \texttt{CURE\_CLAIM\_reason}, \texttt{AUTHORITY\_REFERENCE\_reason}, \texttt{TESTIMONIAL\_reason}, \texttt{FEAR\_URGENCY\_reason}, \texttt{PRICE\_PROMOTION\_reason}, \texttt{IS\_ADS\_reason} & Lý do hoặc bằng chứng gán nhãn cho từng nhóm dấu hiệu. Các trường này hỗ trợ kiểm tra chất lượng nhãn, giải thích kết quả và rà soát lại các trường hợp gây nhầm lẫn. \\ \hline
+\texttt{label\_count} & Số lượng nhãn dương trên một mẫu, dùng để thống kê mức độ chồng lấn nhãn và hỗ trợ kiểm tra phân bố dữ liệu. \\ \hline
 \end{tabularx}
 \end{table}
 
 \subsection{Dữ liệu hình ảnh}
+Với dữ liệu hình ảnh, đề tài sử dụng Roboflow để quản lý ảnh, gán nhãn bounding box, chia tập và export dữ liệu phục vụ huấn luyện YOLO. Vì Roboflow có thể export sang nhiều định dạng khác nhau, báo cáo chỉ cố định định dạng ở mức thực nghiệm: dataset được export theo YOLO/Ultralytics format. Khi đó, dữ liệu không nhất thiết nằm trong một bảng CSV như nhánh văn bản, mà thường được tổ chức theo thư mục ảnh, thư mục nhãn và file cấu hình dataset.
+
 \begin{table}[H]
 \centering
-\caption{Định dạng dữ liệu hình ảnh đề xuất}
+\caption{Cấu trúc dữ liệu hình ảnh khi export từ Roboflow theo YOLO format}
 \label{tab:image_data_format}
-\begin{tabularx}{\textwidth}{|L{0.24\textwidth}|Y|}
+\begin{tabularx}{\textwidth}{|L{0.32\textwidth}|Y|}
 \hline
-\textbf{Trường} & \textbf{Ý nghĩa} \\
+\textbf{Thành phần} & \textbf{Ý nghĩa} \\
 \hline
-\texttt{image\_id} & Mã định danh duy nhất của ảnh hoặc frame. \\ \hline
-\texttt{post\_id} & Mã bài đăng, video hoặc media gốc dùng để kiểm soát trùng lặp. \\ \hline
-\texttt{frame\_path} & Đường dẫn tới ảnh hoặc frame đã lưu. \\ \hline
-\texttt{source\_media} & Đường dẫn hoặc mã media gốc. \\ \hline
-\texttt{labels} & Các nhãn đối tượng được gán trong ảnh/frame. \\ \hline
-\texttt{annotation} & Thông tin bounding box theo định dạng YOLO hoặc định dạng trung gian từ Roboflow. \\ \hline
-\texttt{split} & Tập dữ liệu tương ứng: train, validation hoặc test. \\ \hline
+\texttt{train/}, \texttt{valid/}, \texttt{test/} & Các thư mục dữ liệu sau khi Roboflow chia tập. Tùy cấu hình export, tên validation có thể là \texttt{valid} hoặc \texttt{val}. \\ \hline
+\texttt{images/} & Thư mục chứa các file ảnh dùng cho huấn luyện và đánh giá. Mỗi ảnh tương ứng với một file annotation trong thư mục \texttt{labels/} nếu ảnh có đối tượng được gán nhãn. \\ \hline
+\texttt{labels/} & Thư mục chứa các file nhãn dạng \texttt{.txt}. Mỗi file nhãn có cùng tên gốc với ảnh tương ứng. \\ \hline
+\texttt{data.yaml} & File cấu hình dataset, khai báo đường dẫn train/validation/test, số lớp và tên lớp như \texttt{Lab-coat}, \texttt{logo}, \texttt{stethoscope}, \texttt{Shirt}. \\ \hline
+\texttt{*.txt} annotation & Mỗi dòng trong file nhãn thường có dạng \texttt{class\_id x\_center y\_center width height}. Các tọa độ được chuẩn hóa theo kích thước ảnh, nằm trong khoảng từ 0 đến 1. \\ \hline
+\texttt{metadata} từ Roboflow & Roboflow có thể lưu thêm thông tin version, preprocessing, augmentation hoặc thông tin nguồn. Các thông tin này cần được ghi lại trong báo cáo thực nghiệm để tái lập quá trình huấn luyện. \\ \hline
 \end{tabularx}
 \end{table}
+
+Như vậy, phần văn bản được mô tả theo schema bảng cụ thể, còn phần hình ảnh được mô tả theo cấu trúc export của Roboflow. Khi cần liên kết hai nguồn dữ liệu ở tầng hợp nhất, có thể bổ sung bảng metadata riêng để nối \texttt{post\_id} hoặc URL bài đăng với các file ảnh/frame tương ứng.
 
 \section{Bộ nhãn sử dụng}
 \subsection{Bộ nhãn văn bản}
